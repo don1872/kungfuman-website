@@ -54,36 +54,30 @@ SEO：每个语种有独立 `<html lang>`、`<title>`、`description`、canonica
 
 ### 英文版策略
 
-设计的视觉骨架是中文书法，因此英文版**不是**零汉字，而是：
+英文版**不含汉字**（唯一例外是语言切换按钮上的「中文」——切换控件按惯例用目标语言书写）。
+设计稿的视觉骨架是中文书法，因此英文版需要一套等效的拉丁替身：
 
-| 内容 | 英文版处理 |
+| 中文版 | 英文版 |
 |---|---|
-| 书法巨字（谁主沉浮、問鼎、鼎阵锋王极、擂台、武者报名表、已受理印章、功/武方章） | **保留**，作为品牌视觉符号 |
-| 章节书法标题（赛程、天下英雄榜、五届之路、创始人、集锦、江湖印记） | **保留**，副标改英文 |
-| 选手姓名、绰号 | **保留汉字** —— 武者身份不因语言而变 |
-| 拳种 | 汉字 + 罗马字注，如 `咏春拳 WING CHUN` |
-| 地名、国籍、场馆 | 译为英文 |
-| 其余全部界面、导航、表单、叙事文案 | 英文 |
+| 书法主标题「谁主沉浮」 | `WHO RULES THE WORLD`（Oswald 窄体大写） |
+| 竖排书法水印「問鼎」 | `THE QUEST`，同样竖排（拉丁字母在 `writing-mode: vertical-rl` 下整体旋转 90°，像书脊） |
+| 章节书法标题（赛程 / 天下英雄榜 / 五届之路 / 创始人 / 集锦 / 江湖印记） | 对应英文词，Oswald 粗体 + 大字距 |
+| 五届书法单字 鼎阵锋王极 | 罗马数字 `I II III IV V` |
+| 集锦描边大字 崩枪封势 | `CRUSH / SPEAR / TRAP / FORCE` |
+| 红底「功」方章、金底「武」方章 | `KF` 字母组合，同样的方章造型 |
+| 对决菱形章 | `VS` |
+| 「擂台 THE RING」 | 只留 `THE RING` |
+| 「武者报名表」「已受理」印章 | `FIGHTER ENTRY FORM`、`RECEIVED` |
+| 选手姓名、绰号、拳种 | 罗马字：`PAK Hok-ming`、`"Snowfall Blossom"`、`WING CHUN` |
+| 直角引号「」 | 弯引号 `""` |
 
-新增文案时注意：`Ma Shan Zheng` **没有拉丁字形**。`--font-brush` 的兜底已收紧为
-`Noto Serif SC`（而非通用 `cursive`，那会在 Windows 上落到 Comic Sans），
-但英文长句仍应显式改用 `font-serif-sc` 或 `font-latin`，参见 `Parallax` 的 `font` 参数。
+**新增文案时注意** —— `Ma Shan Zheng` 没有拉丁字形：
 
-## 设计规范
-
-暖褐红夜色主题，全部 token 见 `globals.css`：
-
-| 用途 | Token | 值 |
-|---|---|---|
-| 页面底色 | `--color-ink` | `#140b08` |
-| 卡片底 | `--color-ink-card` | `#1a0e09` |
-| 主红（朱砂） | `--color-cinnabar` | `#e03a20` |
-| 亮红 | `--color-flame` | `#ff5a3c` |
-| 鎏金 | `--color-gold` | `#e0aa4e` |
-| 米白正文 | `--color-rice` | `#f5ead8` |
-| 次级文字 | `--color-rice-dim` | `#c9b394` |
-
-响应式断点为 **780px**（覆盖了 Tailwind 默认的 `md:768px`），与设计稿一致。
+- `--font-brush` 的兜底已收紧为 `Noto Serif SC`（而非通用 `cursive`，那会在 Windows 上落到 Comic Sans）
+- 但英文内容仍应显式选字，不要依赖兜底。组件里的模式是
+  `locale === "zh" ? "font-brush ..." : "font-latin ..."`
+- 英文字串比中文长，几处需要额外让位：五届届名预留两行高度、榜单绰号独占一行、
+  集锦描边大字压小字号。改文案时留意别把这些撑破。
 
 ## 已实现
 

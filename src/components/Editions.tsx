@@ -10,7 +10,7 @@ export function Editions({ locale }: { locale: Locale }) {
   return (
     <section id="editions" className="sec-pad mx-auto max-w-[1240px] scroll-mt-[76px]">
       <div className="mb-3">
-        <SectionHeading brush={d.heading} sub={d.sub} />
+        <SectionHeading heading={d.heading} sub={d.sub} locale={locale} />
       </div>
       <p className="mb-12 max-w-[560px] text-sm leading-[2] text-rice-dim">{d.intro}</p>
 
@@ -25,15 +25,18 @@ export function Editions({ locale }: { locale: Locale }) {
             <div className={`font-latin text-[11px] tracking-[4px] ${ed.live ? "text-flame" : "text-rice-dim"}`}>
               {ed.year}
             </div>
-            {/* 书法单字：两语种共用的视觉符号 */}
+            {/* 中文版是书法单字，英文版是罗马数字 */}
             <div
-              className={`my-[14px] mb-1.5 font-brush text-[72px] leading-[1.1] ${
-                ed.live ? "text-gold" : "text-rice/80"
-              }`}
+              className={`my-[14px] mb-1.5 leading-[1.1] ${
+                locale === "zh" ? "font-brush text-[72px]" : "font-latin text-[62px] font-bold tracking-[2px]"
+              } ${ed.live ? "text-gold" : "text-rice/80"}`}
             >
               {ed.char}
             </div>
-            <div className="font-serif-sc text-xl font-black text-white">{ed.name}</div>
+            {/* 预留两行高度：英文届名长短不一，否则下方格言会高低不齐 */}
+            <div className="flex min-h-[2.6em] items-start justify-center font-serif-sc text-xl leading-[1.3] font-black text-white">
+              {ed.name}
+            </div>
             {locale === "zh" && (
               <div className="mt-1.5 font-latin text-[11px] tracking-[3px] text-rice-dim">{ed.en}</div>
             )}

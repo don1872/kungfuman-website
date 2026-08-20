@@ -4,11 +4,13 @@ import { getDict } from "@/lib/dict";
 import type { Locale } from "@/lib/locales";
 import { SectionHeading } from "./SectionHeading";
 
-const STAT_VALUES = ["40+", "30+", "八极"];
+const STAT_BASE = ["40+", "30+"];
 
 export function Founder({ locale }: { locale: Locale }) {
   const journey = getJourney(locale);
-  const d = getDict(locale).founder;
+  const dict = getDict(locale);
+  const d = dict.founder;
+  const statValues = [...STAT_BASE, d.lineageValue];
 
   return (
     <section
@@ -17,7 +19,7 @@ export function Founder({ locale }: { locale: Locale }) {
     >
       <div className="sec-pad mx-auto max-w-[1240px]">
         <div className="mb-12">
-          <SectionHeading brush={d.heading} sub={d.sub} />
+          <SectionHeading heading={d.heading} sub={d.sub} locale={locale} />
         </div>
 
         <div className="grid grid-cols-1 items-start gap-14 md:grid-cols-[380px_1fr]">
@@ -35,15 +37,19 @@ export function Founder({ locale }: { locale: Locale }) {
                 {d.portraitCaption}
               </div>
             </div>
-            <div className="absolute -right-[14px] -bottom-[14px] flex h-16 w-16 items-center justify-center border-2 border-cinnabar bg-ink font-brush text-[30px] text-flame shadow-[0_0_30px_rgba(224,58,32,.4)]">
-              武
+            <div
+              className={`absolute -right-[14px] -bottom-[14px] flex h-16 w-16 items-center justify-center border-2 border-cinnabar bg-ink text-flame shadow-[0_0_30px_rgba(224,58,32,.4)] ${
+                locale === "zh" ? "font-brush text-[30px]" : "font-latin text-[20px] font-bold tracking-[1px]"
+              }`}
+            >
+              {dict.brand.sealWu}
             </div>
           </div>
 
           <div>
             {/* 姓名保持汉字 */}
             <div className="font-serif-sc text-[40px] leading-[1.2] font-black text-white">
-              {d.name} <span className="text-base font-normal text-flame">{d.alias}</span>
+              {d.name} <span className="text-base font-normal text-flame">{locale === "zh" ? `\u300C${d.alias}\u300D` : d.alias}</span>
             </div>
             <div className="my-2.5 mb-7 font-latin text-sm tracking-[4px] text-gold">{d.title}</div>
             {/* ⚠️ 以下两段为占位虚构文案，上线前须以真实履历核定（见 README） */}
@@ -53,7 +59,7 @@ export function Founder({ locale }: { locale: Locale }) {
             <div className="gold-grid grid-cols-3">
               {d.stats.map((label, i) => (
                 <div key={label} className="bg-ink-card px-3 py-5 text-center md:px-7">
-                  <div className="font-latin text-[30px] font-bold text-gold">{STAT_VALUES[i]}</div>
+                  <div className="font-latin text-[30px] font-bold text-gold">{statValues[i]}</div>
                   <div className="mt-1 text-xs tracking-[2px] text-rice-dim">{label}</div>
                 </div>
               ))}
@@ -63,7 +69,7 @@ export function Founder({ locale }: { locale: Locale }) {
 
         <div className="mt-[72px]">
           <div className="mb-6 flex items-center gap-4">
-            <span className="font-brush text-[30px] text-white">{d.journeyBrush}</span>
+            <span className={locale === "zh" ? "font-brush text-[30px] text-white" : "font-latin text-[22px] font-bold tracking-[5px] text-white uppercase"}>{d.journeyBrush}</span>
             <span className="font-latin text-xs tracking-[4px] text-gold">{d.journeySub}</span>
             <div className="h-px flex-1 bg-gold/30" />
           </div>

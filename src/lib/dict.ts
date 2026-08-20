@@ -11,10 +11,13 @@ import type { Locale } from "./locales";
  */
 
 export type Dict = {
+  /** 品牌视觉符号。中文版是书法字，英文版是拉丁字母 */
+  brand: { seal: string; sealWu: string; watermark: string; watermarkVertical: boolean };
   nav: { events: string; rankings: string; saga: string; founder: string; tickets: string; switchTo: string };
   hero: {
     editionTag: string;
     editionLine: string;
+    title: string;
     tagline: string;
     intro: string;
     countdown: [string, string, string, string];
@@ -22,7 +25,7 @@ export type Dict = {
     venueLine: string;
     scroll: string;
   };
-  mainEvent: { meta: string; flag: string };
+  mainEvent: { meta: string; flag: string; vs: string };
   quote: { eyebrow: string; l1: string; l2: string };
   legacy: { eyebrow: string; l1: string; l2: string };
   events: { heading: string; sub: string; hot: string; soon: string };
@@ -34,7 +37,7 @@ export type Dict = {
     bio1: string; bio2: string;
     portraitCaption: string;
     stats: [string, string, string];
-    journeyBrush: string; journeySub: string;
+    journeyBrush: string; journeySub: string; lineageValue: string;
   };
   media: { heading: string; sub: string };
   cta: {
@@ -49,7 +52,7 @@ export type Dict = {
     changeSession: string; from: string; pick: string; pickFinal: string;
     yourSeats: string; emptyHint: string; qty: string; total: string;
     checkout: string; doneTitle: string; doneBody: string;
-    ring: string; ringSub: string;
+    ring: string | null; ringSub: string;
     legend: [string, string, string, string];
     notes: [string, string, string];
   };
@@ -58,7 +61,7 @@ export type Dict = {
     fields: { name: string; alias: string; age: string; nation: string; style: string; phone: string };
     placeholders: { name: string; alias: string; age: string; nation: string; style: string; phone: string };
     channel: string; error: string; submit: string;
-    cardBrand: string; cardTitle: string; cardNo: string;
+    cardBrand: string; cardTitle: string; cardNo: string; stamp: string;
     rows: { name: string; alias: string; age: string; nation: string; style: string; phone: string; channel: string; date: string };
     footnote1: string; footnote2: string;
     edit: string; done: string;
@@ -66,10 +69,12 @@ export type Dict = {
 };
 
 const zh: Dict = {
+  brand: { seal: "功", sealWu: "武", watermark: "問鼎", watermarkVertical: true },
   nav: { events: "赛程 EVENTS", rankings: "英雄榜 RANKINGS", saga: "五届 SAGA", founder: "创始人 FOUNDER", tickets: "购票", switchTo: "EN" },
   hero: {
     editionTag: "EDITION I · 2026",
     editionLine: "第一届 · 问鼎 THE QUEST FOR THE CROWN",
+    title: "谁主沉浮",
     tagline: "WHO RULES THE WORLD",
     intro: "全球十二国传统武术宗门，八极、咏春、太极、形意、洪拳诸派同台。拳械套路与全接触对抗双线并行，问鼎天下第一之位。",
     countdown: ["天 DAYS", "时 HRS", "分 MIN", "秒 SEC"],
@@ -77,7 +82,7 @@ const zh: Dict = {
     venueLine: "西安 · 问鼎首站",
     scroll: "SCROLL ↓",
   },
-  mainEvent: { meta: "主赛 MAIN EVENT · 综合对抗 84KG", flag: "● 长安站压轴" },
+  mainEvent: { meta: "主赛 MAIN EVENT · 综合对抗 84KG", flag: "● 长安站压轴", vs: "对决" },
   quote: { eyebrow: "创始人 · 陈庆彪 RAINBOW CHEN", l1: "功夫不在胜负，", l2: "在敢不敢站上去。" },
   legacy: { eyebrow: "LEGACY · 薪火相传", l1: "下一代功夫人，", l2: "已经站上垫子。" },
   events: { heading: "赛程", sub: "EDITION I · WORLD TOUR", hot: "热售 HOT", soon: "即将开售 SOON" },
@@ -89,14 +94,14 @@ const zh: Dict = {
   },
   founder: {
     heading: "创始人", sub: "THE FOUNDER",
-    name: "陈庆彪", alias: "「Rainbow」",
+    name: "陈庆彪", alias: "Rainbow",
     title: "RAINBOW CHEN QINGBIAO · FOUNDER & CHAIRMAN",
     // ⚠️ 占位虚构文案，上线前须以真实履历核定
     bio1: "八极拳第八代传人，习武四十余年。曾率中国武术代表团出访三十余国，深感传统武术缺少一个属于自己的世界级擂台——套路被视作表演，实战被归入他人的规则。",
     bio2: "2025年，他变卖武馆创办功夫人巅峰赛，立下五届之约：以问鼎起，以登极终，让全世界在同一座擂台上，重新认识中国功夫。",
     portraitCaption: "2004 · 首届世界传统武术节 双金",
     stats: ["年习武 YEARS", "国出访 NATIONS", "第八代传人 LINEAGE"],
-    journeyBrush: "江湖印记", journeySub: "THE JOURNEY",
+    journeyBrush: "江湖印记", journeySub: "THE JOURNEY", lineageValue: "八极",
   },
   media: { heading: "集锦", sub: "HIGHLIGHTS" },
   cta: {
@@ -131,7 +136,7 @@ const zh: Dict = {
     fields: { name: "姓名 *", alias: "绰号（选填）", age: "年龄", nation: "国籍 / 地区", style: "门派 / 拳种", phone: "联系电话 *" },
     placeholders: { name: "真实姓名", alias: "如：铁山", age: "18–45", nation: "如：中国", style: "如：八极拳、咏春、太极", phone: "手机或 WhatsApp" },
     channel: "报名通道", error: "请至少填写姓名和联系电话", submit: "提交报名 SUBMIT",
-    cardBrand: "KUNGFUMAN · 功夫人巅峰赛", cardTitle: "武者报名表", cardNo: "NO.",
+    cardBrand: "KUNGFUMAN · 功夫人巅峰赛", cardTitle: "武者报名表", cardNo: "NO.", stamp: "已受理",
     rows: { name: "姓 名", alias: "绰 号", age: "年 龄", nation: "国籍 / 地区", style: "门派 / 拳种", phone: "联系电话", channel: "报名通道", date: "提交日期" },
     footnote1: "本表由系统自动生成，组委会初审通过后",
     footnote2: "将以电话方式通知海选时间与地点。",
@@ -140,41 +145,48 @@ const zh: Dict = {
 };
 
 const en: Dict = {
+  // 英文版无汉字：方章用 KF 字母组合，水印用横排描边大字
+  brand: { seal: "KF", sealWu: "KF", watermark: "THE QUEST", watermarkVertical: false },
   nav: { events: "EVENTS", rankings: "RANKINGS", saga: "THE SAGA", founder: "FOUNDER", tickets: "TICKETS", switchTo: "中文" },
   hero: {
     editionTag: "EDITION I · 2026",
     editionLine: "THE QUEST FOR THE CROWN",
-    tagline: "WHO RULES THE WORLD",
-    intro: "Twelve nations. The great traditional schools — Baji, Wing Chun, Tai Chi, Xingyi, Hung Ga — on one stage. Forms and full-contact combat, two roads to one crown.",
+    title: "WHO RULES THE WORLD",
+    tagline: "TWELVE NATIONS · ONE CROWN",
+    intro:
+      "Twelve nations. The great traditional schools — Baji, Wing Chun, Tai Chi, Xingyi, Hung Ga — on one stage. Forms and full-contact combat, two roads to one crown.",
     countdown: ["DAYS", "HRS", "MIN", "SEC"],
     dateLine: "OCT 24 2026",
     venueLine: "Xi'an · Opening Night",
     scroll: "SCROLL ↓",
   },
-  mainEvent: { meta: "MAIN EVENT · FULL CONTACT 84KG", flag: "● XI'AN HEADLINER" },
+  mainEvent: { meta: "MAIN EVENT · FULL CONTACT 84KG", flag: "● XI'AN HEADLINER", vs: "VS" },
   quote: { eyebrow: "FOUNDER · RAINBOW CHEN", l1: "Kung fu is not about winning.", l2: "It's about daring to step up." },
   legacy: { eyebrow: "LEGACY", l1: "The next generation of kung fu,", l2: "already on the mat." },
-  events: { heading: "赛程", sub: "SCHEDULE · WORLD TOUR", hot: "ON SALE", soon: "COMING SOON" },
-  rankings: { heading: "天下英雄榜", sub: "WORLD RANKINGS", pts: "PTS" },
+  events: { heading: "SCHEDULE", sub: "EDITION I · WORLD TOUR", hot: "ON SALE", soon: "COMING SOON" },
+  rankings: { heading: "WORLD RANKINGS", sub: "EDITION I", pts: "PTS" },
   editions: {
-    heading: "五届之路", sub: "THE FIVE-EDITION SAGA",
-    intro: "The Quest, Break the Formation, Clash of Blades, Crowning of Kings, Ascension — five editions tracing one warrior's full road from challenger to king.",
+    heading: "THE FIVE-EDITION SAGA", sub: "2026 — 2030",
+    intro:
+      "The Quest, Break the Formation, Clash of Blades, Crowning of Kings, Ascension — five editions tracing one warrior's full road from challenger to king.",
     now: "NOW",
   },
   founder: {
-    heading: "创始人", sub: "THE FOUNDER",
-    name: "陈庆彪", alias: "「Rainbow」",
-    title: "RAINBOW CHEN QINGBIAO · FOUNDER & CHAIRMAN",
+    heading: "THE FOUNDER", sub: "RAINBOW CHEN",
+    name: "Rainbow Chen", alias: "Qingbiao",
+    title: "FOUNDER & CHAIRMAN · 8TH-GENERATION BAJIQUAN",
     // ⚠️ Placeholder biography — verify against the real record before launch.
-    bio1: "Eighth-generation lineage holder of Bajiquan with over forty years of practice. He led Chinese wushu delegations to more than thirty countries — and saw that traditional kung fu had no world-class ring of its own: forms dismissed as performance, combat folded into other people's rules.",
-    bio2: "In 2025 he sold his school to found KungFuMan, with a five-edition vow: begin with the Quest, end with Ascension — and let the world meet Chinese kung fu on one stage.",
+    bio1:
+      "Eighth-generation lineage holder of Bajiquan with over forty years of practice. He led Chinese wushu delegations to more than thirty countries — and saw that traditional kung fu had no world-class ring of its own: forms dismissed as performance, combat folded into other people's rules.",
+    bio2:
+      "In 2025 he sold his school to found KungFuMan, with a five-edition vow: begin with the Quest, end with Ascension — and let the world meet Chinese kung fu on one stage.",
     portraitCaption: "2004 · Double gold, 1st World Traditional Wushu Festival",
-    stats: ["YEARS OF PRACTICE", "NATIONS VISITED", "8TH-GEN LINEAGE"],
-    journeyBrush: "江湖印记", journeySub: "THE JOURNEY",
+    stats: ["YEARS OF PRACTICE", "NATIONS VISITED", "GENERATION"],
+    journeyBrush: "THE JOURNEY", journeySub: "1994 — 2026", lineageValue: "8TH",
   },
-  media: { heading: "集锦", sub: "HIGHLIGHTS" },
+  media: { heading: "HIGHLIGHTS", sub: "EDITION I" },
   cta: {
-    brush: "上擂台，见真章", sub: "YOUR MOMENT. YOUR LEGACY.",
+    brush: "STEP INTO THE RING", sub: "YOUR MOMENT. YOUR LEGACY.",
     watchTitle: "WATCH LIVE",
     watchBody: "Xi'an · Las Vegas · Singapore · Paris and beyond — witness the Quest live.",
     watchBtn: "BUY NOW",
@@ -190,8 +202,8 @@ const en: Dict = {
     yourSeats: "YOUR SEATS",
     emptyHint: "Tap a section on the seat map\nto choose your seats",
     qty: "QTY", total: "TOTAL", checkout: "CHECKOUT",
-    doneTitle: "出票成功", doneBody: "E-tickets sent to your account · scan at the gate",
-    ring: "擂台", ringSub: "THE RING",
+    doneTitle: "CONFIRMED", doneBody: "E-tickets sent to your account · scan at the gate",
+    ring: null, ringSub: "THE RING",
     legend: ["Chairman's Box ¥8888", "Floor A ¥1888", "Stand B ¥888", "Stand C ¥488"],
     notes: [
       "Chairman's Box includes VIP entrance and post-event meet & greet",
@@ -201,11 +213,12 @@ const en: Dict = {
   },
   register: {
     title: "FIGHTER TRYOUTS", formTitle: "YOUR DETAILS",
-    intro: "Global tryouts are open to every school. Submit and your entry form is generated instantly; the committee will contact you within 7 working days.",
+    intro:
+      "Global tryouts are open to every school. Submit and your entry form is generated instantly; the committee will contact you within 7 working days.",
     fields: { name: "Name *", alias: "Ring name (optional)", age: "Age", nation: "Nationality / Region", style: "School / Style", phone: "Phone *" },
-    placeholders: { name: "Your legal name", alias: "e.g. 铁山 Iron Mountain", age: "18–45", nation: "e.g. China", style: "e.g. 八极拳 Bajiquan", phone: "Mobile or WhatsApp" },
+    placeholders: { name: "Your legal name", alias: "e.g. Iron Mountain", age: "18–45", nation: "e.g. Singapore", style: "e.g. Bajiquan, Wing Chun", phone: "Mobile or WhatsApp" },
     channel: "ENTRY CATEGORY", error: "Please provide at least your name and phone number", submit: "SUBMIT",
-    cardBrand: "KUNGFUMAN · WORLD KUNG FU CHAMPIONSHIP", cardTitle: "武者报名表", cardNo: "NO.",
+    cardBrand: "KUNGFUMAN · WORLD KUNG FU CHAMPIONSHIP", cardTitle: "FIGHTER ENTRY FORM", cardNo: "NO.", stamp: "RECEIVED",
     rows: { name: "Name", alias: "Ring name", age: "Age", nation: "Nationality", style: "School / Style", phone: "Phone", channel: "Category", date: "Submitted" },
     footnote1: "Automatically generated. Once the committee clears your entry,",
     footnote2: "you will be called with tryout time and location.",

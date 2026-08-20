@@ -51,7 +51,7 @@ export function RegisterOverlay({ locale, onClose }: { locale: Locale; onClose: 
   ];
 
   return (
-    <Overlay title={rg.title} closeLabel={d.overlay.close} seal="武" sealVariant="gold" maxWidth="860px" onClose={onClose}>
+    <Overlay title={rg.title} closeLabel={d.overlay.close} seal={d.brand.sealWu} sealVariant="gold" maxWidth="860px" onClose={onClose}>
       {!done ? (
         <div className="border border-gold/30 bg-ink-card p-6 md:px-11 md:py-10">
           <div className={`text-white ${locale === "zh" ? "font-brush text-[34px]" : "font-latin text-[26px] font-semibold tracking-[3px]"}`}>
@@ -113,13 +113,17 @@ export function RegisterOverlay({ locale, onClose }: { locale: Locale; onClose: 
       ) : (
         /* 自动生成的武者报名表 —— 标题与印章为书法视觉符号，两语种共用 */
         <div className="relative overflow-hidden border-2 border-gold bg-[linear-gradient(180deg,#241108,#1a0e09)] p-6 md:px-12 md:py-11">
-          <div className="stroke-char absolute -top-[30px] -right-5 font-brush text-[200px] [-webkit-text-stroke-color:rgba(224,170,78,.18)]">
-            武
+          <div
+            className={`stroke-char absolute -top-[30px] -right-5 whitespace-nowrap [-webkit-text-stroke-color:rgba(224,170,78,.18)] ${
+              locale === "zh" ? "font-brush text-[200px]" : "font-latin text-[150px] font-bold tracking-[4px]"
+            }`}
+          >
+            {d.brand.sealWu}
           </div>
 
           <div className="mb-[26px] border-b border-gold/30 pb-[22px] text-center">
             <div className="font-latin text-xs tracking-[6px] text-gold">{rg.cardBrand}</div>
-            <div className="mt-2 font-brush text-[42px] text-white">{rg.cardTitle}</div>
+            <div className={locale === "zh" ? "mt-2 font-brush text-[42px] text-white" : "mt-2 font-latin text-[30px] font-bold tracking-[5px] text-white uppercase"}>{rg.cardTitle}</div>
             <div className="mt-1.5 font-latin text-[13px] tracking-[3px] text-flame">
               {rg.cardNo} {regNo}
             </div>
@@ -141,7 +145,15 @@ export function RegisterOverlay({ locale, onClose }: { locale: Locale; onClose: 
               {rg.footnote2}
             </div>
             <div className="flex h-[92px] w-[92px] flex-none -rotate-12 flex-col items-center justify-center rounded-full border-[3px] border-cinnabar text-flame">
-              <div className="font-brush text-[26px] leading-[1.1]">已受理</div>
+              <div
+                className={
+                  locale === "zh"
+                    ? "font-brush text-[26px] leading-[1.1]"
+                    : "font-latin text-[15px] leading-[1.1] font-bold tracking-[1px]"
+                }
+              >
+                {rg.stamp}
+              </div>
               <div className="font-latin text-[8px] tracking-[2px]">KUNGFUMAN</div>
             </div>
           </div>

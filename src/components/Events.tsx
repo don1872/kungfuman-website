@@ -10,7 +10,7 @@ export function Events({ locale }: { locale: Locale }) {
   return (
     <section id="events" className="sec-pad mx-auto max-w-[1240px] scroll-mt-[76px]">
       <div className="mb-11">
-        <SectionHeading brush={d.heading} sub={d.sub} />
+        <SectionHeading heading={d.heading} sub={d.sub} locale={locale} />
       </div>
 
       <div className="flex flex-col">

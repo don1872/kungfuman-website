@@ -13,9 +13,7 @@ import type { L, Locale } from "./locales";
 
 export type Event = { date: string; title: string; venue: string; card: string; status: "hot" | "soon" };
 export type Fighter = {
-  rank: string; name: string; alias: string;
-  /** 汉字拳种；英文版后接罗马字注 */
-  style: string;
+  rank: string; name: string; alias: string; style: string;
   nation: string; record: string; pts: string; photo: string;
 };
 export type Edition = { year: string; char: string; name: string; en: string; motto: string; live: boolean };
@@ -43,11 +41,11 @@ const EVENTS: (Omit<Event, "title" | "venue" | "card"> & { title: L; venue: L; c
   { date: "10.24", status: "hot",
     title: { zh: "问鼎 · 长安站", en: "THE QUEST · XI'AN" },
     venue: { zh: "中国西安 · 奥体中心", en: "Olympic Sports Centre, Xi'an, China" },
-    card:  { zh: "主赛 陈山河 vs 白鹤鸣", en: "MAIN 陈山河 vs 白鹤鸣" } },
+    card:  { zh: "主赛 陈山河 vs 白鹤鸣", en: "MAIN CHEN vs PAK" } },
   { date: "11.21", status: "hot",
     title: { zh: "问鼎 · 不夜城站", en: "THE QUEST · LAS VEGAS" },
     venue: { zh: "美国拉斯维加斯 · T-Mobile Arena", en: "T-Mobile Arena, Las Vegas, USA" },
-    card:  { zh: "主赛 石破军 vs J. 科尔特斯", en: "MAIN 石破军 vs J. Cortés" } },
+    card:  { zh: "主赛 石破军 vs J. 科尔特斯", en: "MAIN SHI vs CORTÉS" } },
   { date: "12.19", status: "soon",
     title: { zh: "问鼎 · 狮城站", en: "THE QUEST · SINGAPORE" },
     venue: { zh: "新加坡 · 室内体育馆", en: "Singapore Indoor Stadium" },
@@ -64,15 +62,23 @@ export const getEvents = (l: Locale): Event[] =>
 /* ────────────────────────── 主赛对阵 ────────────────────────── */
 
 const MAIN_EVENT = {
-  red:  { style: { zh: "八极拳 · 中国 CHN", en: "八极拳 BAJIQUAN · CHN" }, name: "陈山河",
-          latin: '"IRON MOUNTAIN" CHEN · 14–1', photo: wiki("Shaolin Kung Fu In Iran.jpg", 600) },
-  gold: { style: { zh: "咏春拳 · 中国香港 HKG", en: "咏春拳 WING CHUN · HKG" }, name: "白鹤鸣",
-          latin: '"WHITE CRANE" PAK · 12–0', photo: wiki("ARIEL SOMASCHINI 师傅鳳凰.png", 600) },
+  red: {
+    style: { zh: "八极拳 · 中国 CHN", en: "BAJIQUAN · CHN" },
+    name:  { zh: "陈山河", en: "CHEN Shanhe" },
+    latin: '"IRON MOUNTAIN" · 14–1',
+    photo: wiki("Shaolin Kung Fu In Iran.jpg", 600),
+  },
+  gold: {
+    style: { zh: "咏春拳 · 中国香港 HKG", en: "WING CHUN · HKG" },
+    name:  { zh: "白鹤鸣", en: "PAK Hok-ming" },
+    latin: '"WHITE CRANE" · 12–0',
+    photo: wiki("ARIEL SOMASCHINI 师傅鳳凰.png", 600),
+  },
 };
 
 export const getMainEvent = (l: Locale) => ({
-  red:  { ...MAIN_EVENT.red,  style: t(MAIN_EVENT.red.style, l) },
-  gold: { ...MAIN_EVENT.gold, style: t(MAIN_EVENT.gold.style, l) },
+  red:  { ...MAIN_EVENT.red,  style: t(MAIN_EVENT.red.style, l),  name: t(MAIN_EVENT.red.name, l) },
+  gold: { ...MAIN_EVENT.gold, style: t(MAIN_EVENT.gold.style, l), name: t(MAIN_EVENT.gold.name, l) },
 });
 
 /* ────────────────────────── 天下英雄榜 ────────────────────────── */
@@ -88,35 +94,34 @@ const rankingPhotos = [
   ["Two Dao - Shaolin wushu.jpg", "Andreas W Friedrich, Keule, 2014.JPG", "Eagle boxing sifu gustavo milazzo inside shaolin temple 2017.jpg", "Taïchi Chuan. Pascal Renault Senseï au Budokaï Dojo.jpg", 'Foto da contra-capa do livro "Tai Chi-Chuan" do Dr. Wu.jpg', "Grandmaster Fu Sheng Yuan, Yong Nian, 2005.JPG"],
 ];
 
-/** 姓名 / 绰号保持汉字；拳种汉字 + 罗马字注（英文版显示）；国籍与均分随语言 */
-type Row = { rank: string; name: string; alias: string; style: string; styleEn: string; nation: L; score: number | string; pts: string };
+type Row = { rank: string; name: L; alias: L; style: string; styleEn: string; nation: L; score: number | string; pts: string };
 
 const AVG: L = { zh: "均分", en: "AVG" };
 
 const RANKING_ROWS: Row[][] = [
   [
-    { rank: "01", name: "白鹤鸣",     alias: "梨花照雪", style: "咏春拳",   styleEn: "WING CHUN",   nation: { zh: "中国香港", en: "Hong Kong" },  score: "12–0", pts: "980" },
-    { rank: "02", name: "陈山河",     alias: "铁山",     style: "八极拳",   styleEn: "BAJIQUAN",    nation: { zh: "中国",     en: "China" },      score: "14–1", pts: "955" },
-    { rank: "03", name: "石破军",     alias: "崩岳",     style: "形意拳",   styleEn: "XINGYIQUAN",  nation: { zh: "中国",     en: "China" },      score: "11–2", pts: "890" },
-    { rank: "04", name: "J. 科尔特斯", alias: "斗牛",    style: "洪拳",     styleEn: "HUNG GA",     nation: { zh: "墨西哥",   en: "Mexico" },     score: "10–2", pts: "842" },
-    { rank: "05", name: "安藤武藏",   alias: "不动",     style: "太极推手", styleEn: "TAI CHI",     nation: { zh: "日本",     en: "Japan" },      score: "9–3",  pts: "801" },
-    { rank: "06", name: "K. 奥科耶",  alias: "黑豹",     style: "蔡李佛",   styleEn: "CHOY LI FUT", nation: { zh: "尼日利亚", en: "Nigeria" },    score: "9–2",  pts: "788" },
+    { rank: "01", name: { zh: "白鹤鸣", en: "PAK Hok-ming" },     alias: { zh: "梨花照雪", en: "Snowfall Blossom" }, style: "咏春拳",   styleEn: "WING CHUN",   nation: { zh: "中国香港", en: "Hong Kong" },  score: "12–0", pts: "980" },
+    { rank: "02", name: { zh: "陈山河", en: "CHEN Shanhe" },     alias: { zh: "铁山", en: "Iron Mountain" },     style: "八极拳",   styleEn: "BAJIQUAN",    nation: { zh: "中国",     en: "China" },      score: "14–1", pts: "955" },
+    { rank: "03", name: { zh: "石破军", en: "SHI Pojun" },     alias: { zh: "崩岳", en: "Crushing Peak" },     style: "形意拳",   styleEn: "XINGYIQUAN",  nation: { zh: "中国",     en: "China" },      score: "11–2", pts: "890" },
+    { rank: "04", name: { zh: "J. 科尔特斯", en: "J. Cortés" }, alias: { zh: "斗牛", en: "The Bull" },    style: "洪拳",     styleEn: "HUNG GA",     nation: { zh: "墨西哥",   en: "Mexico" },     score: "10–2", pts: "842" },
+    { rank: "05", name: { zh: "安藤武藏", en: "ANDO Musashi" },   alias: { zh: "不动", en: "Immovable" },     style: "太极推手", styleEn: "TAI CHI",     nation: { zh: "日本",     en: "Japan" },      score: "9–3",  pts: "801" },
+    { rank: "06", name: { zh: "K. 奥科耶", en: "K. Okoye" },  alias: { zh: "黑豹", en: "Black Panther" },     style: "蔡李佛",   styleEn: "CHOY LI FUT", nation: { zh: "尼日利亚", en: "Nigeria" },    score: "9–2",  pts: "788" },
   ],
   [
-    { rank: "01", name: "沈青梧",     alias: "穿云手",   style: "通背拳",   styleEn: "TONGBEIQUAN", nation: { zh: "中国",     en: "China" },      score: 9.82, pts: "990" },
-    { rank: "02", name: "M. 杜兰特",  alias: "西洋鹤",   style: "白鹤拳",   styleEn: "WHITE CRANE", nation: { zh: "法国",     en: "France" },     score: 9.76, pts: "962" },
-    { rank: "03", name: "林小楼",     alias: "燕子",     style: "翻子拳",   styleEn: "FANZIQUAN",   nation: { zh: "中国",     en: "China" },      score: 9.71, pts: "930" },
-    { rank: "04", name: "朴正勋",     alias: "劲松",     style: "螳螂拳",   styleEn: "MANTIS",      nation: { zh: "韩国",     en: "Korea" },      score: 9.65, pts: "901" },
-    { rank: "05", name: "A. 佩特洛娃", alias: "雪线",    style: "八卦掌",   styleEn: "BAGUAZHANG",  nation: { zh: "俄罗斯",   en: "Russia" },     score: 9.60, pts: "876" },
-    { rank: "06", name: "黄一苇",     alias: "渡江",     style: "长拳",     styleEn: "CHANGQUAN",   nation: { zh: "中国",     en: "China" },      score: 9.55, pts: "850" },
+    { rank: "01", name: { zh: "沈青梧", en: "SHEN Qingwu" },     alias: { zh: "穿云手", en: "Cloud-Piercing Hands" },   style: "通背拳",   styleEn: "TONGBEIQUAN", nation: { zh: "中国",     en: "China" },      score: 9.82, pts: "990" },
+    { rank: "02", name: { zh: "M. 杜兰特", en: "M. Durand" },  alias: { zh: "西洋鹤", en: "Western Crane" },   style: "白鹤拳",   styleEn: "WHITE CRANE", nation: { zh: "法国",     en: "France" },     score: 9.76, pts: "962" },
+    { rank: "03", name: { zh: "林小楼", en: "LIN Xiaolou" },     alias: { zh: "燕子", en: "The Swallow" },     style: "翻子拳",   styleEn: "FANZIQUAN",   nation: { zh: "中国",     en: "China" },      score: 9.71, pts: "930" },
+    { rank: "04", name: { zh: "朴正勋", en: "PARK Jeong-hun" },     alias: { zh: "劲松", en: "Steadfast Pine" },     style: "螳螂拳",   styleEn: "MANTIS",      nation: { zh: "韩国",     en: "Korea" },      score: 9.65, pts: "901" },
+    { rank: "05", name: { zh: "A. 佩特洛娃", en: "A. Petrova" }, alias: { zh: "雪线", en: "Snowline" },    style: "八卦掌",   styleEn: "BAGUAZHANG",  nation: { zh: "俄罗斯",   en: "Russia" },     score: 9.60, pts: "876" },
+    { rank: "06", name: { zh: "黄一苇", en: "HUANG Yiwei" },     alias: { zh: "渡江", en: "River Crossing" },     style: "长拳",     styleEn: "CHANGQUAN",   nation: { zh: "中国",     en: "China" },      score: 9.55, pts: "850" },
   ],
   [
-    { rank: "01", name: "柳残阳",     alias: "枪挑七星", style: "大枪",     styleEn: "SPEAR",       nation: { zh: "中国",     en: "China" },      score: 9.90, pts: "996" },
-    { rank: "02", name: "关月娥",     alias: "春秋刀",   style: "大刀",     styleEn: "GUANDAO",     nation: { zh: "中国",     en: "China" },      score: 9.80, pts: "958" },
-    { rank: "03", name: "D. 惠特克",  alias: "双钩",     style: "虎头钩",   styleEn: "TIGER HOOKS", nation: { zh: "英国",     en: "UK" },         score: 9.72, pts: "921" },
-    { rank: "04", name: "赵无极",     alias: "剑胆",     style: "太极剑",   styleEn: "TAI CHI SWORD", nation: { zh: "中国",   en: "China" },      score: 9.68, pts: "899" },
-    { rank: "05", name: "武氏梅",     alias: "棍扫六合", style: "齐眉棍",   styleEn: "STAFF",       nation: { zh: "越南",     en: "Vietnam" },    score: 9.61, pts: "870" },
-    { rank: "06", name: "S. 拉赫曼",  alias: "流星",     style: "九节鞭",   styleEn: "CHAIN WHIP",  nation: { zh: "马来西亚", en: "Malaysia" },   score: 9.54, pts: "845" },
+    { rank: "01", name: { zh: "柳残阳", en: "LIU Canyang" },     alias: { zh: "枪挑七星", en: "Seven Stars Spear" }, style: "大枪",     styleEn: "SPEAR",       nation: { zh: "中国",     en: "China" },      score: 9.90, pts: "996" },
+    { rank: "02", name: { zh: "关月娥", en: "GUAN Yue'e" },     alias: { zh: "春秋刀", en: "Spring-Autumn Blade" },   style: "大刀",     styleEn: "GUANDAO",     nation: { zh: "中国",     en: "China" },      score: 9.80, pts: "958" },
+    { rank: "03", name: { zh: "D. 惠特克", en: "D. Whittaker" },  alias: { zh: "双钩", en: "Twin Hooks" },     style: "虎头钩",   styleEn: "TIGER HOOKS", nation: { zh: "英国",     en: "UK" },         score: 9.72, pts: "921" },
+    { rank: "04", name: { zh: "赵无极", en: "ZHAO Wuji" },     alias: { zh: "剑胆", en: "Sword Heart" },     style: "太极剑",   styleEn: "TAI CHI SWORD", nation: { zh: "中国",   en: "China" },      score: 9.68, pts: "899" },
+    { rank: "05", name: { zh: "武氏梅", en: "VO Thi Mai" },     alias: { zh: "棍扫六合", en: "Staff of Six Harmonies" }, style: "齐眉棍",   styleEn: "STAFF",       nation: { zh: "越南",     en: "Vietnam" },    score: 9.61, pts: "870" },
+    { rank: "06", name: { zh: "S. 拉赫曼", en: "S. Rahman" },  alias: { zh: "流星", en: "Meteor" },     style: "九节鞭",   styleEn: "CHAIN WHIP",  nation: { zh: "马来西亚", en: "Malaysia" },   score: 9.54, pts: "845" },
   ],
 ];
 
@@ -124,9 +129,9 @@ export const getRankings = (l: Locale): Fighter[][] =>
   RANKING_ROWS.map((list, tab) =>
     list.map((f, i) => ({
       rank: f.rank,
-      name: f.name,
-      alias: f.alias,
-      style: l === "en" ? `${f.style} ${f.styleEn}` : f.style,
+      name: t(f.name, l),
+      alias: t(f.alias, l),
+      style: l === "en" ? f.styleEn : f.style,
       nation: t(f.nation, l),
       record: typeof f.score === "number" ? `${f.score.toFixed(2)} ${t(AVG, l)}` : f.score,
       pts: f.pts,
@@ -136,41 +141,41 @@ export const getRankings = (l: Locale): Fighter[][] =>
 
 /* ────────────────────────── 五届之路 ────────────────────────── */
 
-const EDITIONS: (Omit<Edition, "name" | "motto"> & { name: L; motto: L })[] = [
-  { year: "2026", char: "鼎", en: "THE QUEST",           live: true,
+const EDITIONS: (Omit<Edition, "name" | "motto" | "char"> & { char: L; name: L; motto: L })[] = [
+  { year: "2026", char: { zh: "鼎", en: "I" }, en: "THE QUEST",           live: true,
     name: { zh: "问鼎", en: "THE QUEST" },   motto: { zh: "谁主沉浮",           en: "Who rules the world" } },
-  { year: "2027", char: "阵", en: "BREAK THE FORMATION", live: false,
+  { year: "2027", char: { zh: "阵", en: "II" }, en: "BREAK THE FORMATION", live: false,
     name: { zh: "破阵", en: "BREAK FORMATION" }, motto: { zh: "阵前无名，阵破成名", en: "Nameless before the line, famous once it breaks" } },
-  { year: "2028", char: "锋", en: "CLASH OF BLADES",     live: false,
+  { year: "2028", char: { zh: "锋", en: "III" }, en: "CLASH OF BLADES",     live: false,
     name: { zh: "争锋", en: "CLASH OF BLADES" },  motto: { zh: "针尖对麦芒",       en: "Needle point against wheat awn" } },
-  { year: "2029", char: "王", en: "CROWNING OF KINGS",   live: false,
+  { year: "2029", char: { zh: "王", en: "IV" }, en: "CROWNING OF KINGS",   live: false,
     name: { zh: "封王", en: "CROWNING" },     motto: { zh: "一派一王，王见王",   en: "One school, one king — then king meets king" } },
-  { year: "2030", char: "极", en: "ASCENSION",           live: false,
+  { year: "2030", char: { zh: "极", en: "V" }, en: "ASCENSION",           live: false,
     name: { zh: "登极", en: "ASCENSION" },    motto: { zh: "会当凌绝顶",         en: "To stand at the very summit" } },
 ];
 
 export const getEditions = (l: Locale): Edition[] =>
-  EDITIONS.map((e) => ({ ...e, name: t(e.name, l), motto: t(e.motto, l) }));
+  EDITIONS.map((e) => ({ ...e, char: t(e.char, l), name: t(e.name, l), motto: t(e.motto, l) }));
 
 /* ────────────────────────── 集锦 ────────────────────────── */
 
-const MEDIA: (Omit<MediaItem, "title" | "meta"> & { title: L; meta: L })[] = [
-  { char: "崩", src: wiki("Shaolin Kung Fu.jpg", 800),
-    title: { zh: "陈山河一记崩拳终结比赛", en: "陈山河 ends it with one crushing fist" },
+const MEDIA: (Omit<MediaItem, "title" | "meta" | "char"> & { char: L; title: L; meta: L })[] = [
+  { char: { zh: "崩", en: "CRUSH" }, src: wiki("Shaolin Kung Fu.jpg", 800),
+    title: { zh: "陈山河一记崩拳终结比赛", en: "CHEN Shanhe ends it with one crushing fist" },
     meta:  { zh: "02:14 · 问鼎发布会实战",  en: "02:14 · Launch showcase bout" } },
-  { char: "枪", src: wiki("10th all china games Gun 931.jpg", 800),
-    title: { zh: "柳残阳大枪 9.9 分全场",   en: "柳残阳 takes the spear to 9.9" },
+  { char: { zh: "枪", en: "SPEAR" }, src: wiki("10th all china games Gun 931.jpg", 800),
+    title: { zh: "柳残阳大枪 9.9 分全场",   en: "LIU Canyang takes the spear to 9.9" },
     meta:  { zh: "04:02 · 器械资格赛",      en: "04:02 · Weapons qualifier" } },
-  { char: "封", src: wiki("Wushu (sport).jpg", 800),
-    title: { zh: "白鹤鸣封手连击教学",      en: "白鹤鸣 breaks down the trapping chain" },
+  { char: { zh: "封", en: "TRAP" }, src: wiki("Wushu (sport).jpg", 800),
+    title: { zh: "白鹤鸣封手连击教学",      en: "PAK Hok-ming breaks down the trapping chain" },
     meta:  { zh: "06:30 · 宗师课堂",        en: "06:30 · Master class" } },
-  { char: "势", src: wiki("Shaolin wushu.jpg", 800),
+  { char: { zh: "势", en: "FORCE" }, src: wiki("Shaolin wushu.jpg", 800),
     title: { zh: "十二国宗门入场仪式",      en: "Twelve nations enter the arena" },
     meta:  { zh: "03:48 · 全球海选",        en: "03:48 · Global tryouts" } },
 ];
 
 export const getMedia = (l: Locale): MediaItem[] =>
-  MEDIA.map((m) => ({ ...m, title: t(m.title, l), meta: t(m.meta, l) }));
+  MEDIA.map((m) => ({ ...m, char: t(m.char, l), title: t(m.title, l), meta: t(m.meta, l) }));
 
 /* ──────────── 江湖印记（创始人真实照片，可用于上线） ──────────── */
 
@@ -278,8 +283,8 @@ export const getRegCategories = (l: Locale): string[] => REG_CATEGORIES.map((c) 
 
 const TICKER: L[] = [
   { zh: "快讯 — 巴黎站门票开售",     en: "NEWS — PARIS TICKETS ON SALE" },
-  { zh: "白鹤鸣宣布卫冕战",           en: "白鹤鸣 ANNOUNCES TITLE DEFENSE" },
-  { zh: "器械榜新科榜首：柳残阳",     en: "NEW WEAPONS NO.1: 柳残阳" },
+  { zh: "白鹤鸣宣布卫冕战",           en: "PAK HOK-MING ANNOUNCES TITLE DEFENSE" },
+  { zh: "器械榜新科榜首：柳残阳",     en: "NEW WEAPONS NO.1 — LIU CANYANG" },
   { zh: "全球海选报名开启",           en: "OPEN TRYOUTS NOW LIVE" },
 ];
 

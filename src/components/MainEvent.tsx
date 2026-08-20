@@ -57,8 +57,12 @@ export function MainEvent({ locale }: { locale: Locale }) {
         <div className="grid grid-cols-1 items-center gap-6 px-5 py-7 md:grid-cols-[1fr_auto_1fr] md:p-11">
           <FighterSide fighter={m.red} side="red" />
           <div className="text-center">
-            <div className="mx-auto flex h-[92px] w-[92px] rotate-45 animate-breathe items-center justify-center border-[3px] border-cinnabar bg-cinnabar/12 font-brush text-[34px] text-flame shadow-[0_0_40px_rgba(224,58,32,.35)]">
-              <span className="-rotate-45">对决</span>
+            <div
+              className={`mx-auto flex h-[92px] w-[92px] rotate-45 animate-breathe items-center justify-center border-[3px] border-cinnabar bg-cinnabar/12 text-flame shadow-[0_0_40px_rgba(224,58,32,.35)] ${
+                locale === "zh" ? "font-brush text-[34px]" : "font-latin text-[30px] font-bold tracking-[2px]"
+              }`}
+            >
+              <span className="-rotate-45">{d.vs}</span>
             </div>
           </div>
           <FighterSide fighter={m.gold} side="gold" />

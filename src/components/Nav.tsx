@@ -18,7 +18,7 @@ export function Nav({ locale, onOpenTicket }: { locale: Locale; onOpenTicket: ()
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 flex h-[76px] items-center justify-between bg-gradient-to-b from-ink/85 to-transparent px-[18px] md:px-11">
-      <Wordmark locale={locale} />
+      <Wordmark locale={locale} seal={d.brand.seal} />
 
       <nav className="flex items-center gap-4 font-latin text-sm tracking-[2px] md:gap-[34px]">
         {links.map((l) => (

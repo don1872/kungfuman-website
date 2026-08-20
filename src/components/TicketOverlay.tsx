@@ -38,7 +38,7 @@ export function TicketOverlay({ locale, onClose }: { locale: Locale; onClose: ()
   };
 
   return (
-    <Overlay title={tk.title} closeLabel={d.overlay.close} seal="功" maxWidth="1240px" onClose={onClose}>
+    <Overlay title={tk.title} closeLabel={d.overlay.close} seal={d.brand.seal} maxWidth="1240px" onClose={onClose}>
       <div className="mb-[34px] flex items-center gap-[14px] font-latin text-xs tracking-[3px]">
         <span className={step === 1 ? "text-flame" : "text-rice-dim"}>{tk.step1}</span>
         <span className="text-rice-dim/40">──</span>
@@ -120,9 +120,15 @@ export function TicketOverlay({ locale, onClose }: { locale: Locale; onClose: ()
                 })}
 
                 <div className="absolute top-1/2 left-1/2 flex h-[21%] w-[21%] -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center bg-[linear-gradient(135deg,rgba(224,58,32,.35),#2a160c)] [clip-path:polygon(30%_0,70%_0,100%_30%,100%_70%,70%_100%,30%_100%,0_70%,0_30%)]">
-                  {/* 「擂台」为视觉符号，两语种共用 */}
-                  <div className="font-brush text-[26px] text-white">{tk.ring}</div>
-                  <div className="font-latin text-[9px] tracking-[3px] text-gold">{tk.ringSub}</div>
+                  {/* 中文版书法「擂台」+ 英文副标；英文版只留 THE RING */}
+                  {tk.ring && <div className="font-brush text-[26px] text-white">{tk.ring}</div>}
+                  <div
+                    className={`font-latin tracking-[3px] text-gold ${
+                      tk.ring ? "text-[9px]" : "text-[13px] font-bold text-white"
+                    }`}
+                  >
+                    {tk.ringSub}
+                  </div>
                 </div>
               </div>
 
@@ -183,7 +189,7 @@ export function TicketOverlay({ locale, onClose }: { locale: Locale; onClose: ()
                     </button>
                   ) : (
                     <div className="border border-gold bg-gold/12 p-[18px] text-center">
-                      <div className="font-brush text-[26px] text-gold">{tk.doneTitle}</div>
+                      <div className={locale === "zh" ? "font-brush text-[26px] text-gold" : "font-latin text-[20px] font-bold tracking-[3px] text-gold"}>{tk.doneTitle}</div>
                       <div className="mt-1.5 text-xs tracking-[1px] text-rice-dim">{tk.doneBody}</div>
                     </div>
                   )}

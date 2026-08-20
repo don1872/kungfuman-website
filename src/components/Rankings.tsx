@@ -20,7 +20,7 @@ export function Rankings({ locale }: { locale: Locale }) {
     >
       <div className="sec-pad mx-auto max-w-[1240px]">
         <div className="mb-10 flex flex-wrap items-baseline justify-between gap-5">
-          <SectionHeading brush={d.heading} sub={d.sub} />
+          <SectionHeading heading={d.heading} sub={d.sub} locale={locale} />
 
           <div className="flex flex-wrap gap-2.5" role="tablist" aria-label={d.sub}>
             {tabs.map((label, i) => (
@@ -59,9 +59,18 @@ export function Rankings({ locale }: { locale: Locale }) {
               </div>
               <div className="min-w-0">
                 {/* 姓名与绰号保持汉字 */}
+                {/* 中文名短，绰号可同行；英文名长，绰号另起一行才不会被折断 */}
                 <div className="font-serif-sc text-xl font-black text-white">
-                  {f.name} <span className="text-[13px] font-normal text-flame">「{f.alias}」</span>
+                  {f.name}
+                  {locale === "zh" && (
+                    <span className="text-[13px] font-normal text-flame">
+                      {`\u300C${f.alias}\u300D`}
+                    </span>
+                  )}
                 </div>
+                {locale === "en" && (
+                  <div className="mt-0.5 text-[13px] text-flame">{`\u201C${f.alias}\u201D`}</div>
+                )}
                 <div className="mt-1 text-xs tracking-[1px] text-rice-dim">
                   {f.style} · {f.nation}
                 </div>

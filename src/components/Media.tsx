@@ -11,7 +11,7 @@ export function Media({ locale }: { locale: Locale }) {
     <section id="media" className="border-t border-gold/18">
       <div className="sec-pad mx-auto max-w-[1240px]">
         <div className="mb-11">
-          <SectionHeading brush={d.heading} sub={d.sub} />
+          <SectionHeading heading={d.heading} sub={d.sub} locale={locale} />
         </div>
 
         <div className="grid grid-cols-2 gap-[18px] md:grid-cols-4">
@@ -30,8 +30,14 @@ export function Media({ locale }: { locale: Locale }) {
                 className="absolute inset-0 h-full w-full object-cover [filter:saturate(1.1)_contrast(1.05)]"
               />
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(20,11,8,.2)_0%,rgba(20,11,8,.45)_50%,rgba(20,11,8,.92)_100%)]" />
-              {/* 描边书法单字：视觉符号，两语种共用 */}
-              <div className="stroke-char absolute top-[8%] left-1/2 -translate-x-1/2 font-brush text-[120px] [-webkit-text-stroke-color:rgba(224,170,78,.55)]">
+              {/* 描边大字：中文单字 / 英文短词（更长，需压小并留边） */}
+              <div
+                className={`stroke-char absolute top-[8%] left-1/2 -translate-x-1/2 whitespace-nowrap [-webkit-text-stroke-color:rgba(224,170,78,.55)] ${
+                  locale === "zh"
+                    ? "font-brush text-[120px]"
+                    : "font-latin text-[clamp(26px,3.2vw,44px)] font-bold tracking-[3px]"
+                }`}
+              >
                 {m.char}
               </div>
 

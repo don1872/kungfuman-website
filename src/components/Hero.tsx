@@ -13,7 +13,9 @@ const EMBERS = [
 ];
 
 export function Hero({ locale }: { locale: Locale }) {
-  const d = getDict(locale).hero;
+  const dict = getDict(locale);
+  const d = dict.hero;
+  const brand = dict.brand;
 
   return (
     <section className="relative h-screen min-h-[720px] overflow-hidden">
@@ -42,15 +44,18 @@ export function Hero({ locale }: { locale: Locale }) {
       ))}
 
       {/*
-        竖排巨型描边「問鼎」水印。两个语种都保留 —— 它是视觉符号而非文案。
+        右缘巨型描边水印。中英共用 writing-mode: vertical-rl —— 汉字逐字竖排，
+        拉丁字母会自动整体旋转 90° 顺排（像书脊），无需手算 transform。
         有意与标题叠加，属设计层次（README：「勿"修复"」）。
       */}
       <div
-        className="stroke-char absolute top-1/2 right-[5%] -translate-y-1/2 font-brush leading-[.92] whitespace-nowrap [writing-mode:vertical-rl] [-webkit-text-stroke-width:1.5px] [text-shadow:0_0_60px_rgba(224,58,32,.25)]"
-        style={{ fontSize: "clamp(220px,28vw,460px)" }}
+        className={`stroke-char absolute top-1/2 right-[5%] -translate-y-1/2 leading-[.92] whitespace-nowrap [writing-mode:vertical-rl] [-webkit-text-stroke-width:1.5px] [text-shadow:0_0_60px_rgba(224,58,32,.25)] ${
+          brand.watermarkVertical ? "font-brush" : "font-latin font-bold tracking-[6px]"
+        }`}
+        style={{ fontSize: brand.watermarkVertical ? "clamp(220px,28vw,460px)" : "clamp(56px,7vw,120px)" }}
         aria-hidden
       >
-        問鼎
+        {brand.watermark}
       </div>
 
       <div className="relative z-2 mx-auto flex h-full max-w-[1240px] flex-col justify-end px-5 pb-[7vh] md:px-11 md:pb-[10vh]">
@@ -63,9 +68,15 @@ export function Hero({ locale }: { locale: Locale }) {
           </span>
         </div>
 
-        {/* 书法主标题：两语种共用，作为品牌视觉核心 */}
-        <h1 className="font-brush text-[clamp(72px,10vw,160px)] leading-none text-white [text-shadow:0_6px_40px_rgba(0,0,0,.75),0_0_90px_rgba(224,58,32,.45)]">
-          谁主沉浮
+        {/* 主标题：中文书法 / 英文 Oswald 窄体大写 */}
+        <h1
+          className={`text-white [text-shadow:0_6px_40px_rgba(0,0,0,.75),0_0_90px_rgba(224,58,32,.45)] ${
+            locale === "zh"
+              ? "font-brush text-[clamp(72px,10vw,160px)] leading-none"
+              : "font-latin text-[clamp(44px,7.2vw,116px)] leading-[1.02] font-bold tracking-[2px] uppercase"
+          }`}
+        >
+          {d.title}
         </h1>
         <div className="mt-3 font-latin text-[clamp(18px,2.4vw,30px)] font-semibold tracking-[14px] text-flame [text-shadow:0_2px_16px_rgba(0,0,0,.8)]">
           {d.tagline}

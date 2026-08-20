@@ -23,8 +23,13 @@ export function FinalCta({
 
       <div className="relative z-2 mx-auto w-full max-w-[1240px] px-5 py-[100px] md:px-11">
         <div className="mb-14 text-center">
-          {/* 书法金句：两语种共用 */}
-          <div className="font-brush text-[clamp(48px,6vw,84px)] text-white [text-shadow:0_4px_40px_rgba(0,0,0,.8)]">
+          <div
+            className={`text-white [text-shadow:0_4px_40px_rgba(0,0,0,.8)] ${
+              locale === "zh"
+                ? "font-brush text-[clamp(48px,6vw,84px)]"
+                : "font-latin text-[clamp(34px,4.6vw,68px)] font-bold tracking-[4px] uppercase"
+            }`}
+          >
             {d.brush}
           </div>
           <div className="mt-2.5 font-latin text-sm tracking-[8px] text-gold">{d.sub}</div>
