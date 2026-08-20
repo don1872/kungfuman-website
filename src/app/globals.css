@@ -25,7 +25,9 @@
   --color-rice-dim: #c9b394;   /* 次级文字 */
 
   /* 字体 —— 由 layout.tsx 的 Google Fonts <link> 引入 */
-  --font-brush: 'Ma Shan Zheng', cursive;
+  /* Ma Shan Zheng 只有汉字字形；拉丁字符兜底到 Noto Serif SC，
+     而非通用 cursive（各平台差异极大，Windows 会落到 Comic Sans） */
+  --font-brush: 'Ma Shan Zheng', 'Noto Serif SC', serif;
   --font-serif-sc: 'Noto Serif SC', serif;
   --font-latin: 'Oswald', sans-serif;
 

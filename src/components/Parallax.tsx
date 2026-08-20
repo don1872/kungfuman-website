@@ -12,6 +12,7 @@ export function Parallax({
   children,
   height,
   minHeight,
+  font,
   saturate = 1.1,
 }: {
   image: string;
@@ -21,6 +22,8 @@ export function Parallax({
   children: ReactNode;
   height: string;
   minHeight: string;
+  /** 金句字体：中文用书法，英文用衬线（Ma Shan Zheng 无拉丁字形） */
+  font: "brush" | "serif";
   saturate?: number;
 }) {
   const gradient =
@@ -45,7 +48,11 @@ export function Parallax({
         }`}
       >
         <div className="mb-4 font-latin text-xs tracking-[5px] text-gold">{eyebrow}</div>
-        <div className="max-w-[720px] font-brush text-[clamp(34px,4.4vw,60px)] leading-[1.5] text-white [text-shadow:0_4px_30px_rgba(0,0,0,.7)]">
+        <div className={`max-w-[720px] text-white [text-shadow:0_4px_30px_rgba(0,0,0,.7)] ${
+            font === "brush"
+              ? "font-brush text-[clamp(34px,4.4vw,60px)] leading-[1.5]"
+              : "font-serif-sc text-[clamp(30px,3.6vw,50px)] leading-[1.45] font-normal tracking-[.5px]"
+          }`}>
           {children}
         </div>
       </div>

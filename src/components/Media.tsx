@@ -1,12 +1,17 @@
-import { media } from "@/lib/data";
+import { getMedia } from "@/lib/data";
+import { getDict } from "@/lib/dict";
+import type { Locale } from "@/lib/locales";
 import { SectionHeading } from "./SectionHeading";
 
-export function Media() {
+export function Media({ locale }: { locale: Locale }) {
+  const media = getMedia(locale);
+  const d = getDict(locale).media;
+
   return (
     <section id="media" className="border-t border-gold/18">
       <div className="sec-pad mx-auto max-w-[1240px]">
         <div className="mb-11">
-          <SectionHeading zh="集锦" en="HIGHLIGHTS" />
+          <SectionHeading brush={d.heading} sub={d.sub} />
         </div>
 
         <div className="grid grid-cols-2 gap-[18px] md:grid-cols-4">
@@ -25,6 +30,7 @@ export function Media() {
                 className="absolute inset-0 h-full w-full object-cover [filter:saturate(1.1)_contrast(1.05)]"
               />
               <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(20,11,8,.2)_0%,rgba(20,11,8,.45)_50%,rgba(20,11,8,.92)_100%)]" />
+              {/* 描边书法单字：视觉符号，两语种共用 */}
               <div className="stroke-char absolute top-[8%] left-1/2 -translate-x-1/2 font-brush text-[120px] [-webkit-text-stroke-color:rgba(224,170,78,.55)]">
                 {m.char}
               </div>
@@ -33,12 +39,8 @@ export function Media() {
                 <div className="mb-[14px] flex h-10 w-10 items-center justify-center rounded-full border border-flame text-[13px] text-flame transition-colors group-hover:bg-flame group-hover:text-ink">
                   ▶
                 </div>
-                <div className="font-serif-sc text-[17px] leading-[1.4] font-black text-white">
-                  {m.title}
-                </div>
-                <div className="mt-1.5 font-latin text-[11px] tracking-[2px] text-rice-dim">
-                  {m.meta}
-                </div>
+                <div className="font-serif-sc text-[17px] leading-[1.4] font-black text-white">{m.title}</div>
+                <div className="mt-1.5 font-latin text-[11px] tracking-[2px] text-rice-dim">{m.meta}</div>
               </div>
             </button>
           ))}

@@ -1,4 +1,6 @@
-/** 红底「功」方章 —— 导航、二级页头部、页脚共用 */
+import type { Locale } from "@/lib/locales";
+
+/** 红底「功」方章 —— 导航、二级页头部、页脚共用。汉字作为品牌标识，两语种保留 */
 export function Seal({
   size = 44,
   char = "功",
@@ -25,8 +27,8 @@ export function Seal({
   );
 }
 
-/** 完整品牌锁定：方章 + KUNGFUMAN + 功夫人巅峰赛 */
-export function Wordmark() {
+/** 完整品牌锁定：方章 + KUNGFUMAN + 副行 */
+export function Wordmark({ locale }: { locale: Locale }) {
   return (
     <div className="flex items-center gap-[14px]">
       <Seal />
@@ -34,7 +36,9 @@ export function Wordmark() {
         <div className="font-latin text-xl leading-none font-bold tracking-[4px] text-white [text-shadow:0_1px_8px_rgba(0,0,0,.6)]">
           KUNGFUMAN
         </div>
-        <div className="mt-[3px] text-[11px] tracking-[6px] text-gold">功夫人巅峰赛</div>
+        <div className="mt-[3px] text-[11px] tracking-[6px] text-gold">
+          {locale === "zh" ? "功夫人巅峰赛" : "WORLD KUNG FU"}
+        </div>
       </div>
     </div>
   );

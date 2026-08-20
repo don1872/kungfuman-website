@@ -1,32 +1,24 @@
 "use client";
 
 import { useState } from "react";
-import { REG_CATEGORIES, type RegCategory } from "@/lib/data";
+import { getRegCategories } from "@/lib/data";
+import { getDict } from "@/lib/dict";
+import type { Locale } from "@/lib/locales";
 import { Overlay } from "./Overlay";
 
-type Form = {
-  name: string;
-  alias: string;
-  age: string;
-  nation: string;
-  style: string;
-  phone: string;
-};
-
+type Form = { name: string; alias: string; age: string; nation: string; style: string; phone: string };
 const EMPTY: Form = { name: "", alias: "", age: "", nation: "", style: "", phone: "" };
 
-const FIELDS: { key: keyof Form; label: string; placeholder: string; type?: string }[] = [
-  { key: "name",   label: "姓名 *",        placeholder: "真实姓名" },
-  { key: "alias",  label: "绰号（选填）",   placeholder: "如：铁山" },
-  { key: "age",    label: "年龄",          placeholder: "18–45", type: "number" },
-  { key: "nation", label: "国籍 / 地区",   placeholder: "如：中国" },
-  { key: "style",  label: "门派 / 拳种",   placeholder: "如：八极拳、咏春、太极" },
-  { key: "phone",  label: "联系电话 *",    placeholder: "手机或 WhatsApp", type: "tel" },
-];
+const FIELD_ORDER: (keyof Form)[] = ["name", "alias", "age", "nation", "style", "phone"];
+const INPUT_TYPE: Partial<Record<keyof Form, string>> = { age: "number", phone: "tel" };
 
-export function RegisterOverlay({ onClose }: { onClose: () => void }) {
+export function RegisterOverlay({ locale, onClose }: { locale: Locale; onClose: () => void }) {
+  const d = getDict(locale);
+  const rg = d.register;
+  const categories = getRegCategories(locale);
+
   const [form, setForm] = useState<Form>(EMPTY);
-  const [category, setCategory] = useState<RegCategory>("全接触对抗");
+  const [category, setCategory] = useState(categories[2]);
   const [error, setError] = useState("");
   const [done, setDone] = useState(false);
   const [regNo, setRegNo] = useState("");
@@ -38,7 +30,7 @@ export function RegisterOverlay({ onClose }: { onClose: () => void }) {
 
   const submit = () => {
     if (!form.name.trim() || !form.phone.trim()) {
-      setError("请至少填写姓名和联系电话");
+      setError(rg.error);
       return;
     }
     // TODO: 生产环境改为 POST 到报名接口，落库后由服务端下发编号
@@ -48,41 +40,37 @@ export function RegisterOverlay({ onClose }: { onClose: () => void }) {
   };
 
   const rows: [string, string, boolean?][] = [
-    ["姓 名", form.name],
-    ["绰 号", form.alias || "—"],
-    ["年 龄", form.age || "—"],
-    ["国籍 / 地区", form.nation || "—"],
-    ["门派 / 拳种", form.style || "—"],
-    ["联系电话", form.phone],
-    ["报名通道", category, true],
-    ["提交日期", new Date().toLocaleDateString("zh-CN")],
+    [rg.rows.name, form.name],
+    [rg.rows.alias, form.alias || "—"],
+    [rg.rows.age, form.age || "—"],
+    [rg.rows.nation, form.nation || "—"],
+    [rg.rows.style, form.style || "—"],
+    [rg.rows.phone, form.phone],
+    [rg.rows.channel, category, true],
+    [rg.rows.date, new Date().toLocaleDateString(locale === "zh" ? "zh-CN" : "en-GB")],
   ];
 
   return (
-    <Overlay title="武者报名 FIGHTER TRYOUTS" seal="武" sealVariant="gold" maxWidth="860px" onClose={onClose}>
+    <Overlay title={rg.title} closeLabel={d.overlay.close} seal="武" sealVariant="gold" maxWidth="860px" onClose={onClose}>
       {!done ? (
         <div className="border border-gold/30 bg-ink-card p-6 md:px-11 md:py-10">
-          <div className="font-brush text-[34px] text-white">报名信息</div>
-          <p className="mt-2 mb-[30px] text-[13px] leading-[1.9] text-rice-dim">
-            全球海选面向所有门派开放，英雄不问出处。提交后自动生成报名表，组委会 7
-            个工作日内联系初审。
-          </p>
+          <div className={`text-white ${locale === "zh" ? "font-brush text-[34px]" : "font-latin text-[26px] font-semibold tracking-[3px]"}`}>
+            {rg.formTitle}
+          </div>
+          <p className="mt-2 mb-[30px] text-[13px] leading-[1.9] text-rice-dim">{rg.intro}</p>
 
           <div className="grid grid-cols-1 gap-[18px_20px] md:grid-cols-2">
-            {FIELDS.map((f) => (
-              <div key={f.key}>
-                <label
-                  htmlFor={`rg-${f.key}`}
-                  className="mb-2 block text-xs tracking-[2px] text-gold"
-                >
-                  {f.label}
+            {FIELD_ORDER.map((k) => (
+              <div key={k}>
+                <label htmlFor={`rg-${k}`} className="mb-2 block text-xs tracking-[2px] text-gold">
+                  {rg.fields[k]}
                 </label>
                 <input
-                  id={`rg-${f.key}`}
-                  type={f.type ?? "text"}
-                  value={form[f.key]}
-                  onChange={set(f.key)}
-                  placeholder={f.placeholder}
+                  id={`rg-${k}`}
+                  type={INPUT_TYPE[k] ?? "text"}
+                  value={form[k]}
+                  onChange={set(k)}
+                  placeholder={rg.placeholders[k]}
                   className="w-full border border-gold/35 bg-ink px-[14px] py-[13px] font-serif-sc text-sm text-white placeholder:text-rice-dim/50 focus:border-gold focus:outline-none"
                 />
               </div>
@@ -90,9 +78,9 @@ export function RegisterOverlay({ onClose }: { onClose: () => void }) {
           </div>
 
           <div className="mt-6">
-            <div className="mb-2.5 text-xs tracking-[2px] text-gold">报名通道</div>
+            <div className="mb-2.5 text-xs tracking-[2px] text-gold">{rg.channel}</div>
             <div className="flex flex-wrap gap-2.5">
-              {REG_CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <button
                   key={c}
                   onClick={() => setCategory(c)}
@@ -110,10 +98,7 @@ export function RegisterOverlay({ onClose }: { onClose: () => void }) {
           </div>
 
           {error && (
-            <div
-              role="alert"
-              className="mt-5 border border-flame/40 bg-cinnabar/10 px-[14px] py-2.5 text-[13px] text-flame"
-            >
+            <div role="alert" className="mt-5 border border-flame/40 bg-cinnabar/10 px-[14px] py-2.5 text-[13px] text-flame">
               {error}
             </div>
           )}
@@ -122,45 +107,38 @@ export function RegisterOverlay({ onClose }: { onClose: () => void }) {
             onClick={submit}
             className="mt-7 w-full cursor-pointer bg-cinnabar py-4 font-latin text-[15px] font-semibold tracking-[4px] text-white shadow-[0_0_26px_rgba(224,58,32,.4)] transition-colors hover:bg-flame"
           >
-            提交报名 SUBMIT
+            {rg.submit}
           </button>
         </div>
       ) : (
-        /* 自动生成的武者报名表 */
+        /* 自动生成的武者报名表 —— 标题与印章为书法视觉符号，两语种共用 */
         <div className="relative overflow-hidden border-2 border-gold bg-[linear-gradient(180deg,#241108,#1a0e09)] p-6 md:px-12 md:py-11">
           <div className="stroke-char absolute -top-[30px] -right-5 font-brush text-[200px] [-webkit-text-stroke-color:rgba(224,170,78,.18)]">
             武
           </div>
 
           <div className="mb-[26px] border-b border-gold/30 pb-[22px] text-center">
-            <div className="font-latin text-xs tracking-[6px] text-gold">
-              KUNGFUMAN · 功夫人巅峰赛
-            </div>
-            <div className="mt-2 font-brush text-[42px] text-white">武者报名表</div>
+            <div className="font-latin text-xs tracking-[6px] text-gold">{rg.cardBrand}</div>
+            <div className="mt-2 font-brush text-[42px] text-white">{rg.cardTitle}</div>
             <div className="mt-1.5 font-latin text-[13px] tracking-[3px] text-flame">
-              NO. {regNo}
+              {rg.cardNo} {regNo}
             </div>
           </div>
 
           <div className="relative grid grid-cols-1 gap-[16px_40px] md:grid-cols-2">
             {rows.map(([label, value, accent]) => (
-              <div
-                key={label}
-                className="flex justify-between border-b border-dashed border-rice-dim/35 pb-2.5"
-              >
-                <span className="text-[13px] text-rice-dim">{label}</span>
-                <span className={`font-semibold ${accent ? "text-flame" : "text-white"}`}>
-                  {value}
-                </span>
+              <div key={label} className="flex justify-between gap-3 border-b border-dashed border-rice-dim/35 pb-2.5">
+                <span className="text-[13px] whitespace-nowrap text-rice-dim">{label}</span>
+                <span className={`truncate font-semibold ${accent ? "text-flame" : "text-white"}`}>{value}</span>
               </div>
             ))}
           </div>
 
           <div className="mt-[34px] flex items-center justify-between gap-4">
             <div className="text-xs leading-[1.9] text-rice-dim/75">
-              本表由系统自动生成，组委会初审通过后
+              {rg.footnote1}
               <br />
-              将以电话方式通知海选时间与地点。
+              {rg.footnote2}
             </div>
             <div className="flex h-[92px] w-[92px] flex-none -rotate-12 flex-col items-center justify-center rounded-full border-[3px] border-cinnabar text-flame">
               <div className="font-brush text-[26px] leading-[1.1]">已受理</div>
@@ -173,13 +151,13 @@ export function RegisterOverlay({ onClose }: { onClose: () => void }) {
               onClick={() => setDone(false)}
               className="flex-1 cursor-pointer border border-rice-dim/50 py-[13px] font-latin text-[13px] tracking-[3px] text-rice-dim transition-colors hover:border-gold hover:text-gold"
             >
-              ← 修改信息
+              {rg.edit}
             </button>
             <button
               onClick={onClose}
               className="flex-1 cursor-pointer bg-gold py-[13px] font-latin text-[13px] font-semibold tracking-[3px] text-ink transition-colors hover:bg-gold-soft"
             >
-              完成 DONE
+              {rg.done}
             </button>
           </div>
         </div>

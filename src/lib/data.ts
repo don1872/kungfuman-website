@@ -1,121 +1,86 @@
 /**
  * KungFuMan 站点数据层
  *
- * 目前为静态常量，对应设计稿逻辑类中的 events / data / eds / media / journey / sessData。
- * 上线时这一层应替换为 CMS / API 拉取（见 README「后续开发清单」第 2 条），
- * 组件只依赖下面这些类型，因此换数据源不需要改 UI。
+ * 双语策略：只有真正随语言变化的字段用 L = {zh, en}；
+ * 选手姓名 / 绰号 / 拳种汉字、日期、比分等保持单一值（见 dict.ts 顶部说明）。
+ * 组件调用 getXxx(locale) 拿到的是**已解析的纯字符串**，不需要感知 L。
+ *
+ * 上线时这一层应替换为 CMS / API（README「后续开发清单」第 2 条）。
  */
+import type { L, Locale } from "./locales";
 
 /* ────────────────────────── 类型 ────────────────────────── */
 
-export type Event = {
-  date: string;
-  title: string;
-  venue: string;
-  card: string;
-  status: "hot" | "soon";
-};
-
+export type Event = { date: string; title: string; venue: string; card: string; status: "hot" | "soon" };
 export type Fighter = {
-  rank: string;
-  name: string;
-  alias: string;
+  rank: string; name: string; alias: string;
+  /** 汉字拳种；英文版后接罗马字注 */
   style: string;
-  nation: string;
-  record: string;
-  pts: string;
-  photo: string;
+  nation: string; record: string; pts: string; photo: string;
 };
-
-export type Edition = {
-  year: string;
-  char: string;
-  name: string;
-  en: string;
-  motto: string;
-  live: boolean;
-};
-
-export type MediaItem = {
-  char: string;
-  title: string;
-  meta: string;
-  src: string;
-};
-
-export type JourneyItem = {
-  src: string;
-  tag: string;
-  cap: string;
-  span: 1 | 2;
-};
-
-export type Session = {
-  date: string;
-  title: string;
-  venue: string;
-  priceFrom: string;
-  isFinal: boolean;
-};
-
+export type Edition = { year: string; char: string; name: string; en: string; motto: string; live: boolean };
+export type MediaItem = { char: string; title: string; meta: string; src: string };
+export type JourneyItem = { src: string; tag: string; cap: string; span: 1 | 2 };
+export type Session = { date: string; title: string; venue: string; priceFrom: string; isFinal: boolean };
 export type Tier = "p" | "a" | "b" | "c";
+export type SeatSection = { id: string; label: string; tier: Tier; x: number; y: number; w: number; h: number; rot: number };
 
-export type SeatSection = {
-  id: string;
-  label: string;
-  tier: Tier;
-  /** 圆形场馆内的百分比坐标（极坐标换算而来） */
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  /** 朝向圆心的旋转角 */
-  rot: number;
-};
+const t = (v: L, l: Locale) => v[l];
 
-/* ──────────────────── 占位图（⚠️ 上线前必须替换） ────────────────────
- * 选手头像与集锦封面暂用 Wikimedia Commons 公开图热链，授权多为 CC-BY / CC-BY-SA。
- * README「Assets」明确要求：商用上线前替换为自有版权素材，或补齐合规署名。
- * ------------------------------------------------------------------ */
+/* ──────────────── 占位图（⚠️ 上线前必须替换） ────────────────
+ * 选手头像与集锦封面为 Wikimedia Commons 公开图热链，授权多为 CC-BY / CC-BY-SA。
+ * 商用上线前必须替换为自有版权素材，或补齐合规署名。
+ * ---------------------------------------------------------- */
 const wiki = (name: string, width = 400) =>
   `https://commons.wikimedia.org/wiki/Special:FilePath/${encodeURIComponent(name)}?width=${width}`;
-
-/* ────────────────────────── 倒计时目标 ────────────────────────── */
 
 /** 问鼎首站 · 西安 · 2026-10-24 19:00 (UTC+8) */
 export const COUNTDOWN_TARGET = new Date("2026-10-24T19:00:00+08:00").getTime();
 
 /* ────────────────────────── 首页精选赛程 ────────────────────────── */
 
-export const events: Event[] = [
-  { date: "10.24", title: "问鼎 · 长安站",   venue: "中国西安 · 奥体中心 XI'AN, CHINA",        card: "主赛 陈山河 vs 白鹤鸣",           status: "hot" },
-  { date: "11.21", title: "问鼎 · 不夜城站", venue: "美国拉斯维加斯 · T-MOBILE ARENA",         card: "主赛 石破军 vs J. 科尔特斯",      status: "hot" },
-  { date: "12.19", title: "问鼎 · 狮城站",   venue: "新加坡 · 室内体育馆 SINGAPORE",           card: "器械之夜 WEAPONS NIGHT",          status: "soon" },
-  { date: "01.30", title: "问鼎 · 终章 THE CROWN", venue: "法国巴黎 · ACCOR ARENA, PARIS",     card: "总决赛 GRAND FINAL",              status: "soon" },
+const EVENTS: (Omit<Event, "title" | "venue" | "card"> & { title: L; venue: L; card: L })[] = [
+  { date: "10.24", status: "hot",
+    title: { zh: "问鼎 · 长安站", en: "THE QUEST · XI'AN" },
+    venue: { zh: "中国西安 · 奥体中心", en: "Olympic Sports Centre, Xi'an, China" },
+    card:  { zh: "主赛 陈山河 vs 白鹤鸣", en: "MAIN 陈山河 vs 白鹤鸣" } },
+  { date: "11.21", status: "hot",
+    title: { zh: "问鼎 · 不夜城站", en: "THE QUEST · LAS VEGAS" },
+    venue: { zh: "美国拉斯维加斯 · T-Mobile Arena", en: "T-Mobile Arena, Las Vegas, USA" },
+    card:  { zh: "主赛 石破军 vs J. 科尔特斯", en: "MAIN 石破军 vs J. Cortés" } },
+  { date: "12.19", status: "soon",
+    title: { zh: "问鼎 · 狮城站", en: "THE QUEST · SINGAPORE" },
+    venue: { zh: "新加坡 · 室内体育馆", en: "Singapore Indoor Stadium" },
+    card:  { zh: "器械之夜 WEAPONS NIGHT", en: "WEAPONS NIGHT" } },
+  { date: "01.30", status: "soon",
+    title: { zh: "问鼎 · 终章 THE CROWN", en: "THE QUEST · THE CROWN" },
+    venue: { zh: "法国巴黎 · Accor Arena", en: "Accor Arena, Paris, France" },
+    card:  { zh: "总决赛 GRAND FINAL", en: "GRAND FINAL" } },
 ];
+
+export const getEvents = (l: Locale): Event[] =>
+  EVENTS.map((e) => ({ ...e, title: t(e.title, l), venue: t(e.venue, l), card: t(e.card, l) }));
 
 /* ────────────────────────── 主赛对阵 ────────────────────────── */
 
-export const mainEvent = {
-  meta: "主赛 MAIN EVENT · 综合对抗 84KG",
-  flag: "● 长安站压轴",
-  red: {
-    style: "八极拳 · 中国 CHN",
-    name: "陈山河",
-    latin: '"IRON MOUNTAIN" CHEN · 14–1',
-    photo: wiki("Shaolin Kung Fu In Iran.jpg", 600),
-  },
-  gold: {
-    style: "咏春拳 · 中国香港 HKG",
-    name: "白鹤鸣",
-    latin: '"WHITE CRANE" PAK · 12–0',
-    photo: wiki("ARIEL SOMASCHINI 师傅鳳凰.png", 600),
-  },
+const MAIN_EVENT = {
+  red:  { style: { zh: "八极拳 · 中国 CHN", en: "八极拳 BAJIQUAN · CHN" }, name: "陈山河",
+          latin: '"IRON MOUNTAIN" CHEN · 14–1', photo: wiki("Shaolin Kung Fu In Iran.jpg", 600) },
+  gold: { style: { zh: "咏春拳 · 中国香港 HKG", en: "咏春拳 WING CHUN · HKG" }, name: "白鹤鸣",
+          latin: '"WHITE CRANE" PAK · 12–0', photo: wiki("ARIEL SOMASCHINI 师傅鳳凰.png", 600) },
 };
+
+export const getMainEvent = (l: Locale) => ({
+  red:  { ...MAIN_EVENT.red,  style: t(MAIN_EVENT.red.style, l) },
+  gold: { ...MAIN_EVENT.gold, style: t(MAIN_EVENT.gold.style, l) },
+});
 
 /* ────────────────────────── 天下英雄榜 ────────────────────────── */
 
-export const rankingTabs = ["综合对抗 COMBAT", "拳法套路 FORMS", "器械 WEAPONS"];
+export const getRankingTabs = (l: Locale): string[] =>
+  l === "zh"
+    ? ["综合对抗 COMBAT", "拳法套路 FORMS", "器械 WEAPONS"]
+    : ["FULL CONTACT", "FORMS", "WEAPONS"];
 
 const rankingPhotos = [
   ["20241103 Shaolin Martial Art Performance 01.jpg", "20241103 Shaolin Martial Art Performance 02.jpg", "20241103 Shaolin Martial Art Performance 03.jpg", "20241103 Shaolin Martial Art Performance 04.jpg", "Sifu Behrouz Dehnadi.jpg", "Shaolin Tiger Boxing - Shaolin Kuan shifu gustavo MIlazzo.jpg"],
@@ -123,73 +88,109 @@ const rankingPhotos = [
   ["Two Dao - Shaolin wushu.jpg", "Andreas W Friedrich, Keule, 2014.JPG", "Eagle boxing sifu gustavo milazzo inside shaolin temple 2017.jpg", "Taïchi Chuan. Pascal Renault Senseï au Budokaï Dojo.jpg", 'Foto da contra-capa do livro "Tai Chi-Chuan" do Dr. Wu.jpg', "Grandmaster Fu Sheng Yuan, Yong Nian, 2005.JPG"],
 ];
 
-const rankingRows: Omit<Fighter, "photo">[][] = [
+/** 姓名 / 绰号保持汉字；拳种汉字 + 罗马字注（英文版显示）；国籍与均分随语言 */
+type Row = { rank: string; name: string; alias: string; style: string; styleEn: string; nation: L; score: number | string; pts: string };
+
+const AVG: L = { zh: "均分", en: "AVG" };
+
+const RANKING_ROWS: Row[][] = [
   [
-    { rank: "01", name: "白鹤鸣",     alias: "梨花照雪", style: "咏春拳",   nation: "中国香港", record: "12–0", pts: "980" },
-    { rank: "02", name: "陈山河",     alias: "铁山",     style: "八极拳",   nation: "中国",     record: "14–1", pts: "955" },
-    { rank: "03", name: "石破军",     alias: "崩岳",     style: "形意拳",   nation: "中国",     record: "11–2", pts: "890" },
-    { rank: "04", name: "J. 科尔特斯", alias: "斗牛",    style: "洪拳",     nation: "墨西哥",   record: "10–2", pts: "842" },
-    { rank: "05", name: "安藤武藏",   alias: "不动",     style: "太极推手", nation: "日本",     record: "9–3",  pts: "801" },
-    { rank: "06", name: "K. 奥科耶",  alias: "黑豹",     style: "蔡李佛",   nation: "尼日利亚", record: "9–2",  pts: "788" },
+    { rank: "01", name: "白鹤鸣",     alias: "梨花照雪", style: "咏春拳",   styleEn: "WING CHUN",   nation: { zh: "中国香港", en: "Hong Kong" },  score: "12–0", pts: "980" },
+    { rank: "02", name: "陈山河",     alias: "铁山",     style: "八极拳",   styleEn: "BAJIQUAN",    nation: { zh: "中国",     en: "China" },      score: "14–1", pts: "955" },
+    { rank: "03", name: "石破军",     alias: "崩岳",     style: "形意拳",   styleEn: "XINGYIQUAN",  nation: { zh: "中国",     en: "China" },      score: "11–2", pts: "890" },
+    { rank: "04", name: "J. 科尔特斯", alias: "斗牛",    style: "洪拳",     styleEn: "HUNG GA",     nation: { zh: "墨西哥",   en: "Mexico" },     score: "10–2", pts: "842" },
+    { rank: "05", name: "安藤武藏",   alias: "不动",     style: "太极推手", styleEn: "TAI CHI",     nation: { zh: "日本",     en: "Japan" },      score: "9–3",  pts: "801" },
+    { rank: "06", name: "K. 奥科耶",  alias: "黑豹",     style: "蔡李佛",   styleEn: "CHOY LI FUT", nation: { zh: "尼日利亚", en: "Nigeria" },    score: "9–2",  pts: "788" },
   ],
   [
-    { rank: "01", name: "沈青梧",     alias: "穿云手",   style: "通背拳",   nation: "中国",     record: "9.82 均分", pts: "990" },
-    { rank: "02", name: "M. 杜兰特",  alias: "西洋鹤",   style: "白鹤拳",   nation: "法国",     record: "9.76 均分", pts: "962" },
-    { rank: "03", name: "林小楼",     alias: "燕子",     style: "翻子拳",   nation: "中国",     record: "9.71 均分", pts: "930" },
-    { rank: "04", name: "朴正勋",     alias: "劲松",     style: "螳螂拳",   nation: "韩国",     record: "9.65 均分", pts: "901" },
-    { rank: "05", name: "A. 佩特洛娃", alias: "雪线",    style: "八卦掌",   nation: "俄罗斯",   record: "9.60 均分", pts: "876" },
-    { rank: "06", name: "黄一苇",     alias: "渡江",     style: "长拳",     nation: "中国",     record: "9.55 均分", pts: "850" },
+    { rank: "01", name: "沈青梧",     alias: "穿云手",   style: "通背拳",   styleEn: "TONGBEIQUAN", nation: { zh: "中国",     en: "China" },      score: 9.82, pts: "990" },
+    { rank: "02", name: "M. 杜兰特",  alias: "西洋鹤",   style: "白鹤拳",   styleEn: "WHITE CRANE", nation: { zh: "法国",     en: "France" },     score: 9.76, pts: "962" },
+    { rank: "03", name: "林小楼",     alias: "燕子",     style: "翻子拳",   styleEn: "FANZIQUAN",   nation: { zh: "中国",     en: "China" },      score: 9.71, pts: "930" },
+    { rank: "04", name: "朴正勋",     alias: "劲松",     style: "螳螂拳",   styleEn: "MANTIS",      nation: { zh: "韩国",     en: "Korea" },      score: 9.65, pts: "901" },
+    { rank: "05", name: "A. 佩特洛娃", alias: "雪线",    style: "八卦掌",   styleEn: "BAGUAZHANG",  nation: { zh: "俄罗斯",   en: "Russia" },     score: 9.60, pts: "876" },
+    { rank: "06", name: "黄一苇",     alias: "渡江",     style: "长拳",     styleEn: "CHANGQUAN",   nation: { zh: "中国",     en: "China" },      score: 9.55, pts: "850" },
   ],
   [
-    { rank: "01", name: "柳残阳",     alias: "枪挑七星", style: "大枪",     nation: "中国",     record: "9.90 均分", pts: "996" },
-    { rank: "02", name: "关月娥",     alias: "春秋刀",   style: "大刀",     nation: "中国",     record: "9.80 均分", pts: "958" },
-    { rank: "03", name: "D. 惠特克",  alias: "双钩",     style: "虎头钩",   nation: "英国",     record: "9.72 均分", pts: "921" },
-    { rank: "04", name: "赵无极",     alias: "剑胆",     style: "太极剑",   nation: "中国",     record: "9.68 均分", pts: "899" },
-    { rank: "05", name: "武氏梅",     alias: "棍扫六合", style: "齐眉棍",   nation: "越南",     record: "9.61 均分", pts: "870" },
-    { rank: "06", name: "S. 拉赫曼",  alias: "流星",     style: "九节鞭",   nation: "马来西亚", record: "9.54 均分", pts: "845" },
+    { rank: "01", name: "柳残阳",     alias: "枪挑七星", style: "大枪",     styleEn: "SPEAR",       nation: { zh: "中国",     en: "China" },      score: 9.90, pts: "996" },
+    { rank: "02", name: "关月娥",     alias: "春秋刀",   style: "大刀",     styleEn: "GUANDAO",     nation: { zh: "中国",     en: "China" },      score: 9.80, pts: "958" },
+    { rank: "03", name: "D. 惠特克",  alias: "双钩",     style: "虎头钩",   styleEn: "TIGER HOOKS", nation: { zh: "英国",     en: "UK" },         score: 9.72, pts: "921" },
+    { rank: "04", name: "赵无极",     alias: "剑胆",     style: "太极剑",   styleEn: "TAI CHI SWORD", nation: { zh: "中国",   en: "China" },      score: 9.68, pts: "899" },
+    { rank: "05", name: "武氏梅",     alias: "棍扫六合", style: "齐眉棍",   styleEn: "STAFF",       nation: { zh: "越南",     en: "Vietnam" },    score: 9.61, pts: "870" },
+    { rank: "06", name: "S. 拉赫曼",  alias: "流星",     style: "九节鞭",   styleEn: "CHAIN WHIP",  nation: { zh: "马来西亚", en: "Malaysia" },   score: 9.54, pts: "845" },
   ],
 ];
 
-export const rankings: Fighter[][] = rankingRows.map((list, t) =>
-  list.map((f, i) => ({ ...f, photo: wiki(rankingPhotos[t][i]) })),
-);
+export const getRankings = (l: Locale): Fighter[][] =>
+  RANKING_ROWS.map((list, tab) =>
+    list.map((f, i) => ({
+      rank: f.rank,
+      name: f.name,
+      alias: f.alias,
+      style: l === "en" ? `${f.style} ${f.styleEn}` : f.style,
+      nation: t(f.nation, l),
+      record: typeof f.score === "number" ? `${f.score.toFixed(2)} ${t(AVG, l)}` : f.score,
+      pts: f.pts,
+      photo: wiki(rankingPhotos[tab][i]),
+    })),
+  );
 
 /* ────────────────────────── 五届之路 ────────────────────────── */
 
-export const editions: Edition[] = [
-  { year: "2026", char: "鼎", name: "问鼎", en: "THE QUEST",             motto: "谁主沉浮",             live: true  },
-  { year: "2027", char: "阵", name: "破阵", en: "BREAK THE FORMATION",   motto: "阵前无名，阵破成名",   live: false },
-  { year: "2028", char: "锋", name: "争锋", en: "CLASH OF BLADES",       motto: "针尖对麦芒",           live: false },
-  { year: "2029", char: "王", name: "封王", en: "CROWNING OF KINGS",     motto: "一派一王，王见王",     live: false },
-  { year: "2030", char: "极", name: "登极", en: "ASCENSION",             motto: "会当凌绝顶",           live: false },
+const EDITIONS: (Omit<Edition, "name" | "motto"> & { name: L; motto: L })[] = [
+  { year: "2026", char: "鼎", en: "THE QUEST",           live: true,
+    name: { zh: "问鼎", en: "THE QUEST" },   motto: { zh: "谁主沉浮",           en: "Who rules the world" } },
+  { year: "2027", char: "阵", en: "BREAK THE FORMATION", live: false,
+    name: { zh: "破阵", en: "BREAK FORMATION" }, motto: { zh: "阵前无名，阵破成名", en: "Nameless before the line, famous once it breaks" } },
+  { year: "2028", char: "锋", en: "CLASH OF BLADES",     live: false,
+    name: { zh: "争锋", en: "CLASH OF BLADES" },  motto: { zh: "针尖对麦芒",       en: "Needle point against wheat awn" } },
+  { year: "2029", char: "王", en: "CROWNING OF KINGS",   live: false,
+    name: { zh: "封王", en: "CROWNING" },     motto: { zh: "一派一王，王见王",   en: "One school, one king — then king meets king" } },
+  { year: "2030", char: "极", en: "ASCENSION",           live: false,
+    name: { zh: "登极", en: "ASCENSION" },    motto: { zh: "会当凌绝顶",         en: "To stand at the very summit" } },
 ];
+
+export const getEditions = (l: Locale): Edition[] =>
+  EDITIONS.map((e) => ({ ...e, name: t(e.name, l), motto: t(e.motto, l) }));
 
 /* ────────────────────────── 集锦 ────────────────────────── */
 
-export const media: MediaItem[] = [
-  { char: "崩", title: "陈山河一记崩拳终结比赛", meta: "02:14 · 问鼎发布会实战", src: wiki("Shaolin Kung Fu.jpg", 800) },
-  { char: "枪", title: "柳残阳大枪 9.9 分全场",  meta: "04:02 · 器械资格赛",     src: wiki("10th all china games Gun 931.jpg", 800) },
-  { char: "封", title: "白鹤鸣封手连击教学",     meta: "06:30 · 宗师课堂",       src: wiki("Wushu (sport).jpg", 800) },
-  { char: "势", title: "十二国宗门入场仪式",     meta: "03:48 · 全球海选",       src: wiki("Shaolin wushu.jpg", 800) },
+const MEDIA: (Omit<MediaItem, "title" | "meta"> & { title: L; meta: L })[] = [
+  { char: "崩", src: wiki("Shaolin Kung Fu.jpg", 800),
+    title: { zh: "陈山河一记崩拳终结比赛", en: "陈山河 ends it with one crushing fist" },
+    meta:  { zh: "02:14 · 问鼎发布会实战",  en: "02:14 · Launch showcase bout" } },
+  { char: "枪", src: wiki("10th all china games Gun 931.jpg", 800),
+    title: { zh: "柳残阳大枪 9.9 分全场",   en: "柳残阳 takes the spear to 9.9" },
+    meta:  { zh: "04:02 · 器械资格赛",      en: "04:02 · Weapons qualifier" } },
+  { char: "封", src: wiki("Wushu (sport).jpg", 800),
+    title: { zh: "白鹤鸣封手连击教学",      en: "白鹤鸣 breaks down the trapping chain" },
+    meta:  { zh: "06:30 · 宗师课堂",        en: "06:30 · Master class" } },
+  { char: "势", src: wiki("Shaolin wushu.jpg", 800),
+    title: { zh: "十二国宗门入场仪式",      en: "Twelve nations enter the arena" },
+    meta:  { zh: "03:48 · 全球海选",        en: "03:48 · Global tryouts" } },
 ];
 
-/* ──────────────── 江湖印记（创始人真实照片，可用于上线） ──────────────── */
+export const getMedia = (l: Locale): MediaItem[] =>
+  MEDIA.map((m) => ({ ...m, title: t(m.title, l), meta: t(m.meta, l) }));
 
-export const journey: JourneyItem[] = [
-  { src: "/assets/founder_141_onset_wide.jpg",      tag: "ON SET",     cap: "片场论武",                span: 2 },
-  { src: "/assets/founder_132.png",                 tag: "CINEMA",     cap: "与电影人切磋交流",        span: 1 },
-  { src: "/assets/founder_139_onimusha_crew.png",   tag: "2002",       cap: "《鬼武者》CG电影剧组",    span: 1 },
-  { src: "/assets/founder_135_kids_class.jpg",      tag: "LEGACY",     cap: "海外传艺 · 少年武学班",   span: 1 },
-  { src: "/assets/founder_136_chilife_studio.jpg",  tag: "SINGAPORE",  cap: "创办 Ch'i Life Studio",   span: 1 },
-  { src: "/assets/founder_142_with_master.jpg",     tag: "MASTERS",    cap: "与前辈宗师",              span: 1 },
-  { src: "/assets/founder_138.png",                 tag: "DIPLOMACY",  cap: "武术文化外交",            span: 1 },
-  { src: "/assets/founder_140_beach_taichi.png",    tag: "PRACTICE",   cap: "海上晨功",                span: 1 },
-  { src: "/assets/founder_131.png",                 tag: "ENVOY",      cap: "受邀国事文化活动",        span: 1 },
-  { src: "/assets/founder_146_lantern_gym.jpg",     tag: "OVERSEAS",   cap: "北美武馆交流",            span: 1 },
-  { src: "/assets/founder_145_cage.jpg",            tag: "THE CAGE",   cap: "现代擂台 · 筹建赛事",     span: 1 },
+/* ──────────── 江湖印记（创始人真实照片，可用于上线） ──────────── */
+
+const JOURNEY: (Omit<JourneyItem, "cap"> & { cap: L })[] = [
+  { src: "/assets/founder_141_onset_wide.jpg",     tag: "ON SET",    span: 2, cap: { zh: "片场论武",              en: "Talking kung fu on set" } },
+  { src: "/assets/founder_132.png",                tag: "CINEMA",    span: 1, cap: { zh: "与电影人切磋交流",      en: "Trading moves with filmmakers" } },
+  { src: "/assets/founder_139_onimusha_crew.png",  tag: "2002",      span: 1, cap: { zh: "《鬼武者》CG电影剧组",  en: "Onimusha CG film crew" } },
+  { src: "/assets/founder_135_kids_class.jpg",     tag: "LEGACY",    span: 1, cap: { zh: "海外传艺 · 少年武学班", en: "Teaching abroad · youth class" } },
+  { src: "/assets/founder_136_chilife_studio.jpg", tag: "SINGAPORE", span: 1, cap: { zh: "创办 Ch'i Life Studio", en: "Founding Ch'i Life Studio" } },
+  { src: "/assets/founder_142_with_master.jpg",    tag: "MASTERS",   span: 1, cap: { zh: "与前辈宗师",            en: "With the old masters" } },
+  { src: "/assets/founder_138.png",                tag: "DIPLOMACY", span: 1, cap: { zh: "武术文化外交",          en: "Wushu cultural diplomacy" } },
+  { src: "/assets/founder_140_beach_taichi.png",   tag: "PRACTICE",  span: 1, cap: { zh: "海上晨功",              en: "Morning practice by the sea" } },
+  { src: "/assets/founder_131.png",                tag: "ENVOY",     span: 1, cap: { zh: "受邀国事文化活动",      en: "Invited to a state cultural event" } },
+  { src: "/assets/founder_146_lantern_gym.jpg",    tag: "OVERSEAS",  span: 1, cap: { zh: "北美武馆交流",          en: "Exchange at a North American school" } },
+  { src: "/assets/founder_145_cage.jpg",           tag: "THE CAGE",  span: 1, cap: { zh: "现代擂台 · 筹建赛事",   en: "The modern ring · building the league" } },
 ];
 
-/** 关键图片单独导出，供 Hero / 视差插页 / 创始人肖像复用 */
+export const getJourney = (l: Locale): JourneyItem[] =>
+  JOURNEY.map((j) => ({ ...j, cap: t(j.cap, l) }));
+
 export const photos = {
   heroCage:        "/assets/founder_145_cage.jpg",
   quoteOnSet:      "/assets/founder_141_onset_wide.jpg",
@@ -200,83 +201,86 @@ export const photos = {
 
 /* ────────────────────────── 购票：13 场次 ────────────────────────── */
 
-export const sessions: Session[] = [
-  { date: "01.24", title: "问鼎 · 西安站",        venue: "中国西安 · 奥体中心",              priceFrom: "¥488", isFinal: false },
-  { date: "02.21", title: "问鼎 · 曼谷站",        venue: "泰国曼谷 · IMPACT ARENA",          priceFrom: "¥388", isFinal: false },
-  { date: "03.21", title: "问鼎 · 新加坡站",      venue: "新加坡 · 室内体育馆",              priceFrom: "¥388", isFinal: false },
-  { date: "04.18", title: "问鼎 · 东京站",        venue: "日本东京 · 有明体育馆",            priceFrom: "¥488", isFinal: false },
-  { date: "05.23", title: "问鼎 · 悉尼站",        venue: "澳大利亚悉尼 · QUDOS BANK ARENA",  priceFrom: "¥388", isFinal: false },
-  { date: "06.20", title: "问鼎 · 迪拜站",        venue: "阿联酋迪拜 · COCA-COLA ARENA",     priceFrom: "¥588", isFinal: false },
-  { date: "07.25", title: "问鼎 · 伦敦站",        venue: "英国伦敦 · O2 ARENA",              priceFrom: "¥488", isFinal: false },
-  { date: "08.22", title: "问鼎 · 巴黎站",        venue: "法国巴黎 · ACCOR ARENA",           priceFrom: "¥488", isFinal: false },
-  { date: "09.19", title: "问鼎 · 纽约站",        venue: "美国纽约 · 麦迪逊广场花园",        priceFrom: "¥588", isFinal: false },
-  { date: "10.24", title: "问鼎 · 拉斯维加斯站",  venue: "美国拉斯维加斯 · T-MOBILE ARENA",  priceFrom: "¥588", isFinal: false },
-  { date: "11.21", title: "问鼎 · 圣保罗站",      venue: "巴西圣保罗 · GINÁSIO IBIRAPUERA",  priceFrom: "¥388", isFinal: false },
-  { date: "12.05", title: "问鼎 · 香港站",        venue: "中国香港 · 红磡体育馆",            priceFrom: "¥488", isFinal: false },
-  { date: "12.30", title: "年终总决赛 · 问鼎之夜", venue: "中国澳门 · 威尼斯人金光综艺馆",    priceFrom: "¥888", isFinal: true  },
+const SESSIONS: (Omit<Session, "title" | "venue"> & { title: L; venue: L })[] = [
+  { date: "01.24", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 西安站",   en: "THE QUEST · XI'AN" },     venue: { zh: "中国西安 · 奥体中心",       en: "Olympic Sports Centre, Xi'an" } },
+  { date: "02.21", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 曼谷站",   en: "THE QUEST · BANGKOK" },   venue: { zh: "泰国曼谷 · Impact Arena",   en: "Impact Arena, Bangkok" } },
+  { date: "03.21", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 新加坡站", en: "THE QUEST · SINGAPORE" }, venue: { zh: "新加坡 · 室内体育馆",       en: "Singapore Indoor Stadium" } },
+  { date: "04.18", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 东京站",   en: "THE QUEST · TOKYO" },     venue: { zh: "日本东京 · 有明体育馆",     en: "Ariake Arena, Tokyo" } },
+  { date: "05.23", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 悉尼站",   en: "THE QUEST · SYDNEY" },    venue: { zh: "澳大利亚悉尼 · Qudos Bank Arena", en: "Qudos Bank Arena, Sydney" } },
+  { date: "06.20", priceFrom: "¥588", isFinal: false, title: { zh: "问鼎 · 迪拜站",   en: "THE QUEST · DUBAI" },     venue: { zh: "阿联酋迪拜 · Coca-Cola Arena", en: "Coca-Cola Arena, Dubai" } },
+  { date: "07.25", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 伦敦站",   en: "THE QUEST · LONDON" },    venue: { zh: "英国伦敦 · O2 Arena",       en: "The O2 Arena, London" } },
+  { date: "08.22", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 巴黎站",   en: "THE QUEST · PARIS" },     venue: { zh: "法国巴黎 · Accor Arena",    en: "Accor Arena, Paris" } },
+  { date: "09.19", priceFrom: "¥588", isFinal: false, title: { zh: "问鼎 · 纽约站",   en: "THE QUEST · NEW YORK" },  venue: { zh: "美国纽约 · 麦迪逊广场花园", en: "Madison Square Garden, New York" } },
+  { date: "10.24", priceFrom: "¥588", isFinal: false, title: { zh: "问鼎 · 拉斯维加斯站", en: "THE QUEST · LAS VEGAS" }, venue: { zh: "美国拉斯维加斯 · T-Mobile Arena", en: "T-Mobile Arena, Las Vegas" } },
+  { date: "11.21", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 圣保罗站", en: "THE QUEST · SÃO PAULO" }, venue: { zh: "巴西圣保罗 · Ginásio Ibirapuera", en: "Ginásio Ibirapuera, São Paulo" } },
+  { date: "12.05", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 香港站",   en: "THE QUEST · HONG KONG" }, venue: { zh: "中国香港 · 红磡体育馆",     en: "Hung Hom Coliseum, Hong Kong" } },
+  { date: "12.30", priceFrom: "¥888", isFinal: true,  title: { zh: "年终总决赛 · 问鼎之夜", en: "GRAND FINAL · NIGHT OF THE QUEST" }, venue: { zh: "中国澳门 · 威尼斯人金光综艺馆", en: "Venetian Cotai Arena, Macau" } },
 ];
 
-/* ──────────────── 购票：环形场馆座区（极坐标布局） ────────────────
+export const getSessions = (l: Locale): Session[] =>
+  SESSIONS.map((s) => ({ ...s, title: t(s.title, l), venue: t(s.venue, l) }));
+
+/* ──────────── 购票：环形场馆座区（极坐标布局） ────────────
  * 主席台正北固定；A/B/C 三环按 x = 50 + r·sin(a), y = 50 − r·cos(a) 均分，
  * 每块再 rotate(a) 使其朝向圆心。半径：A 环 26 / B 环 37.5 / C 环 46。
- * ------------------------------------------------------------------ */
+ * -------------------------------------------------------- */
 
 export const TIER_PRICES: Record<Tier, number> = { p: 8888, a: 1888, b: 888, c: 488 };
 
 function ring(
-  tier: Tier,
-  count: number,
-  radius: number,
-  /** 相邻两块之间的夹角 */
-  step: number,
-  /** 首块相对正北的偏移角 */
-  offset: number,
-  w: number,
-  h: number,
+  tier: Tier, count: number, radius: number,
+  /** 相邻两块之间的夹角 */ step: number,
+  /** 首块相对正北的偏移角 */ offset: number,
+  w: number, h: number,
 ): SeatSection[] {
   return Array.from({ length: count }, (_, i) => {
     const angle = step * i + offset;
     const rad = (Math.PI * angle) / 180;
     const id = tier.toUpperCase() + (i + 1);
-    return {
-      id,
-      label: id,
-      tier,
-      x: 50 + radius * Math.sin(rad),
-      y: 50 - radius * Math.cos(rad),
-      w,
-      h,
-      rot: angle,
-    };
+    return { id, label: id, tier, x: 50 + radius * Math.sin(rad), y: 50 - radius * Math.cos(rad), w, h, rot: angle };
   });
 }
 
 export const seatSections: SeatSection[] = [
   { id: "P", label: "主席台", tier: "p", x: 50, y: 20, w: 24, h: 8, rot: 0 },
-  // A 环：7 块，从 45° 起每 45° 一块（正北 0° 留给主席台）
   ...ring("a", 7, 26, 45, 45, 13, 7),
-  // B 环：12 块，每 30° 一块，偏移 15° 错开
   ...ring("b", 12, 37.5, 30, 15, 12.5, 6.5),
-  // C 环：16 块，每 22.5° 一块，偏移 11.25° 错开
   ...ring("c", 16, 46, 22.5, 11.25, 9.5, 5.5),
 ];
 
-/** 座区中文名：主席台 / 内场 A1 / 看台 B3 */
-export function seatLabel(s: SeatSection): string {
-  if (s.tier === "p") return "主席台";
-  return (s.tier === "a" ? "内场 " : "看台 ") + s.id;
+const TIER_NAME: Record<Tier, L> = {
+  p: { zh: "主席台", en: "Chairman's Box" },
+  a: { zh: "内场 ",  en: "Floor " },
+  b: { zh: "看台 ",  en: "Stand " },
+  c: { zh: "看台 ",  en: "Stand " },
+};
+
+/** 座区中文名：主席台 / 内场 A1 / 看台 B3 —— 英文：Chairman's Box / Floor A1 / Stand B3 */
+export function seatLabel(s: SeatSection, l: Locale): string {
+  return s.tier === "p" ? t(TIER_NAME.p, l) : t(TIER_NAME[s.tier], l) + s.id;
 }
+
+/** 座位图上主席台方块内的短标签（空间有限） */
+export const seatBlockLabel = (s: SeatSection, l: Locale): string =>
+  s.tier === "p" ? (l === "zh" ? "主席台" : "BOX") : s.label;
 
 /* ────────────────────────── 报名通道 ────────────────────────── */
 
-export const REG_CATEGORIES = ["拳法套路", "器械", "全接触对抗"] as const;
-export type RegCategory = (typeof REG_CATEGORIES)[number];
+export const REG_CATEGORIES: L[] = [
+  { zh: "拳法套路",   en: "Forms" },
+  { zh: "器械",       en: "Weapons" },
+  { zh: "全接触对抗", en: "Full Contact" },
+];
+
+export const getRegCategories = (l: Locale): string[] => REG_CATEGORIES.map((c) => t(c, l));
 
 /* ────────────────────────── 快讯跑马灯 ────────────────────────── */
 
-export const tickerItems = [
-  "快讯 — 巴黎站门票开售 PARIS ON SALE",
-  "白鹤鸣宣布卫冕战 PAK ANNOUNCES DEFENSE",
-  "器械榜新科榜首：柳残阳 NEW WEAPONS NO.1",
-  "全球海选报名开启 OPEN TRYOUTS LIVE",
+const TICKER: L[] = [
+  { zh: "快讯 — 巴黎站门票开售",     en: "NEWS — PARIS TICKETS ON SALE" },
+  { zh: "白鹤鸣宣布卫冕战",           en: "白鹤鸣 ANNOUNCES TITLE DEFENSE" },
+  { zh: "器械榜新科榜首：柳残阳",     en: "NEW WEAPONS NO.1: 柳残阳" },
+  { zh: "全球海选报名开启",           en: "OPEN TRYOUTS NOW LIVE" },
 ];
+
+export const getTickerItems = (l: Locale): string[] => TICKER.map((x) => t(x, l));

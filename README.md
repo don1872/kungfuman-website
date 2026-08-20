@@ -22,15 +22,52 @@ npm run lint
 
 ```
 src/
+├─ proxy.ts           裸路径按 Accept-Language 重定向到 /zh 或 /en
 ├─ app/
 │  ├─ globals.css     设计 token（@theme）、keyframes、响应式组件类
-│  ├─ layout.tsx      字体引入、SEO metadata
-│  └─ page.tsx        页面组装 + 顶层状态（语言 / 两个覆盖层）
-├─ components/        每个板块一个组件
+│  ├─ layout.tsx      根壳
+│  └─ [locale]/
+│     ├─ layout.tsx   <html lang>、字体引入、按语种的 SEO metadata + hreflang
+│     └─ page.tsx     语种校验 → SiteShell
+├─ components/
+│  ├─ SiteShell.tsx   页面组装 + 两个覆盖层的开关状态
+│  └─ ...             每个板块一个组件，统一接收 locale
 └─ lib/
-   ├─ data.ts         赛程、榜单、五届、集锦、照片墙、13 场次、座区几何
-   └─ i18n.ts         中英文案（8 处叙事文案切换）
+   ├─ locales.ts      Locale 类型、语言检测、双语字段 L
+   ├─ dict.ts         全站界面文案（zh / en）
+   └─ data.ts         赛程、榜单、五届、集锦、照片墙、13 场次、座区几何（双语）
 ```
+
+## 中英双语
+
+两套独立路由，各自静态预渲染：
+
+| 路由 | 说明 |
+|---|---|
+| `/zh` | 中文版 |
+| `/en` | 英文版 |
+| `/` | `src/proxy.ts` 按 `Accept-Language` 302 到对应语种，认不出回落 `/zh` |
+
+SEO：每个语种有独立 `<html lang>`、`<title>`、`description`、canonical，
+并互相声明 `hreflang`（`zh-CN` / `en` / `x-default`）与 `og:locale:alternate`。
+语言切换是真实 `<Link>`，搜索引擎能顺着抓到另一语种。
+
+### 英文版策略
+
+设计的视觉骨架是中文书法，因此英文版**不是**零汉字，而是：
+
+| 内容 | 英文版处理 |
+|---|---|
+| 书法巨字（谁主沉浮、問鼎、鼎阵锋王极、擂台、武者报名表、已受理印章、功/武方章） | **保留**，作为品牌视觉符号 |
+| 章节书法标题（赛程、天下英雄榜、五届之路、创始人、集锦、江湖印记） | **保留**，副标改英文 |
+| 选手姓名、绰号 | **保留汉字** —— 武者身份不因语言而变 |
+| 拳种 | 汉字 + 罗马字注，如 `咏春拳 WING CHUN` |
+| 地名、国籍、场馆 | 译为英文 |
+| 其余全部界面、导航、表单、叙事文案 | 英文 |
+
+新增文案时注意：`Ma Shan Zheng` **没有拉丁字形**。`--font-brush` 的兜底已收紧为
+`Noto Serif SC`（而非通用 `cursive`，那会在 Windows 上落到 Comic Sans），
+但英文长句仍应显式改用 `font-serif-sc` 或 `font-latin`，参见 `Parallax` 的 `font` 参数。
 
 ## 设计规范
 
@@ -54,7 +91,7 @@ src/
   视差插页 ×3、赛程、天下英雄榜（三 tab）、五届之路、创始人 + 江湖印记照片墙、集锦、收尾 CTA、页脚
 - 购票二级页：13 场次 → 环形选座（极坐标，主席台 / A / B / C 四档共 36 区）→ 数量步进（1–8）→ 合计 → 出票
 - 武者报名二级页：表单校验 → 自动生成武者报名表（编号 / 印章 / 信息行）
-- 中英切换（8 处叙事文案；标题类中英并置不切换，为设计特征）
+- 中英双语：`/zh` `/en` 两套独立路由，各自静态预渲染 + hreflang
 - 780px 响应式、`prefers-reduced-motion` 降级、覆盖层 Esc 关闭与滚动锁
 
 ## ⚠️ 上线前必须处理
@@ -74,4 +111,4 @@ src/
 | 报名 | 演示态，编号本地生成 | 表单入库、审核后台、报名表 PDF 导出 |
 | 集锦 | 卡片可点击但无行为 | 视频播放器 |
 | 选手详情页 | 设计稿未含 | 需另出设计 |
-| 多语言 | 客户端切换 | `/zh` `/en` 路由分发（SEO） |
+| 域名 | `[locale]/layout.tsx` 中 `SITE` 为占位 | 换成实际域名，否则 canonical / og:url 不对 |

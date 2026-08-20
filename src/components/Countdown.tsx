@@ -25,39 +25,45 @@ const getServerSnapshot = () => 0;
 
 const pad = (n: number) => String(n).padStart(2, "0");
 
-const LABELS = ["天 DAYS", "时 HRS", "分 MIN", "秒 SEC"];
-
-function cells(now: number) {
-  if (now === 0) return LABELS.map((label) => ({ label, value: "--" }));
+function values(now: number) {
+  if (now === 0) return ["--", "--", "--", "--"];
   const d = Math.max(0, COUNTDOWN_TARGET - now);
-  const values = [
+  return [
     pad(Math.floor(d / 864e5)),
     pad(Math.floor(d / 36e5) % 24),
     pad(Math.floor(d / 6e4) % 60),
     pad(Math.floor(d / 1e3) % 60),
   ];
-  return LABELS.map((label, i) => ({ label, value: values[i] }));
 }
 
-export function Countdown() {
+export function Countdown({
+  labels,
+  dateLine,
+  venueLine,
+}: {
+  labels: readonly [string, string, string, string];
+  dateLine: string;
+  venueLine: string;
+}) {
   const now = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const vals = values(now);
 
   return (
     <div className="flex w-full flex-wrap border border-gold/40 bg-ink/55 backdrop-blur-lg md:w-auto">
-      {cells(now).map((c) => (
+      {labels.map((label, i) => (
         <div
-          key={c.label}
+          key={label}
           className="flex-1 border-r border-gold/20 px-2 py-[14px] text-center md:flex-none md:px-[30px] md:py-[18px]"
         >
           <div className="font-latin text-[38px] leading-none font-bold text-white tabular-nums">
-            {c.value}
+            {vals[i]}
           </div>
-          <div className="mt-1.5 text-[11px] tracking-[4px] text-gold">{c.label}</div>
+          <div className="mt-1.5 text-[11px] tracking-[4px] text-gold">{label}</div>
         </div>
       ))}
       <div className="flex flex-col justify-center px-[26px] py-[18px]">
-        <div className="font-latin text-[13px] tracking-[3px] text-gold">OCT 24 2026</div>
-        <div className="mt-1 text-xs text-rice/75">西安 · 问鼎首站</div>
+        <div className="font-latin text-[13px] tracking-[3px] text-gold">{dateLine}</div>
+        <div className="mt-1 text-xs text-rice/75">{venueLine}</div>
       </div>
     </div>
   );

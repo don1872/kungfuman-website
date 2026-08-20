@@ -1,14 +1,15 @@
 import Image from "next/image";
-import { journey, photos } from "@/lib/data";
+import { getJourney, photos } from "@/lib/data";
+import { getDict } from "@/lib/dict";
+import type { Locale } from "@/lib/locales";
 import { SectionHeading } from "./SectionHeading";
 
-const STATS = [
-  { value: "40+",  label: "年习武 YEARS" },
-  { value: "30+",  label: "国出访 NATIONS" },
-  { value: "八极", label: "第八代传人 LINEAGE" },
-];
+const STAT_VALUES = ["40+", "30+", "八极"];
 
-export function Founder({ bio1, bio2 }: { bio1: string; bio2: string }) {
+export function Founder({ locale }: { locale: Locale }) {
+  const journey = getJourney(locale);
+  const d = getDict(locale).founder;
+
   return (
     <section
       id="founder"
@@ -16,23 +17,22 @@ export function Founder({ bio1, bio2 }: { bio1: string; bio2: string }) {
     >
       <div className="sec-pad mx-auto max-w-[1240px]">
         <div className="mb-12">
-          <SectionHeading zh="创始人" en="THE FOUNDER" />
+          <SectionHeading brush={d.heading} sub={d.sub} />
         </div>
 
         <div className="grid grid-cols-1 items-start gap-14 md:grid-cols-[380px_1fr]">
-          {/* 肖像 */}
           <div className="relative">
             <div className="relative aspect-3/4 overflow-hidden border border-gold/40 shadow-[0_24px_60px_rgba(0,0,0,.55)]">
               <Image
                 src={photos.founderPortrait}
-                alt="陈庆彪 · 2004 首届世界传统武术节双金"
+                alt={d.portraitCaption}
                 fill
-                sizes="(max-width: 768px) 100vw, 380px"
+                sizes="(max-width: 780px) 100vw, 380px"
                 className="object-cover [filter:saturate(1.15)_contrast(1.1)]"
               />
               <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(20,11,8,.1)_0%,transparent_30%,transparent_60%,rgba(20,11,8,.8)_100%)]" />
               <div className="absolute right-[70px] bottom-[14px] left-4 font-latin text-[11px] tracking-[2px] text-gold-soft">
-                2004 · 首届世界传统武术节 双金
+                {d.portraitCaption}
               </div>
             </div>
             <div className="absolute -right-[14px] -bottom-[14px] flex h-16 w-16 items-center justify-center border-2 border-cinnabar bg-ink font-brush text-[30px] text-flame shadow-[0_0_30px_rgba(224,58,32,.4)]">
@@ -40,34 +40,31 @@ export function Founder({ bio1, bio2 }: { bio1: string; bio2: string }) {
             </div>
           </div>
 
-          {/* 简介 */}
           <div>
+            {/* 姓名保持汉字 */}
             <div className="font-serif-sc text-[40px] leading-[1.2] font-black text-white">
-              陈庆彪 <span className="text-base font-normal text-flame">「Rainbow」</span>
+              {d.name} <span className="text-base font-normal text-flame">{d.alias}</span>
             </div>
-            <div className="my-2.5 mb-7 font-latin text-sm tracking-[4px] text-gold">
-              RAINBOW CHEN QINGBIAO · FOUNDER &amp; CHAIRMAN
-            </div>
+            <div className="my-2.5 mb-7 font-latin text-sm tracking-[4px] text-gold">{d.title}</div>
             {/* ⚠️ 以下两段为占位虚构文案，上线前须以真实履历核定（见 README） */}
-            <p className="mb-[18px] text-[15px] leading-[2.2] text-rice-dim">{bio1}</p>
-            <p className="mb-9 text-[15px] leading-[2.2] text-rice-dim">{bio2}</p>
+            <p className="mb-[18px] text-[15px] leading-[2.2] text-rice-dim">{d.bio1}</p>
+            <p className="mb-9 text-[15px] leading-[2.2] text-rice-dim">{d.bio2}</p>
 
             <div className="gold-grid grid-cols-3">
-              {STATS.map((s) => (
-                <div key={s.label} className="bg-ink-card px-3 py-5 text-center md:px-7">
-                  <div className="font-latin text-[30px] font-bold text-gold">{s.value}</div>
-                  <div className="mt-1 text-xs tracking-[2px] text-rice-dim">{s.label}</div>
+              {d.stats.map((label, i) => (
+                <div key={label} className="bg-ink-card px-3 py-5 text-center md:px-7">
+                  <div className="font-latin text-[30px] font-bold text-gold">{STAT_VALUES[i]}</div>
+                  <div className="mt-1 text-xs tracking-[2px] text-rice-dim">{label}</div>
                 </div>
               ))}
             </div>
           </div>
         </div>
 
-        {/* 江湖印记照片墙 */}
         <div className="mt-[72px]">
           <div className="mb-6 flex items-center gap-4">
-            <span className="font-brush text-[30px] text-white">江湖印记</span>
-            <span className="font-latin text-xs tracking-[4px] text-gold">THE JOURNEY</span>
+            <span className="font-brush text-[30px] text-white">{d.journeyBrush}</span>
+            <span className="font-latin text-xs tracking-[4px] text-gold">{d.journeySub}</span>
             <div className="h-px flex-1 bg-gold/30" />
           </div>
 
@@ -82,7 +79,7 @@ export function Founder({ bio1, bio2 }: { bio1: string; bio2: string }) {
                   src={j.src}
                   alt={j.cap}
                   fill
-                  sizes={j.span === 2 ? "(max-width: 768px) 100vw, 620px" : "(max-width: 768px) 50vw, 310px"}
+                  sizes={j.span === 2 ? "(max-width: 780px) 100vw, 620px" : "(max-width: 780px) 50vw, 310px"}
                   className="object-cover transition-transform duration-500 [filter:saturate(1.15)_contrast(1.1)] group-hover:scale-105"
                 />
                 <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,transparent_55%,rgba(20,11,8,.88)_100%)]" />
