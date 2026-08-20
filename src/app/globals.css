@@ -29,7 +29,10 @@
      而非通用 cursive（各平台差异极大，Windows 会落到 Comic Sans） */
   --font-brush: 'Ma Shan Zheng', 'Noto Serif SC', serif;
   --font-serif-sc: 'Noto Serif SC', serif;
-  --font-latin: 'Oswald', sans-serif;
+  /* Oswald 只有拉丁字形。中文版的导航、倒计时标签等处是「赛程 EVENTS」这类中英混排，
+     汉字若只靠通用 sans-serif 兜底，在缺中文字体的环境会显示成方框（Vercel 截图
+     服务器上已复现）。补上已随页面加载的 Noto Serif SC 作为汉字兜底。 */
+  --font-latin: 'Oswald', 'Noto Serif SC', sans-serif;
 
   /* 断点 —— 设计稿断点为 780px，覆盖 Tailwind 默认的 md:768px */
   --breakpoint-md: 780px;
