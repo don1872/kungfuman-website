@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getRegCategories } from "@/lib/data";
 import { getDict } from "@/lib/dict";
 import type { Locale } from "@/lib/locales";
+import { HeroSummons } from "./HeroSummons";
 import { Overlay } from "./Overlay";
 
 type Form = { name: string; alias: string; age: string; nation: string; style: string; phone: string };
@@ -38,17 +39,6 @@ export function RegisterOverlay({ locale, onClose }: { locale: Locale; onClose: 
     setRegNo("KFM-2026-" + String(Date.now() % 100000).padStart(5, "0"));
     setDone(true);
   };
-
-  const rows: [string, string, boolean?][] = [
-    [rg.rows.name, form.name],
-    [rg.rows.alias, form.alias || "—"],
-    [rg.rows.age, form.age || "—"],
-    [rg.rows.nation, form.nation || "—"],
-    [rg.rows.style, form.style || "—"],
-    [rg.rows.phone, form.phone],
-    [rg.rows.channel, category, true],
-    [rg.rows.date, new Date().toLocaleDateString(locale === "zh" ? "zh-CN" : "en-GB")],
-  ];
 
   return (
     <Overlay title={rg.title} closeLabel={d.overlay.close} seal={d.brand.sealWu} sealVariant="gold" maxWidth="860px" onClose={onClose}>
@@ -111,52 +101,22 @@ export function RegisterOverlay({ locale, onClose }: { locale: Locale; onClose: 
           </button>
         </div>
       ) : (
-        /* 自动生成的武者报名表 —— 标题与印章为书法视觉符号，两语种共用 */
-        <div className="relative overflow-hidden border-2 border-gold bg-[linear-gradient(180deg,#241108,#1a0e09)] p-6 md:px-12 md:py-11">
-          <div
-            className={`stroke-char absolute -top-[30px] -right-5 whitespace-nowrap [-webkit-text-stroke-color:rgba(224,170,78,.18)] ${
-              locale === "zh" ? "font-brush text-[200px]" : "font-latin text-[150px] font-bold tracking-[4px]"
-            }`}
-          >
-            {d.brand.sealWu}
-          </div>
-
-          <div className="mb-[26px] border-b border-gold/30 pb-[22px] text-center">
-            <div className="font-latin text-xs tracking-[6px] text-gold">{rg.cardBrand}</div>
-            <div className={locale === "zh" ? "mt-2 font-brush text-[42px] text-white" : "mt-2 font-latin text-[30px] font-bold tracking-[5px] text-white uppercase"}>{rg.cardTitle}</div>
-            <div className="mt-1.5 font-latin text-[13px] tracking-[3px] text-flame">
-              {rg.cardNo} {regNo}
-            </div>
-          </div>
-
-          <div className="relative grid grid-cols-1 gap-[16px_40px] md:grid-cols-2">
-            {rows.map(([label, value, accent]) => (
-              <div key={label} className="flex justify-between gap-3 border-b border-dashed border-rice-dim/35 pb-2.5">
-                <span className="text-[13px] whitespace-nowrap text-rice-dim">{label}</span>
-                <span className={`truncate font-semibold ${accent ? "text-flame" : "text-white"}`}>{value}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-[34px] flex items-center justify-between gap-4">
-            <div className="text-xs leading-[1.9] text-rice-dim/75">
-              {rg.footnote1}
-              <br />
-              {rg.footnote2}
-            </div>
-            <div className="flex h-[92px] w-[92px] flex-none -rotate-12 flex-col items-center justify-center rounded-full border-[3px] border-cinnabar text-flame">
-              <div
-                className={
-                  locale === "zh"
-                    ? "font-brush text-[26px] leading-[1.1]"
-                    : "font-latin text-[15px] leading-[1.1] font-bold tracking-[1px]"
-                }
-              >
-                {rg.stamp}
-              </div>
-              <div className="font-latin text-[8px] tracking-[2px]">KUNGFUMAN</div>
-            </div>
-          </div>
+        /* 提交后自动生成英雄帖 */
+        <>
+          <HeroSummons
+            locale={locale}
+            data={{
+              name: form.name,
+              alias: form.alias,
+              age: form.age,
+              nation: form.nation,
+              style: form.style,
+              category,
+              phone: form.phone,
+              no: regNo,
+              date: new Date(),
+            }}
+          />
 
           <div className="mt-[30px] flex gap-3">
             <button
@@ -172,7 +132,7 @@ export function RegisterOverlay({ locale, onClose }: { locale: Locale; onClose: 
               {rg.done}
             </button>
           </div>
-        </div>
+        </>
       )}
     </Overlay>
   );

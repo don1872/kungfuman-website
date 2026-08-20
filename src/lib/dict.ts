@@ -61,10 +61,25 @@ export type Dict = {
     fields: { name: string; alias: string; age: string; nation: string; style: string; phone: string };
     placeholders: { name: string; alias: string; age: string; nation: string; style: string; phone: string };
     channel: string; error: string; submit: string;
-    cardBrand: string; cardTitle: string; cardNo: string; stamp: string;
-    rows: { name: string; alias: string; age: string; nation: string; style: string; phone: string; channel: string; date: string };
-    footnote1: string; footnote2: string;
+    cardNo: string; stamp: string;
     edit: string; done: string;
+    /** 英雄帖 */
+    summons: {
+      /** 大字帖名（中文竖排书法 / 英文横排大写） */
+      title: string;
+      /** 帖首：主办与届次 */
+      lead: string[];
+      /** 正文各句。{name} {alias} {style} {nation} {age} {cat} 由组件替换；
+       *  含未填字段的句子会被整句略去，不出现「—」 */
+      body: string[];
+      /** 结语 */
+      closing: string;
+      /** 落款 */
+      signature: string;
+      /** 底栏小字 */
+      footerNote: string;
+      phoneLabel: string;
+    };
   };
 };
 
@@ -136,11 +151,23 @@ const zh: Dict = {
     fields: { name: "姓名 *", alias: "绰号（选填）", age: "年龄", nation: "国籍 / 地区", style: "门派 / 拳种", phone: "联系电话 *" },
     placeholders: { name: "真实姓名", alias: "如：铁山", age: "18–45", nation: "如：中国", style: "如：八极拳、咏春、太极", phone: "手机或 WhatsApp" },
     channel: "报名通道", error: "请至少填写姓名和联系电话", submit: "提交报名 SUBMIT",
-    cardBrand: "KUNGFUMAN · 功夫人巅峰赛", cardTitle: "武者报名表", cardNo: "NO.", stamp: "已受理",
-    rows: { name: "姓 名", alias: "绰 号", age: "年 龄", nation: "国籍 / 地区", style: "门派 / 拳种", phone: "联系电话", channel: "报名通道", date: "提交日期" },
-    footnote1: "本表由系统自动生成，组委会初审通过后",
-    footnote2: "将以电话方式通知海选时间与地点。",
+    cardNo: "NO.", stamp: "已受理",
     edit: "← 修改信息", done: "完成 DONE",
+    summons: {
+      title: "英雄帖",
+      lead: ["功夫人巅峰赛", "第一届 · 问鼎"],
+      body: [
+        "广邀天下英雄，不问出处",
+        "兹有 {name} {alias}",
+        "{style} 门下，{nation} 籍",
+        "年 {age}",
+        "应 {cat} 之选",
+      ],
+      closing: "帖到即验，候召赴会",
+      signature: "功夫人巅峰赛组委会",
+      footerNote: "本帖由系统自动生成，组委会初审通过后将以电话通知海选时间与地点。",
+      phoneLabel: "联系电话",
+    },
   },
 };
 
@@ -218,11 +245,23 @@ const en: Dict = {
     fields: { name: "Name *", alias: "Ring name (optional)", age: "Age", nation: "Nationality / Region", style: "School / Style", phone: "Phone *" },
     placeholders: { name: "Your legal name", alias: "e.g. Iron Mountain", age: "18–45", nation: "e.g. Singapore", style: "e.g. Bajiquan, Wing Chun", phone: "Mobile or WhatsApp" },
     channel: "ENTRY CATEGORY", error: "Please provide at least your name and phone number", submit: "SUBMIT",
-    cardBrand: "KUNGFUMAN · WORLD KUNG FU CHAMPIONSHIP", cardTitle: "FIGHTER ENTRY FORM", cardNo: "NO.", stamp: "RECEIVED",
-    rows: { name: "Name", alias: "Ring name", age: "Age", nation: "Nationality", style: "School / Style", phone: "Phone", channel: "Category", date: "Submitted" },
-    footnote1: "Automatically generated. Once the committee clears your entry,",
-    footnote2: "you will be called with tryout time and location.",
+    cardNo: "NO.", stamp: "RECEIVED",
     edit: "← EDIT", done: "DONE",
+    summons: {
+      title: "THE HERO'S SUMMONS",
+      lead: ["KUNGFUMAN", "EDITION I · THE QUEST"],
+      body: [
+        "The world is called to the ring, and no one is asked where they came from.",
+        "Let it be known that {name} {alias}",
+        "of the {style} school, of {nation},",
+        "aged {age},",
+        "answers the call on the road of {cat}.",
+      ],
+      closing: "Present this summons when the call comes.",
+      signature: "THE KUNGFUMAN COMMITTEE",
+      footerNote: "Automatically generated. Once the committee clears your entry, you will be called with tryout time and location.",
+      phoneLabel: "Phone",
+    },
   },
 };
 
