@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ══════════════════════════════════════════════════════════
+   KungFuMan 设计 token（暖褐红夜色主题）
+   来源：design_handoff_kungfuman_website/README.md
+   ══════════════════════════════════════════════════════════ */
+@theme {
+  /* 底色层次 */
+  --color-ink: #140b08;        /* 页面底色 */
+  --color-ink-card: #1a0e09;   /* 卡片底 */
+  --color-ink-hot: #241108;    /* 强调底 / 悬停 */
+  --color-ink-grain: #2a160c;  /* 深纹理 */
+  --color-ink-grain-2: #20100a;
+
+  /* 火焰红 */
+  --color-cinnabar: #e03a20;   /* 主红（朱砂） */
+  --color-flame: #ff5a3c;      /* 亮红 */
+
+  /* 鎏金 */
+  --color-gold: #e0aa4e;
+  --color-gold-soft: #f2d9a0;  /* 淡金文字 */
+
+  /* 文字 */
+  --color-rice: #f5ead8;       /* 米白正文 */
+  --color-rice-dim: #c9b394;   /* 次级文字 */
+
+  /* 字体 —— 由 layout.tsx 的 Google Fonts <link> 引入 */
+  --font-brush: 'Ma Shan Zheng', cursive;
+  --font-serif-sc: 'Noto Serif SC', serif;
+  --font-latin: 'Oswald', sans-serif;
+
+  /* 断点 —— 设计稿断点为 780px，覆盖 Tailwind 默认的 md:768px */
+  --breakpoint-md: 780px;
+
+  /* 动效 */
+  --animate-marquee: marquee 28s linear infinite;
+  --animate-breathe: breathe 2.8s ease-in-out infinite;
+  --animate-blink: blink 1.8s infinite;
+  --animate-float-y: floatY 2.4s ease-in-out infinite;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@keyframes marquee   { 0% { transform: translateX(0); }        100% { transform: translateX(-50%); } }
+@keyframes breathe   { 0%, 100% { opacity: .55; transform: rotate(45deg) scale(1); }
+                       50%      { opacity: 1;   transform: rotate(45deg) scale(1.04); } }
+@keyframes blink     { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+@keyframes floatY    { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(10px); } }
+@keyframes emberUp   { 0%   { transform: translateY(0);      opacity: 0; }
+                       12%  { opacity: .9; }
+                       100% { transform: translateY(-110vh); opacity: 0; } }
+
+/* ══════════════════════════════════════════════════════════
+   基础层
+   ══════════════════════════════════════════════════════════ */
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--color-ink);
+  }
+  body {
+    font-family: var(--font-serif-sc);
+    color: var(--color-rice);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--color-gold); text-decoration: none; }
+  a:hover { color: var(--color-flame); }
+  ::selection { background: var(--color-cinnabar); color: #fff; }
+  h1, h2, h3, p { margin: 0; }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ══════════════════════════════════════════════════════════
+   组件层 —— 原型里靠 !important 实现的断点规则，
+   在此转为正常的响应式写法（README「Interactions & Behavior」要求）
+   ══════════════════════════════════════════════════════════ */
+@layer components {
+  /* 描边巨字：水印、集锦大字、报名表「武」印 */
+  .stroke-char {
+    color: transparent;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgba(224, 170, 78, .45);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* 视差插页背景：移动端降级为 scroll，避免 iOS 上的 fixed 抖动 */
+  .fx-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+  @media (max-width: 780px) {
+    .fx-bg { background-attachment: scroll; }
+  }
+
+  /* 章节内边距：桌面 110px / 44px，移动端压缩 */
+  .sec-pad { padding: 110px 44px; }
+  @media (max-width: 780px) {
+    .sec-pad { padding: 64px 20px; }
+  }
+
+  /* 金色描边网格容器（英雄榜 / 五届 / 数据格 / 照片墙共用） */
+  .gold-grid {
+    background: rgba(224, 170, 78, .18);
+    border: 1px solid rgba(224, 170, 78, .18);
+    display: grid;
+    gap: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* 动效降级：尊重系统「减少动态效果」设置 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fx-bg { background-attachment: scroll; }
 }
