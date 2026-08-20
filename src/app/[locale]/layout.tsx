@@ -3,7 +3,26 @@ import { notFound } from "next/navigation";
 import { LOCALES, isLocale, type Locale } from "@/lib/locales";
 import "../globals.css";
 
-const SITE = "https://kungfuman.com"; // TODO: 换成实际域名
+/**
+ * 站点根地址 —— canonical / og:url / hreflang 都基于它。
+ *
+ * 优先级：显式配置 > Vercel 生产域名 > 本地。
+ * 绑定自有域名后，在 Vercel 项目里设 NEXT_PUBLIC_SITE_URL=https://你的域名 即可。
+ */
+const SITE =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL
+    ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+    : "http://localhost:3000");
+
+/**
+ * 是否允许搜索引擎收录。
+ *
+ * 默认关闭：站上仍有占位内容 —— 选手头像为 Wikimedia CC 素材，
+ * 创始人简介为虚构文案。这些被搜索引擎抓取并当作事实缓存是有风险的。
+ * 内容核定完毕后，在 Vercel 项目里设 NEXT_PUBLIC_ALLOW_INDEXING=true 开启。
+ */
+const ALLOW_INDEXING = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
 
 const META: Record<Locale, { title: string; description: string; ogTitle: string; ogDesc: string; keywords: string[] }> = {
   zh: {
@@ -42,6 +61,9 @@ export async function generateMetadata({
     title: m.title,
     description: m.description,
     keywords: m.keywords,
+    robots: ALLOW_INDEXING
+      ? undefined
+      : { index: false, follow: false, googleBot: { index: false, follow: false } },
     alternates: {
       canonical: `/${locale}`,
       // hreflang：告诉搜索引擎两个语种是同一页面的不同版本
