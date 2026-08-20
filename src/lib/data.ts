@@ -181,14 +181,14 @@ export const getMedia = (l: Locale): MediaItem[] =>
 
 const JOURNEY: (Omit<JourneyItem, "cap"> & { cap: L })[] = [
   { src: "/assets/founder_141_onset_wide.jpg",     tag: "ON SET",    span: 2, cap: { zh: "片场论武",              en: "Talking kung fu on set" } },
-  { src: "/assets/founder_132.png",                tag: "CINEMA",    span: 1, cap: { zh: "与电影人切磋交流",      en: "Trading moves with filmmakers" } },
-  { src: "/assets/founder_139_onimusha_crew.png",  tag: "2002",      span: 1, cap: { zh: "《鬼武者》CG电影剧组",  en: "Onimusha CG film crew" } },
+  { src: "/assets/founder_132.jpg",                tag: "CINEMA",    span: 1, cap: { zh: "与电影人切磋交流",      en: "Trading moves with filmmakers" } },
+  { src: "/assets/founder_139_onimusha_crew.jpg",  tag: "2002",      span: 1, cap: { zh: "《鬼武者》CG电影剧组",  en: "Onimusha CG film crew" } },
   { src: "/assets/founder_135_kids_class.jpg",     tag: "LEGACY",    span: 1, cap: { zh: "海外传艺 · 少年武学班", en: "Teaching abroad · youth class" } },
   { src: "/assets/founder_136_chilife_studio.jpg", tag: "SINGAPORE", span: 1, cap: { zh: "创办 Ch'i Life Studio", en: "Founding Ch'i Life Studio" } },
   { src: "/assets/founder_142_with_master.jpg",    tag: "MASTERS",   span: 1, cap: { zh: "与前辈宗师",            en: "With the old masters" } },
-  { src: "/assets/founder_138.png",                tag: "DIPLOMACY", span: 1, cap: { zh: "武术文化外交",          en: "Wushu cultural diplomacy" } },
-  { src: "/assets/founder_140_beach_taichi.png",   tag: "PRACTICE",  span: 1, cap: { zh: "海上晨功",              en: "Morning practice by the sea" } },
-  { src: "/assets/founder_131.png",                tag: "ENVOY",     span: 1, cap: { zh: "受邀国事文化活动",      en: "Invited to a state cultural event" } },
+  { src: "/assets/founder_138.jpg",                tag: "DIPLOMACY", span: 1, cap: { zh: "武术文化外交",          en: "Wushu cultural diplomacy" } },
+  { src: "/assets/founder_140_beach_taichi.jpg",   tag: "PRACTICE",  span: 1, cap: { zh: "海上晨功",              en: "Morning practice by the sea" } },
+  { src: "/assets/founder_131.jpg",                tag: "ENVOY",     span: 1, cap: { zh: "受邀国事文化活动",      en: "Invited to a state cultural event" } },
   { src: "/assets/founder_146_lantern_gym.jpg",    tag: "OVERSEAS",  span: 1, cap: { zh: "北美武馆交流",          en: "Exchange at a North American school" } },
   { src: "/assets/founder_145_cage.jpg",           tag: "THE CAGE",  span: 1, cap: { zh: "现代擂台 · 筹建赛事",   en: "The modern ring · building the league" } },
 ];
@@ -201,7 +201,7 @@ export const photos = {
   quoteOnSet:      "/assets/founder_141_onset_wide.jpg",
   legacyKidsClass: "/assets/founder_135_kids_class.jpg",
   ctaLanternGym:   "/assets/founder_146_lantern_gym.jpg",
-  founderPortrait: "/assets/founder_133_medals_portrait.png",
+  founderPortrait: "/assets/founder_133_medals_portrait.jpg",
 };
 
 /* ────────────────────────── 购票：13 场次 ────────────────────────── */
