@@ -113,7 +113,7 @@ const zh: Dict = {
     title: "RAINBOW CHEN QINGBIAO · FOUNDER & CHAIRMAN",
     // ⚠️ 占位虚构文案，上线前须以真实履历核定
     bio1: "八极拳第八代传人，习武四十余年。曾率中国武术代表团出访三十余国，深感传统武术缺少一个属于自己的世界级擂台——套路被视作表演，实战被归入他人的规则。",
-    bio2: "2025年，他变卖武馆创办功夫人巅峰赛，立下五届之约：以问鼎起，以登极终，让全世界在同一座擂台上，重新认识中国功夫。",
+    bio2: "2025年，他变卖武馆创办功夫侠国际武术巅峰赛，立下五届之约：以问鼎起，以登极终，让全世界在同一座擂台上，重新认识中国功夫。",
     portraitCaption: "2004 · 首届世界传统武术节 双金",
     stats: ["年习武 YEARS", "国出访 NATIONS", "第八代传人 LINEAGE"],
     journeyBrush: "江湖印记", journeySub: "THE JOURNEY", lineageValue: "八极",
@@ -128,7 +128,7 @@ const zh: Dict = {
     applyBody: "全球海选，套路、器械、对抗三条通道，英雄不问出处。",
     applyBtn: "报名参赛 APPLY",
   },
-  footer: { tagline: "功夫人巅峰赛 · 第一届 问鼎 · 谁主沉浮" },
+  footer: { tagline: "功夫侠国际武术巅峰赛 · 第一届 问鼎 · 谁主沉浮" },
   overlay: { close: "关闭 CLOSE" },
   ticket: {
     title: "购票 TICKETS", step1: "① 选场次 SESSION", step2: "② 选座位 SEATS",
@@ -155,7 +155,7 @@ const zh: Dict = {
     edit: "← 修改信息", done: "完成 DONE",
     summons: {
       title: "英雄帖",
-      lead: ["功夫人巅峰赛", "第一届 · 问鼎"],
+      lead: ["功夫侠国际武术巅峰赛", "第一届 · 问鼎"],
       body: [
         "广邀天下英雄，不问出处",
         "兹有 {name} {alias}",
@@ -164,7 +164,7 @@ const zh: Dict = {
         "应 {cat} 之选",
       ],
       closing: "帖到即验，候召赴会",
-      signature: "功夫人巅峰赛组委会",
+      signature: "功夫侠国际武术巅峰赛组委会",
       footerNote: "本帖由系统自动生成，组委会初审通过后将以电话通知海选时间与地点。",
       phoneLabel: "联系电话",
     },
@@ -221,7 +221,7 @@ const en: Dict = {
     applyBody: "Global tryouts open to every school. Forms, weapons, full-contact — heroes rise from anywhere.",
     applyBtn: "APPLY",
   },
-  footer: { tagline: "KUNGFUMAN · EDITION I THE QUEST · WHO RULES THE WORLD" },
+  footer: { tagline: "KUNGFUMAN INTERNATIONAL WUSHU CHAMPIONSHIP · EDITION I" },
   overlay: { close: "CLOSE" },
   ticket: {
     title: "TICKETS", step1: "① SESSION", step2: "② SEATS",
@@ -249,7 +249,7 @@ const en: Dict = {
     edit: "← EDIT", done: "DONE",
     summons: {
       title: "THE HERO'S SUMMONS",
-      lead: ["KUNGFUMAN", "EDITION I · THE QUEST"],
+      lead: ["KUNGFUMAN INTERNATIONAL WUSHU CHAMPIONSHIP", "EDITION I · THE QUEST"],
       body: [
         "The world is called to the ring, and no one is asked where they came from.",
         "Let it be known that {name} {alias}",

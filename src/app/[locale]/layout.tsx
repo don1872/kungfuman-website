@@ -26,17 +26,17 @@ const ALLOW_INDEXING = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
 
 const META: Record<Locale, { title: string; description: string; ogTitle: string; ogDesc: string; keywords: string[] }> = {
   zh: {
-    title: "功夫人巅峰赛 KUNGFUMAN · 第一届 问鼎 · 谁主沉浮",
+    title: "功夫侠国际武术巅峰赛 KUNGFUMAN · 第一届 问鼎 · 谁主沉浮",
     description:
-      "KungFuMan 功夫人巅峰赛：全球十二国传统武术宗门，八极、咏春、太极、形意、洪拳诸派同台。拳械套路与全接触对抗双线并行，问鼎天下第一之位。",
-    ogTitle: "功夫人巅峰赛 KUNGFUMAN · 问鼎",
+      "KUNGFUMAN 功夫侠国际武术巅峰赛：全球十二国传统武术宗门，八极、咏春、太极、形意、洪拳诸派同台。拳械套路与全接触对抗双线并行，问鼎天下第一之位。",
+    ogTitle: "功夫侠国际武术巅峰赛 KUNGFUMAN · 问鼎",
     ogDesc: "谁主沉浮 · WHO RULES THE WORLD — 2026.10.24 西安首站",
-    keywords: ["功夫人巅峰赛", "KungFuMan", "传统武术", "八极拳", "咏春", "武术赛事", "问鼎"],
+    keywords: ["功夫侠", "功夫侠国际武术巅峰赛", "KUNGFUMAN", "国际武术锦标赛", "传统武术", "八极拳", "咏春", "武术赛事", "问鼎"],
   },
   en: {
-    title: "KUNGFUMAN · Edition I The Quest · Who Rules the World",
+    title: "KUNGFUMAN International Wushu Championship · Edition I · Who Rules the World",
     description:
-      "KungFuMan World Kung Fu Championship: twelve nations, the great traditional schools — Baji, Wing Chun, Tai Chi, Xingyi, Hung Ga — on one stage. Forms and full-contact combat, two roads to one crown.",
+      "KUNGFUMAN International Wushu Championship: twelve nations, the great traditional schools — Baji, Wing Chun, Tai Chi, Xingyi, Hung Ga — on one stage. Forms and full-contact combat, two roads to one crown.",
     ogTitle: "KUNGFUMAN · The Quest",
     ogDesc: "WHO RULES THE WORLD — Opening night Xi'an, 24 Oct 2026",
     keywords: ["KungFuMan", "kung fu championship", "traditional wushu", "Bajiquan", "Wing Chun", "martial arts event"],

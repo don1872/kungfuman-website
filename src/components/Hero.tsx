@@ -21,7 +21,7 @@ export function Hero({ locale }: { locale: Locale }) {
     <section className="relative h-screen min-h-[720px] overflow-hidden">
       <Image
         src={photos.heroCage}
-        alt={locale === "zh" ? "功夫人巅峰赛擂台" : "The KungFuMan ring"}
+        alt={locale === "zh" ? "功夫侠国际武术巅峰赛擂台" : "The KungFuMan ring"}
         fill
         priority
         sizes="100vw"

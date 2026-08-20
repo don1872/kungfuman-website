@@ -31,7 +31,7 @@ export function LogoFull({ size = 140 }: { size?: number }) {
   return (
     <Image
       src="/assets/logo.jpg"
-      alt="KUNGFUMAN 功夫侠 国际武术锦标赛"
+      alt="KUNGFUMAN 功夫侠国际武术巅峰赛"
       width={460}
       height={450}
       className="w-auto flex-none border border-gold/40"
@@ -83,7 +83,7 @@ export function Wordmark({ locale }: { locale: Locale }) {
           KUNGFUMAN
         </div>
         <div className="mt-[3px] text-[11px] tracking-[4px] text-gold">
-          {locale === "zh" ? "功夫侠 · 国际武术锦标赛" : "INTERNATIONAL WUSHU CHAMPIONSHIP"}
+          {locale === "zh" ? "功夫侠国际武术巅峰赛" : "INTERNATIONAL WUSHU CHAMPIONSHIP"}
         </div>
       </div>
     </div>
