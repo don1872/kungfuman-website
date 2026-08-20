@@ -38,7 +38,7 @@ const M: Milestone[] = [
     title: { zh: "生于山东武术世家", en: "Born into a martial arts family in Shandong" },
     detail: {
       zh: "六岁起随祖父与父亲习武，兼修武术、散打与太极。后毕业于安徽宿州体育学院、新加坡中华总商会管理学院。",
-      en: "He began training with his grandfather and father at the age of six, studying wushu, sanda and tai chi. He later graduated from the Suzhou Institute of Physical Education in Anhui and the SCCCI Institute of Business in Singapore.",
+      en: "He began training with his grandfather and father at six, studying wushu, sanda and tai chi. Later a graduate of Suzhou Institute of Physical Education and SCCCI Institute of Business.",
     },
     photo: "/founder/1970-childhood.jpg",
     alt: { zh: "陈庆彪童年照", en: "Chen Qingbiao as a child" },
@@ -48,7 +48,7 @@ const M: Milestone[] = [
     title: { zh: "郑州 · 新加坡电视台功夫演员大赛", en: "Zhengzhou · MediaCorp Singapore kung fu talent search" },
     detail: {
       zh: "近千名参赛者中脱颖而出，获选前四名，受邀赴新加坡签约为电视台艺人。",
-      en: "Handpicked from nearly a thousand entrants as one of the final four, and signed as a MediaCorp artiste in Singapore.",
+      en: "Handpicked from nearly a thousand entrants as one of the final four, and signed by MediaCorp Singapore.",
     },
     photo: "/founder/1992-selection.jpg",
     alt: { zh: "1992 年入选的四位功夫演员", en: "The four selected kung fu performers, 1992" },
@@ -115,7 +115,7 @@ const M: Milestone[] = [
     title: { zh: "郑州 · 世界首届传统武术节 双金", en: "Zhengzhou · Double gold, First World Traditional Wushu Festival" },
     detail: {
       zh: "62 个参赛国家、2000 余名选手角逐，代表新加坡夺得地躺拳与象形拳双项冠军。",
-      en: "Representing Singapore against more than 2,000 competitors from 62 countries, he took gold in both Ditangquan and Xiangxingquan.",
+      en: "Gold in both Ditangquan and Xiangxingquan, against 2,000+ competitors from 62 countries.",
     },
     photo: "/assets/founder_133_medals_portrait.jpg",
     alt: { zh: "2004 年获双金牌", en: "With both gold medals, 2004" },
@@ -132,7 +132,7 @@ const M: Milestone[] = [
     title: { zh: "新加坡 · 功夫偶像大赛双冠", en: "Singapore · Kung Fu Idol, double champion" },
     detail: {
       zh: "哥伦比亚电影公司于周星驰《功夫》上映之际举办，获最佳功夫与最佳表演双项冠军。",
-      en: "Organised by Columbia Pictures for the Singapore launch of Stephen Chow's Kung Fu Hustle; won both Best Kung Fu and Best Performance.",
+      en: "Held by Columbia Pictures for the Singapore launch of Stephen Chow's Kung Fu Hustle. Won Best Kung Fu and Best Performance.",
     },
     photo: "/founder/2004-kungfuidol.jpg",
     alt: { zh: "功夫偶像大赛现场", en: "At the Kung Fu Idol competition" },
@@ -142,7 +142,7 @@ const M: Milestone[] = [
     title: { zh: "世界首部功夫音乐剧《黄飞鸿》", en: "The world's first kung fu musical · A Kung Fu Tale" },
     detail: {
       zh: "自编自导自演，于新加坡滨海艺术中心首演。时任新加坡总统纳丹先生出席首演之夜，李连杰的师父吴彬担任武术顾问。",
-      en: "He wrote, directed and starred in it. The show premiered at the Esplanade Theatre in Singapore; President S. R. Nathan attended opening night, and Wu Bin — Jet Li's own master — served as martial arts consultant.",
+      en: "He wrote, directed and starred in it. It premiered at Singapore's Esplanade Theatre, with President S. R. Nathan at opening night. Wu Bin — Jet Li's own master — was martial arts consultant.",
     },
     photo: "/founder/2006-musical.jpg",
     alt: { zh: "《黄飞鸿》音乐剧海报", en: "A Kung Fu Tale poster" },
@@ -152,7 +152,7 @@ const M: Milestone[] = [
     title: { zh: "北京 ·《功夫宝贝 KUNG FU KIDS》", en: "Beijing · KUNG FU KIDS" },
     detail: {
       zh: "于蓝色港湾创立，至 2015 年发展至 9 家直营店，成为北京规模最大的功夫教育机构。",
-      en: "Founded at Solana, Beijing, and grown to nine directly-operated schools by 2015 — the largest kung fu academy in the city.",
+      en: "Founded at Solana and grown to nine schools by 2015 — Beijing's largest kung fu academy.",
     },
     photo: "/founder/2008-kungfukids.jpg",
     alt: { zh: "《功夫宝贝》海报", en: "KUNG FU KIDS poster" },

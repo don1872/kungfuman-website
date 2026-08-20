@@ -3,6 +3,16 @@ import { getEras, getMilestones } from "@/lib/founder";
 import type { Locale } from "@/lib/locales";
 
 /**
+ * 英文说明按句拆行，每句独占一行，不与相邻句子挤在同一行。
+ *
+ * (?<=[.;])         紧邻的前一个字符是句点或分号
+ * (?<![A-Z][.;])    但前两个字符不是「大写字母 + 句点」——避开 S. R. Nathan 这类缩写
+ * (?=[A-Z])         后面紧跟大写字母，即确实是新句开头
+ */
+const splitSentences = (text: string) =>
+  text.split(/(?<=[.;])(?<![A-Z][.;])\s+(?=[A-Z])/).filter(Boolean);
+
+/**
  * 创始人履历时间线。
  *
  * 左列年份、中间一道金线串起节点、右列内容与配图。
@@ -49,16 +59,23 @@ export function Timeline({ locale }: { locale: Locale }) {
               </div>
 
               {/* 内容：桌面端图片置于文字右侧，整体更紧凑；窄屏下堆叠 */}
-              <div className="flex flex-col gap-4 pb-9 md:flex-row md:items-start md:gap-7">
+              <div className="flex flex-col gap-4 pb-9 md:flex-row md:items-start md:gap-6">
                 <div className="min-w-0 flex-1">
                   <h4 className="font-serif-sc text-[17px] leading-[1.5] font-black text-white md:text-xl">
                     {m.title}
                   </h4>
-                  {m.detail && (
-                    <p className="mt-2 max-w-[54ch] text-[13px] leading-[1.95] text-rice-dim md:text-sm">
-                      {m.detail}
-                    </p>
-                  )}
+                  {m.detail &&
+                    (locale === "en" ? (
+                      <div className="mt-2 space-y-[3px] text-[13px] leading-[1.9] text-rice-dim md:text-sm">
+                        {splitSentences(m.detail).map((line) => (
+                          <p key={line}>{line}</p>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="mt-2 text-[13px] leading-[1.95] text-rice-dim md:text-sm">
+                        {m.detail}
+                      </p>
+                    ))}
                 </div>
 
                 {m.photo && (
@@ -68,8 +85,8 @@ export function Timeline({ locale }: { locale: Locale }) {
                       alt={m.alt ?? m.title}
                       width={880}
                       height={600}
-                      sizes="(max-width: 780px) 90vw, 240px"
-                      className="h-auto w-full max-h-[200px] object-contain md:w-[240px]"
+                      sizes="(max-width: 780px) 90vw, 210px"
+                      className="h-auto max-h-[180px] w-full object-contain md:w-[210px]"
                     />
                   </figure>
                 )}
