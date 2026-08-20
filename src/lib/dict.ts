@@ -33,11 +33,13 @@ export type Dict = {
   editions: { heading: string; sub: string; intro: string; now: string };
   founder: {
     heading: string; sub: string;
-    name: string; alias: string; title: string;
+    name: string; title: string;
     bio1: string; bio2: string;
     portraitCaption: string;
-    stats: [string, string, string];
-    journeyBrush: string; journeySub: string; lineageValue: string;
+    /** 三格数据：大字 + 说明。数值与说明都随语言 */
+    stats: { value: string; label: string }[];
+    /** 履历时间线标题 */
+    recordHeading: string; recordSub: string;
   };
   media: { heading: string; sub: string };
   cta: {
@@ -109,14 +111,17 @@ const zh: Dict = {
   },
   founder: {
     heading: "创始人", sub: "THE FOUNDER",
-    name: "陈庆彪", alias: "Rainbow",
-    title: "RAINBOW CHEN QINGBIAO · FOUNDER & CHAIRMAN",
-    // ⚠️ 占位虚构文案，上线前须以真实履历核定
-    bio1: "八极拳第八代传人，习武四十余年。曾率中国武术代表团出访三十余国，深感传统武术缺少一个属于自己的世界级擂台——套路被视作表演，实战被归入他人的规则。",
-    bio2: "2025年，他变卖武馆创办功夫侠国际武术巅峰赛，立下五届之约：以问鼎起，以登极终，让全世界在同一座擂台上，重新认识中国功夫。",
-    portraitCaption: "2004 · 首届世界传统武术节 双金",
-    stats: ["年习武 YEARS", "国出访 NATIONS", "第八代传人 LINEAGE"],
-    journeyBrush: "江湖印记", journeySub: "THE JOURNEY", lineageValue: "八极",
+    name: "陈庆彪",
+    title: "功夫教练 · 武术指导 · 编导",
+    bio1: "1970 年生于山东武术世家，六岁起随祖父与父亲习武，兼修武术、散打与太极。毕业于安徽宿州体育学院、新加坡中华总商会管理学院。",
+    bio2: "1992 年在近千名参赛者中脱颖而出签约新加坡电视台，此后横跨银幕与擂台：为《陆小凤》《笑傲江湖》担任武术指导，与郭富城、甄子丹、袁咏仪等合作拍摄；2004 年在 62 国角逐的世界首届传统武术节夺得双金，同年再获美国西雅图国际功夫大赛自由搏击冠军。2006 年自编自导自演世界首部功夫音乐剧《黄飞鸿》。",
+    portraitCaption: "陈庆彪",
+    stats: [
+      { value: "6", label: "岁起习武 SINCE AGE 6" },
+      { value: "62", label: "国角逐夺双金 NATIONS, 2004" },
+      { value: "9", label: "家北京武馆 SCHOOLS" },
+    ],
+    recordHeading: "履历", recordSub: "THE RECORD",
   },
   media: { heading: "集锦", sub: "HIGHLIGHTS" },
   cta: {
@@ -199,17 +204,18 @@ const en: Dict = {
     now: "NOW",
   },
   founder: {
-    heading: "THE FOUNDER", sub: "RAINBOW CHEN",
-    name: "Rainbow Chen", alias: "Qingbiao",
-    title: "FOUNDER & CHAIRMAN · 8TH-GENERATION BAJIQUAN",
-    // ⚠️ Placeholder biography — verify against the real record before launch.
-    bio1:
-      "Eighth-generation lineage holder of Bajiquan with over forty years of practice. He led Chinese wushu delegations to more than thirty countries — and saw that traditional kung fu had no world-class ring of its own: forms dismissed as performance, combat folded into other people's rules.",
-    bio2:
-      "In 2025 he sold his school to found KungFuMan, with a five-edition vow: begin with the Quest, end with Ascension — and let the world meet Chinese kung fu on one stage.",
-    portraitCaption: "2004 · Double gold, 1st World Traditional Wushu Festival",
-    stats: ["YEARS OF PRACTICE", "NATIONS VISITED", "GENERATION"],
-    journeyBrush: "THE JOURNEY", journeySub: "1994 — 2026", lineageValue: "8TH",
+    heading: "THE FOUNDER", sub: "CHEN QINGBIAO",
+    name: "Chen Qingbiao",
+    title: "KUNG FU COACH · FIGHT CHOREOGRAPHER · DIRECTOR",
+    bio1: "Born in 1970 into a martial arts family in Shandong, he began training with his grandfather and father at the age of six, studying wushu, sanda and tai chi. He graduated from the Suzhou Institute of Physical Education in Anhui and the SCCCI Institute of Business in Singapore.",
+    bio2: "In 1992 he was handpicked from nearly a thousand entrants and signed with MediaCorp Singapore. The two decades that followed ran on both sides of the craft — fight choreographer on television dramas, on-screen alongside Aaron Kwok, Donnie Yen and Anita Yuen — while he kept competing. In 2004 he took double gold at the First World Traditional Wushu Festival against entrants from 62 countries, and free-sparring gold at the US International Kung Fu Championship the same year. In 2006 he wrote, directed and starred in the world's first kung fu musical.",
+    portraitCaption: "Chen Qingbiao",
+    stats: [
+      { value: "6", label: "TRAINING FROM AGE SIX" },
+      { value: "62", label: "NATIONS · DOUBLE GOLD 2004" },
+      { value: "9", label: "SCHOOLS IN BEIJING" },
+    ],
+    recordHeading: "THE RECORD", recordSub: "1970 — 2015",
   },
   media: { heading: "HIGHLIGHTS", sub: "EDITION I" },
   cta: {
