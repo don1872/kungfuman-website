@@ -45,9 +45,12 @@ export function SiteShell({ locale }: { locale: Locale }) {
           font={locale === "zh" ? "brush" : "serif"}
           saturate={1.08}
         >
-          「{d.quote.l1}
+          {/* 引号随语种：中文用直角引号，英文用弯引号 */}
+          {locale === "zh" ? "「" : "\u201C"}
+          {d.quote.l1}
           <br />
-          {d.quote.l2}」
+          {d.quote.l2}
+          {locale === "zh" ? "」" : "\u201D"}
         </Parallax>
 
         <Events locale={locale} />
