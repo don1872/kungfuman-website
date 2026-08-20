@@ -38,7 +38,7 @@ export function TicketOverlay({ locale, onClose }: { locale: Locale; onClose: ()
   };
 
   return (
-    <Overlay title={tk.title} closeLabel={d.overlay.close} seal={d.brand.seal} maxWidth="1240px" onClose={onClose}>
+    <Overlay title={tk.title} closeLabel={d.overlay.close} seal={d.brand.seal} brandMark maxWidth="1240px" onClose={onClose}>
       <div className="mb-[34px] flex items-center gap-[14px] font-latin text-xs tracking-[3px]">
         <span className={step === 1 ? "text-flame" : "text-rice-dim"}>{tk.step1}</span>
         <span className="text-rice-dim/40">──</span>

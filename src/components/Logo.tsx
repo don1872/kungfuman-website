@@ -1,6 +1,48 @@
+import Image from "next/image";
 import type { Locale } from "@/lib/locales";
 
-/** 红底方章 —— 导航、二级页头部、页脚共用。中文版是「功」，英文版是 KF 字母组合 */
+/**
+ * 官方 logo 是一整套徽章式锁定（人物 + 红圆 + KUNGFUMAN + 中英副标）。
+ * 缩到导航的 60px 高时里面四行小字会糊成一团，所以拆两个用法：
+ *   - 小尺寸（导航、二级页头部）用裁出的圆形徽章 + 旁边live 文字
+ *   - 大尺寸（页脚）用完整锁定，尺寸足够时所有信息都清晰
+ * 素材黑底不透明且无法抠图（图案的黑描边与外部背景是连通的同一片黑），
+ * 混合模式也不可行——固定定位的导航栏自成层叠上下文，blend 够不到后面的照片。
+ * 因此给徽章加一道金色细边，做成有意为之的徽章框，与站内卡片、英雄帖的金线语言一致。
+ */
+
+/** 圆形徽章 —— 替代原先手做的「功」方章 */
+export function Mark({ size = 44 }: { size?: number }) {
+  return (
+    <Image
+      src="/assets/logo-mark.jpg"
+      alt="KUNGFUMAN"
+      width={362}
+      height={292}
+      priority
+      className="w-auto flex-none border border-gold/40"
+      style={{ height: size }}
+    />
+  );
+}
+
+/** 完整锁定 —— 页脚等有空间的位置 */
+export function LogoFull({ size = 140 }: { size?: number }) {
+  return (
+    <Image
+      src="/assets/logo.jpg"
+      alt="KUNGFUMAN 功夫侠 国际武术锦标赛"
+      width={460}
+      height={450}
+      className="w-auto flex-none border border-gold/40"
+      style={{ height: size }}
+    />
+  );
+}
+
+/**
+ * 装饰性方章（创始人肖像角标、报名覆盖层）—— 不是品牌 logo，保留手做样式。
+ */
 export function Seal({
   size = 44,
   char,
@@ -16,7 +58,6 @@ export function Seal({
     outline: "border-cinnabar text-flame",
   }[variant];
 
-  // 汉字方章用书法体；英文版的 KF 字母组合用 Oswald，字号需压小
   const isLatin = /^[\x00-\x7F]+$/.test(char);
 
   return (
@@ -32,17 +73,17 @@ export function Seal({
   );
 }
 
-/** 完整品牌锁定：方章 + KUNGFUMAN + 副行 */
-export function Wordmark({ locale, seal }: { locale: Locale; seal: string }) {
+/** 品牌锁定：徽章 + KUNGFUMAN + 副行 */
+export function Wordmark({ locale }: { locale: Locale }) {
   return (
-    <div className="flex items-center gap-[14px]">
-      <Seal char={seal} />
+    <div className="flex items-center gap-3">
+      <Mark size={52} />
       <div>
         <div className="font-latin text-xl leading-none font-bold tracking-[4px] text-white [text-shadow:0_1px_8px_rgba(0,0,0,.6)]">
           KUNGFUMAN
         </div>
-        <div className="mt-[3px] text-[11px] tracking-[6px] text-gold">
-          {locale === "zh" ? "功夫人巅峰赛" : "WORLD KUNG FU"}
+        <div className="mt-[3px] text-[11px] tracking-[4px] text-gold">
+          {locale === "zh" ? "功夫侠 · 国际武术锦标赛" : "INTERNATIONAL WUSHU CHAMPIONSHIP"}
         </div>
       </div>
     </div>

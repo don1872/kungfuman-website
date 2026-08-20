@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, type ReactNode } from "react";
-import { Seal } from "./Logo";
+import { Mark, Seal } from "./Logo";
 
 /** 全屏覆盖层外壳：锁背景滚动、Esc 关闭、统一头部 */
 export function Overlay({
@@ -9,6 +9,7 @@ export function Overlay({
   closeLabel,
   seal,
   sealVariant = "solid",
+  brandMark = false,
   maxWidth,
   onClose,
   children,
@@ -17,6 +18,8 @@ export function Overlay({
   closeLabel: string;
   seal: string;
   sealVariant?: "solid" | "gold";
+  /** true 时头部用官方徽章，而非手做方章 */
+  brandMark?: boolean;
   maxWidth: string;
   onClose: () => void;
   children: ReactNode;
@@ -42,7 +45,7 @@ export function Overlay({
       <div className="mx-auto px-[18px] pt-[22px] pb-14 md:px-11 md:pt-[30px] md:pb-[70px]" style={{ maxWidth }}>
         <div className="mb-[30px] flex items-center justify-between gap-4">
           <div className="flex items-center gap-[14px]">
-            <Seal size={38} char={seal} variant={sealVariant} />
+            {brandMark ? <Mark size={44} /> : <Seal size={38} char={seal} variant={sealVariant} />}
             <div className="font-latin text-lg font-bold tracking-[3px] text-white">{title}</div>
           </div>
           <button
