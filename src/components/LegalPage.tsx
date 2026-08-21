@@ -72,6 +72,12 @@ export function LegalPage({ locale, doc }: { locale: Locale; doc: ResolvedDoc })
                 {d.footer.phone}
               </a>
             </div>
+            <div>
+              {d.footer.emailLabel}{" "}
+              <a href={`mailto:${d.footer.email}`} className="break-all text-gold hover:text-flame">
+                {d.footer.email}
+              </a>
+            </div>
             {d.footer.address.map((line) => (
               <div key={line}>{line}</div>
             ))}

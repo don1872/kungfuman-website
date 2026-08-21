@@ -152,16 +152,6 @@ const M: Milestone[] = [
     photo: "/founder/2006-musical.jpg",
     alt: { zh: "《黄飞鸿》音乐剧海报", en: "A Kung Fu Tale poster" },
   },
-  {
-    year: "2008 — 2015", era: "create",
-    title: { zh: "北京 ·《功夫宝贝 KUNG FU KIDS》", en: "Beijing · KUNG FU KIDS" },
-    detail: {
-      zh: "于蓝色港湾创立，至 2015 年发展至 9 家直营店，成为北京规模最大的功夫教育机构。",
-      en: "Founded at Solana and grown to nine schools by 2015 — Beijing's largest kung fu academy.",
-    },
-    photo: "/founder/2008-kungfukids.jpg",
-    alt: { zh: "《功夫宝贝》海报", en: "KUNG FU KIDS poster" },
-  },
 ];
 
 const t = (v: L, l: Locale) => v[l];

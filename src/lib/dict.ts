@@ -40,6 +40,7 @@ export type Dict = {
     stats: { value: string; label: string }[];
     /** 履历时间线标题 */
     recordHeading: string; recordSub: string;
+    journeyHeading: string; journeySub: string;
   };
   media: { heading: string; sub: string };
   cta: {
@@ -57,6 +58,8 @@ export type Dict = {
     address: string[];
     colEvent: string; colJoin: string; colAbout: string; colContact: string;
     phoneLabel: string; phone: string;
+    emailLabel: string; email: string;
+    socialLabel: string; instagram: string;
     linkPrivacy: string; linkTerms: string;
     linkEvents: string; linkRankings: string; linkSaga: string;
     linkTickets: string; linkApply: string; linkFounder: string; linkMedia: string;
@@ -133,9 +136,10 @@ const zh: Dict = {
     stats: [
       { value: "6", label: "岁起习武 SINCE AGE 6" },
       { value: "62", label: "国角逐夺双金 NATIONS, 2004" },
-      { value: "9", label: "家北京武馆 SCHOOLS" },
+      { value: "1", label: "世界首部功夫音乐剧 2006" },
     ],
     recordHeading: "履历", recordSub: "THE RECORD",
+    journeyHeading: "江湖印记", journeySub: "THE JOURNEY",
   },
   media: { heading: "集锦", sub: "HIGHLIGHTS" },
   cta: {
@@ -158,6 +162,8 @@ const zh: Dict = {
     address: ["KENT, WASHINGTON", "United States"],
     colEvent: "赛事", colJoin: "参与", colAbout: "关于", colContact: "联系",
     phoneLabel: "电话", phone: "+1 (425) 998-3898",
+    emailLabel: "邮箱", email: "Rainbowchen@gmail.com",
+    socialLabel: "Instagram", instagram: "Rainbowchen",
     linkPrivacy: "隐私政策", linkTerms: "服务条款",
     linkEvents: "赛程", linkRankings: "天下英雄榜", linkSaga: "五届之路",
     linkTickets: "购票", linkApply: "武者报名", linkFounder: "创始人", linkMedia: "集锦",
@@ -172,7 +178,7 @@ const zh: Dict = {
     qty: "数量 QTY", total: "合计 TOTAL", checkout: "确认购买 CHECKOUT",
     doneTitle: "出票成功", doneBody: "电子票已发送至你的账户 · 现场凭码入场",
     ring: "擂台", ringSub: "THE RING",
-    legend: ["主席台 ¥8888", "内场 A ¥1888", "看台 B ¥888", "看台 C ¥488"],
+    legend: ["主席台 $8,888", "内场 A $1,888", "看台 B $888", "看台 C $488"],
     notes: [
       "主席台含贵宾通道、赛后见面会资格",
       "内场 A 为擂台四周首排至五排",
@@ -242,9 +248,10 @@ const en: Dict = {
     stats: [
       { value: "6", label: "TRAINING FROM AGE SIX" },
       { value: "62", label: "NATIONS · DOUBLE GOLD 2004" },
-      { value: "9", label: "SCHOOLS IN BEIJING" },
+      { value: "1", label: "WORLD'S FIRST KUNG FU MUSICAL" },
     ],
-    recordHeading: "THE RECORD", recordSub: "1970 — 2015",
+    recordHeading: "THE RECORD", recordSub: "1970 — 2006",
+    journeyHeading: "THE JOURNEY", journeySub: "IN PICTURES",
   },
   media: { heading: "HIGHLIGHTS", sub: "EDITION I" },
   cta: {
@@ -264,6 +271,8 @@ const en: Dict = {
     address: ["KENT, WASHINGTON", "United States"],
     colEvent: "THE EVENT", colJoin: "TAKE PART", colAbout: "ABOUT", colContact: "CONTACT",
     phoneLabel: "PHONE", phone: "+1 (425) 998-3898",
+    emailLabel: "EMAIL", email: "Rainbowchen@gmail.com",
+    socialLabel: "INSTAGRAM", instagram: "Rainbowchen",
     linkPrivacy: "Privacy Policy", linkTerms: "Terms of Service",
     linkEvents: "Schedule", linkRankings: "World Rankings", linkSaga: "The Five-Edition Saga",
     linkTickets: "Tickets", linkApply: "Fighter Tryouts", linkFounder: "The Founder", linkMedia: "Highlights",
@@ -278,7 +287,7 @@ const en: Dict = {
     qty: "QTY", total: "TOTAL", checkout: "CHECKOUT",
     doneTitle: "CONFIRMED", doneBody: "E-tickets sent to your account · scan at the gate",
     ring: null, ringSub: "THE RING",
-    legend: ["Chairman's Box ¥8888", "Floor A ¥1888", "Stand B ¥888", "Stand C ¥488"],
+    legend: ["Chairman's Box $8,888", "Floor A $1,888", "Stand B $888", "Stand C $488"],
     notes: [
       "Chairman's Box includes VIP entrance and post-event meet & greet",
       "Floor A covers rows 1–5 around the ring",

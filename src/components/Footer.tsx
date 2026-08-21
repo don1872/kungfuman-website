@@ -9,8 +9,7 @@ import { LogoFull } from "./Logo";
  * 法人信息取自华盛顿州公司注册文件：KUNG FU MAN CORP.，营利法人，
  * 注册地 12614 SE 208TH PL, Kent, WA 98031-2296。
  *
- * 电话取自本人提供。邮箱与社交账号目前仍无可用信息，编造联系方式比留空更糟，
- * 待提供后补入品牌列。
+ * 联系方式（电话、邮箱、Instagram）均取自本人提供，未作补充。
  *
  * 隐私政策与服务条款为模板文本，见 src/lib/legal.ts 顶部的待办清单——
  * 正式收集个人信息前须经律师审定。
@@ -68,15 +67,43 @@ export function Footer({ locale }: { locale: Locale }) {
             <div className="mt-4 font-latin text-[10px] tracking-[3px] text-gold">
               {f.colContact}
             </div>
-            <div className="mt-1.5 text-xs text-rice-dim">
-              {f.phoneLabel}{" "}
-              <a
-                href={`tel:${f.phone.replace(/[^\d+]/g, "")}`}
-                className="font-latin tracking-[1px] text-rice transition-colors hover:text-flame"
-              >
-                {f.phone}
-              </a>
-            </div>
+            <dl className="mt-1.5 space-y-1.5 text-xs text-rice-dim">
+              <div className="flex flex-wrap gap-x-2">
+                <dt>{f.phoneLabel}</dt>
+                <dd>
+                  <a
+                    href={`tel:${f.phone.replace(/[^\d+]/g, "")}`}
+                    className="font-latin tracking-[1px] text-rice transition-colors hover:text-flame"
+                  >
+                    {f.phone}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex flex-wrap gap-x-2">
+                <dt>{f.emailLabel}</dt>
+                <dd>
+                  <a
+                    href={`mailto:${f.email}`}
+                    className="font-latin tracking-[.5px] break-all text-rice transition-colors hover:text-flame"
+                  >
+                    {f.email}
+                  </a>
+                </dd>
+              </div>
+              <div className="flex flex-wrap gap-x-2">
+                <dt>{f.socialLabel}</dt>
+                <dd>
+                  <a
+                    href={`https://instagram.com/${f.instagram}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-latin tracking-[.5px] text-rice transition-colors hover:text-flame"
+                  >
+                    @{f.instagram}
+                  </a>
+                </dd>
+              </div>
+            </dl>
           </div>
 
           {/* 站内导航三列 */}

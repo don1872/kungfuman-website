@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { journeyPhotos } from "@/lib/data";
 import { getDict } from "@/lib/dict";
 import type { Locale } from "@/lib/locales";
 import { SectionHeading } from "./SectionHeading";
@@ -70,6 +71,29 @@ export function Founder({ locale }: { locale: Locale }) {
         <div className="mt-[72px]">
           <SectionHeading heading={d.recordHeading} sub={d.recordSub} locale={locale} />
           <Timeline locale={locale} />
+        </div>
+
+        {/* 江湖印记：纯影像墙。照片为本人真实素材，
+            原设计稿为每张配的说明是杜撰的，已移除，只留图。 */}
+        <div className="mt-[72px]">
+          <SectionHeading heading={d.journeyHeading} sub={d.journeySub} locale={locale} />
+          <div className="gold-grid mt-8 auto-rows-[130px] grid-cols-2 md:auto-rows-[190px] md:grid-cols-4">
+            {journeyPhotos.map((j) => (
+              <div
+                key={j.src}
+                className="group relative overflow-hidden bg-ink-card"
+                style={{ gridColumn: `span ${j.span}` }}
+              >
+                <Image
+                  src={j.src}
+                  alt=""
+                  fill
+                  sizes={j.span === 2 ? "(max-width: 780px) 100vw, 620px" : "(max-width: 780px) 50vw, 310px"}
+                  className="object-cover transition-transform duration-500 [filter:saturate(1.12)_contrast(1.08)] group-hover:scale-105"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

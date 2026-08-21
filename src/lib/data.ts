@@ -18,7 +18,6 @@ export type Fighter = {
 };
 export type Edition = { year: string; char: string; name: string; en: string; motto: string; live: boolean };
 export type MediaItem = { char: string; title: string; meta: string; src: string };
-export type JourneyItem = { src: string; tag: string; cap: string; span: 1 | 2 };
 export type Session = { date: string; title: string; venue: string; priceFrom: string; isFinal: boolean };
 export type Tier = "p" | "a" | "b" | "c";
 export type SeatSection = { id: string; label: string; tier: Tier; x: number; y: number; w: number; h: number; rot: number };
@@ -177,24 +176,26 @@ const MEDIA: (Omit<MediaItem, "title" | "meta" | "char"> & { char: L; title: L; 
 export const getMedia = (l: Locale): MediaItem[] =>
   MEDIA.map((m) => ({ ...m, char: t(m.char, l), title: t(m.title, l), meta: t(m.meta, l) }));
 
-/* ──────────── 江湖印记（创始人真实照片，可用于上线） ──────────── */
+/* ──────────── 江湖印记（创始人真实照片，可用于上线） ────────────
+ * 照片本身是本人提供的真实素材。原设计稿给每张配了说明文字
+ *（「片场论武」「海外传艺 · 少年武学班」等），但那些是设计师杜撰的，
+ * 未经核实，已全部移除——只保留图片，作为纯视觉的影像墙。
+ * 若日后拿到准确说明，可为每张补回 caption。
+ * ------------------------------------------------------------ */
 
-const JOURNEY: (Omit<JourneyItem, "cap"> & { cap: L })[] = [
-  { src: "/assets/founder_141_onset_wide.jpg",     tag: "ON SET",    span: 2, cap: { zh: "片场论武",              en: "Talking kung fu on set" } },
-  { src: "/assets/founder_132.jpg",                tag: "CINEMA",    span: 1, cap: { zh: "与电影人切磋交流",      en: "Trading moves with filmmakers" } },
-  { src: "/assets/founder_139_onimusha_crew.jpg",  tag: "2002",      span: 1, cap: { zh: "《鬼武者》CG电影剧组",  en: "Onimusha CG film crew" } },
-  { src: "/assets/founder_135_kids_class.jpg",     tag: "LEGACY",    span: 1, cap: { zh: "海外传艺 · 少年武学班", en: "Teaching abroad · youth class" } },
-  { src: "/assets/founder_136_chilife_studio.jpg", tag: "SINGAPORE", span: 1, cap: { zh: "创办 Ch'i Life Studio", en: "Founding Ch'i Life Studio" } },
-  { src: "/assets/founder_142_with_master.jpg",    tag: "MASTERS",   span: 1, cap: { zh: "与前辈宗师",            en: "With the old masters" } },
-  { src: "/assets/founder_138.jpg",                tag: "DIPLOMACY", span: 1, cap: { zh: "武术文化外交",          en: "Wushu cultural diplomacy" } },
-  { src: "/assets/founder_140_beach_taichi.jpg",   tag: "PRACTICE",  span: 1, cap: { zh: "海上晨功",              en: "Morning practice by the sea" } },
-  { src: "/assets/founder_131.jpg",                tag: "ENVOY",     span: 1, cap: { zh: "受邀国事文化活动",      en: "Invited to a state cultural event" } },
-  { src: "/assets/founder_146_lantern_gym.jpg",    tag: "OVERSEAS",  span: 1, cap: { zh: "北美武馆交流",          en: "Exchange at a North American school" } },
-  { src: "/assets/founder_145_cage.jpg",           tag: "THE CAGE",  span: 1, cap: { zh: "现代擂台 · 筹建赛事",   en: "The modern ring · building the league" } },
+export const journeyPhotos: { src: string; span: 1 | 2 }[] = [
+  { src: "/assets/founder_141_onset_wide.jpg",     span: 2 },
+  { src: "/assets/founder_132.jpg",                span: 1 },
+  { src: "/assets/founder_139_onimusha_crew.jpg",  span: 1 },
+  { src: "/assets/founder_135_kids_class.jpg",     span: 1 },
+  { src: "/assets/founder_136_chilife_studio.jpg", span: 1 },
+  { src: "/assets/founder_142_with_master.jpg",    span: 1 },
+  { src: "/assets/founder_138.jpg",                span: 1 },
+  { src: "/assets/founder_140_beach_taichi.jpg",   span: 1 },
+  { src: "/assets/founder_131.jpg",                span: 1 },
+  { src: "/assets/founder_146_lantern_gym.jpg",    span: 1 },
+  { src: "/assets/founder_145_cage.jpg",           span: 1 },
 ];
-
-export const getJourney = (l: Locale): JourneyItem[] =>
-  JOURNEY.map((j) => ({ ...j, cap: t(j.cap, l) }));
 
 export const photos = {
   heroCage:        "/assets/founder_145_cage.jpg",
@@ -207,19 +208,19 @@ export const photos = {
 /* ────────────────────────── 购票：13 场次 ────────────────────────── */
 
 const SESSIONS: (Omit<Session, "title" | "venue"> & { title: L; venue: L })[] = [
-  { date: "01.24", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 西安站",   en: "THE QUEST · XI'AN" },     venue: { zh: "中国西安 · 奥体中心",       en: "Olympic Sports Centre, Xi'an" } },
-  { date: "02.21", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 曼谷站",   en: "THE QUEST · BANGKOK" },   venue: { zh: "泰国曼谷 · Impact Arena",   en: "Impact Arena, Bangkok" } },
-  { date: "03.21", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 新加坡站", en: "THE QUEST · SINGAPORE" }, venue: { zh: "新加坡 · 室内体育馆",       en: "Singapore Indoor Stadium" } },
-  { date: "04.18", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 东京站",   en: "THE QUEST · TOKYO" },     venue: { zh: "日本东京 · 有明体育馆",     en: "Ariake Arena, Tokyo" } },
-  { date: "05.23", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 悉尼站",   en: "THE QUEST · SYDNEY" },    venue: { zh: "澳大利亚悉尼 · Qudos Bank Arena", en: "Qudos Bank Arena, Sydney" } },
-  { date: "06.20", priceFrom: "¥588", isFinal: false, title: { zh: "问鼎 · 迪拜站",   en: "THE QUEST · DUBAI" },     venue: { zh: "阿联酋迪拜 · Coca-Cola Arena", en: "Coca-Cola Arena, Dubai" } },
-  { date: "07.25", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 伦敦站",   en: "THE QUEST · LONDON" },    venue: { zh: "英国伦敦 · O2 Arena",       en: "The O2 Arena, London" } },
-  { date: "08.22", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 巴黎站",   en: "THE QUEST · PARIS" },     venue: { zh: "法国巴黎 · Accor Arena",    en: "Accor Arena, Paris" } },
-  { date: "09.19", priceFrom: "¥588", isFinal: false, title: { zh: "问鼎 · 纽约站",   en: "THE QUEST · NEW YORK" },  venue: { zh: "美国纽约 · 麦迪逊广场花园", en: "Madison Square Garden, New York" } },
-  { date: "10.24", priceFrom: "¥588", isFinal: false, title: { zh: "问鼎 · 拉斯维加斯站", en: "THE QUEST · LAS VEGAS" }, venue: { zh: "美国拉斯维加斯 · T-Mobile Arena", en: "T-Mobile Arena, Las Vegas" } },
-  { date: "11.21", priceFrom: "¥388", isFinal: false, title: { zh: "问鼎 · 圣保罗站", en: "THE QUEST · SÃO PAULO" }, venue: { zh: "巴西圣保罗 · Ginásio Ibirapuera", en: "Ginásio Ibirapuera, São Paulo" } },
-  { date: "12.05", priceFrom: "¥488", isFinal: false, title: { zh: "问鼎 · 香港站",   en: "THE QUEST · HONG KONG" }, venue: { zh: "中国香港 · 红磡体育馆",     en: "Hung Hom Coliseum, Hong Kong" } },
-  { date: "12.30", priceFrom: "¥888", isFinal: true,  title: { zh: "年终总决赛 · 问鼎之夜", en: "GRAND FINAL · NIGHT OF THE QUEST" }, venue: { zh: "中国澳门 · 威尼斯人金光综艺馆", en: "Venetian Cotai Arena, Macau" } },
+  { date: "01.24", priceFrom: "$488", isFinal: false, title: { zh: "问鼎 · 西安站",   en: "THE QUEST · XI'AN" },     venue: { zh: "中国西安 · 奥体中心",       en: "Olympic Sports Centre, Xi'an" } },
+  { date: "02.21", priceFrom: "$388", isFinal: false, title: { zh: "问鼎 · 曼谷站",   en: "THE QUEST · BANGKOK" },   venue: { zh: "泰国曼谷 · Impact Arena",   en: "Impact Arena, Bangkok" } },
+  { date: "03.21", priceFrom: "$388", isFinal: false, title: { zh: "问鼎 · 新加坡站", en: "THE QUEST · SINGAPORE" }, venue: { zh: "新加坡 · 室内体育馆",       en: "Singapore Indoor Stadium" } },
+  { date: "04.18", priceFrom: "$488", isFinal: false, title: { zh: "问鼎 · 东京站",   en: "THE QUEST · TOKYO" },     venue: { zh: "日本东京 · 有明体育馆",     en: "Ariake Arena, Tokyo" } },
+  { date: "05.23", priceFrom: "$388", isFinal: false, title: { zh: "问鼎 · 悉尼站",   en: "THE QUEST · SYDNEY" },    venue: { zh: "澳大利亚悉尼 · Qudos Bank Arena", en: "Qudos Bank Arena, Sydney" } },
+  { date: "06.20", priceFrom: "$588", isFinal: false, title: { zh: "问鼎 · 迪拜站",   en: "THE QUEST · DUBAI" },     venue: { zh: "阿联酋迪拜 · Coca-Cola Arena", en: "Coca-Cola Arena, Dubai" } },
+  { date: "07.25", priceFrom: "$488", isFinal: false, title: { zh: "问鼎 · 伦敦站",   en: "THE QUEST · LONDON" },    venue: { zh: "英国伦敦 · O2 Arena",       en: "The O2 Arena, London" } },
+  { date: "08.22", priceFrom: "$488", isFinal: false, title: { zh: "问鼎 · 巴黎站",   en: "THE QUEST · PARIS" },     venue: { zh: "法国巴黎 · Accor Arena",    en: "Accor Arena, Paris" } },
+  { date: "09.19", priceFrom: "$588", isFinal: false, title: { zh: "问鼎 · 纽约站",   en: "THE QUEST · NEW YORK" },  venue: { zh: "美国纽约 · 麦迪逊广场花园", en: "Madison Square Garden, New York" } },
+  { date: "10.24", priceFrom: "$588", isFinal: false, title: { zh: "问鼎 · 拉斯维加斯站", en: "THE QUEST · LAS VEGAS" }, venue: { zh: "美国拉斯维加斯 · T-Mobile Arena", en: "T-Mobile Arena, Las Vegas" } },
+  { date: "11.21", priceFrom: "$388", isFinal: false, title: { zh: "问鼎 · 圣保罗站", en: "THE QUEST · SÃO PAULO" }, venue: { zh: "巴西圣保罗 · Ginásio Ibirapuera", en: "Ginásio Ibirapuera, São Paulo" } },
+  { date: "12.05", priceFrom: "$488", isFinal: false, title: { zh: "问鼎 · 香港站",   en: "THE QUEST · HONG KONG" }, venue: { zh: "中国香港 · 红磡体育馆",     en: "Hung Hom Coliseum, Hong Kong" } },
+  { date: "12.30", priceFrom: "$888", isFinal: true,  title: { zh: "年终总决赛 · 问鼎之夜", en: "GRAND FINAL · NIGHT OF THE QUEST" }, venue: { zh: "中国澳门 · 威尼斯人金光综艺馆", en: "Venetian Cotai Arena, Macau" } },
 ];
 
 export const getSessions = (l: Locale): Session[] =>
@@ -230,6 +231,7 @@ export const getSessions = (l: Locale): Session[] =>
  * 每块再 rotate(a) 使其朝向圆心。半径：A 环 26 / B 环 37.5 / C 环 46。
  * -------------------------------------------------------- */
 
+/** 票价（美元）。⚠️ 仍为演示数据，正式售票前须按实际定价调整 */
 export const TIER_PRICES: Record<Tier, number> = { p: 8888, a: 1888, b: 888, c: 488 };
 
 function ring(

@@ -103,7 +103,7 @@ export function TicketOverlay({ locale, onClose }: { locale: Locale; onClose: ()
                     <button
                       key={s.id}
                       onClick={() => { setSeat(s); setDone(false); }}
-                      aria-label={`${seatLabel(s, locale)} ¥${TIER_PRICES[s.tier]}`}
+                      aria-label={`${seatLabel(s, locale)} $${TIER_PRICES[s.tier]}`}
                       aria-pressed={selected}
                       className="absolute flex cursor-pointer items-center justify-center border font-latin text-[10px] tracking-[1px] whitespace-nowrap transition-[filter] hover:brightness-140"
                       style={{
@@ -153,7 +153,7 @@ export function TicketOverlay({ locale, onClose }: { locale: Locale; onClose: ()
                 <>
                   <div className="flex items-baseline justify-between gap-3 border-b border-gold/20 pb-[14px]">
                     <div className="font-serif-sc text-2xl font-black text-white">{seatLabel(seat, locale)}</div>
-                    <div className="font-latin text-[22px] font-bold text-flame">¥{price}</div>
+                    <div className="font-latin text-[22px] font-bold text-flame">${price.toLocaleString("en-US")}</div>
                   </div>
 
                   <div className="my-5 flex items-center justify-between">
@@ -177,7 +177,7 @@ export function TicketOverlay({ locale, onClose }: { locale: Locale; onClose: ()
 
                   <div className="mb-[22px] flex items-baseline justify-between">
                     <span className="text-sm text-rice-dim">{tk.total}</span>
-                    <span className="font-latin text-[30px] font-bold text-gold">¥{total.toLocaleString()}</span>
+                    <span className="font-latin text-[30px] font-bold text-gold">${total.toLocaleString("en-US")}</span>
                   </div>
 
                   {!done ? (
