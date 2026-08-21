@@ -149,8 +149,11 @@ const zh: Dict = {
     tagline: "第一届 · 问鼎 · 谁主沉浮",
     entity: "KUNG FU MAN CORP.",
     entityNote: "美国华盛顿州注册营利法人",
-    addressLabel: "注册地址",
-    address: ["12614 SE 208TH PL", "KENT, WA 98031-2296", "United States"],
+    addressLabel: "注册地",
+    // 只到城市与州。完整注册地址为 12614 SE 208TH PL, KENT, WA 98031-2296，
+    // 属公开工商信息，但该路名位于肯特市住宅区，多半是自住地址，
+    // 公开门牌号会招致不必要的到访与邮件，且展示型官网并不需要它。
+    address: ["KENT, WASHINGTON", "United States"],
     colEvent: "赛事", colJoin: "参与", colAbout: "关于",
     linkEvents: "赛程", linkRankings: "天下英雄榜", linkSaga: "五届之路",
     linkTickets: "购票", linkApply: "武者报名", linkFounder: "创始人", linkMedia: "集锦",
@@ -253,8 +256,8 @@ const en: Dict = {
     tagline: "EDITION I · THE QUEST · WHO RULES THE WORLD",
     entity: "KUNG FU MAN CORP.",
     entityNote: "A profit corporation registered in the State of Washington, USA",
-    addressLabel: "REGISTERED OFFICE",
-    address: ["12614 SE 208TH PL", "KENT, WA 98031-2296", "United States"],
+    addressLabel: "REGISTERED IN",
+    address: ["KENT, WASHINGTON", "United States"],
     colEvent: "THE EVENT", colJoin: "TAKE PART", colAbout: "ABOUT",
     linkEvents: "Schedule", linkRankings: "World Rankings", linkSaga: "The Five-Edition Saga",
     linkTickets: "Tickets", linkApply: "Fighter Tryouts", linkFounder: "The Founder", linkMedia: "Highlights",
