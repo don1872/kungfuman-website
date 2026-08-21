@@ -43,15 +43,21 @@ export function Parallax({
       />
       <div className="absolute inset-0" style={{ background: gradient }} />
       <div
-        className={`relative z-2 mx-auto flex h-full max-w-[1240px] flex-col justify-center px-5 md:px-11 ${
+        className={`relative z-2 mx-auto flex h-full max-w-[1240px] flex-col justify-center px-4 md:px-11 ${
           align === "right" ? "items-end text-right" : ""
         }`}
       >
         <div className="mb-4 font-latin text-xs tracking-[5px] text-gold">{eyebrow}</div>
-        <div className={`max-w-[720px] text-white [text-shadow:0_4px_30px_rgba(0,0,0,.7)] ${
+        {/*
+          英文金句每行必须完整成行。最长一行「The next generation of kung fu,」在
+          Noto Serif SC 下约需 15.7 × 字号 的宽度，据此把容器放宽到 860px、
+          字号下限降到 20px（360px 窄屏的临界值），并让 vw 系数陡一些以补足中间区段。
+          中文书法金句字数短，沿用 720px。
+        */}
+        <div className={`text-white [text-shadow:0_4px_30px_rgba(0,0,0,.7)] ${
             font === "brush"
-              ? "font-brush text-[clamp(34px,4.4vw,60px)] leading-[1.5]"
-              : "font-serif-sc text-[clamp(30px,3.6vw,50px)] leading-[1.45] font-normal tracking-[.5px]"
+              ? "max-w-[720px] font-brush text-[clamp(34px,4.4vw,60px)] leading-[1.5]"
+              : "max-w-[860px] font-serif-sc text-[clamp(20px,4.5vw,50px)] leading-[1.45] font-normal tracking-[.5px]"
           }`}>
           {children}
         </div>
