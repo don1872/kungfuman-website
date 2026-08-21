@@ -184,9 +184,11 @@ export const getMedia = (l: Locale): MediaItem[] =>
  * ------------------------------------------------------------ */
 
 export const journeyPhotos: { src: string; span: 1 | 2 }[] = [
-  { src: "/assets/founder_141_onset_wide.jpg",     span: 2 },
-  { src: "/assets/founder_132.jpg",                span: 1 },
-  { src: "/assets/founder_139_onimusha_crew.jpg",  span: 1 },
+  // 两张跨两列的大图并排。10 张图若只有一张跨两列共 11 格，
+  // 4 列网格会在右下角空出一格；两张跨两列正好 12 格，三行填满。
+  // 主图：2004 年《功夫》上映活动现场，背景横幅可见「周星驰」
+  { src: "/assets/founder_132.jpg",                span: 2 },
+  { src: "/assets/founder_139_onimusha_crew.jpg",  span: 2 },
   { src: "/assets/founder_135_kids_class.jpg",     span: 1 },
   { src: "/assets/founder_136_chilife_studio.jpg", span: 1 },
   { src: "/assets/founder_142_with_master.jpg",    span: 1 },
