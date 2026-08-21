@@ -12,21 +12,20 @@ import type { Locale } from "@/lib/locales";
  */
 
 /**
- * 圆形徽章 —— 替代原先手做的「功」方章。
- * 裁切 (12,6,453,262)：包含完整金环与人物四肢，底边切在 y=275 的
- * KUNGFUMAN 字母带之上。此前裁在 (50,0,412,292)，圆环右侧与上沿被切掉，
- * 视觉上整个徽章偏向左下。
+ * 品牌徽章。
  *
- * 文件名带 -v2：Next 给 /_next/image 下发长效不可变缓存，键是 URL。
- * 原地覆盖同名文件的话，回访用户会继续拿到旧图。换素材必须换文件名。
+ * 用完整锁定图，不做裁切。原图是竖式构图——徽章在上、KUNGFUMAN 字样在下，
+ * 而人物的腿本来就伸进文字带，所以任何「只裁圆形徽章」的做法都会把人物拦腰切断。
+ * 改为整图缩放：小尺寸下内部小字不可辨，但那由旁边的 live 文字承担；
+ * 徽章本身保持完整，不出现残肢。
  */
-export function Mark({ className = "h-11" }: { className?: string }) {
+export function Mark({ className = "h-12" }: { className?: string }) {
   return (
     <Image
-      src="/assets/logo-mark-v2.jpg"
+      src="/assets/logo.jpg"
       alt="KUNGFUMAN"
-      width={441}
-      height={256}
+      width={460}
+      height={450}
       priority
       // 高度只用 class 控制。内联 style 优先级高于 md: 断点类，
       // 写成 style={{height}} 会让响应式尺寸失效。
@@ -35,7 +34,7 @@ export function Mark({ className = "h-11" }: { className?: string }) {
   );
 }
 
-/** 完整锁定 —— 页脚等有空间的位置 */
+/** 完整锁定，大尺寸用（页脚） */
 export function LogoFull({ size = 140 }: { size?: number }) {
   return (
     <Image
@@ -91,7 +90,7 @@ export function Seal({
 export function Wordmark({ locale }: { locale: Locale }) {
   return (
     <div className="flex items-center gap-3">
-      <Mark className="h-11 md:h-[52px]" />
+      <Mark className="h-12 md:h-[60px]" />
       <div className="hidden md:block">
         <div className="font-latin text-xl leading-none font-bold tracking-[4px] text-white [text-shadow:0_1px_8px_rgba(0,0,0,.6)]">
           KUNGFUMAN

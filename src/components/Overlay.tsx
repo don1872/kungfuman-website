@@ -45,7 +45,7 @@ export function Overlay({
       <div className="mx-auto px-[18px] pt-[22px] pb-14 md:px-11 md:pt-[30px] md:pb-[70px]" style={{ maxWidth }}>
         <div className="mb-[30px] flex items-center justify-between gap-4">
           <div className="flex items-center gap-[14px]">
-            {brandMark ? <Mark className="h-11" /> : <Seal size={38} char={seal} variant={sealVariant} />}
+            {brandMark ? <Mark className="h-12" /> : <Seal size={38} char={seal} variant={sealVariant} />}
             <div className="font-latin text-lg font-bold tracking-[3px] text-white">{title}</div>
           </div>
           <button
