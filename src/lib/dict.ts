@@ -33,7 +33,7 @@ export type Dict = {
   editions: { heading: string; sub: string; intro: string; now: string };
   founder: {
     heading: string; sub: string;
-    name: string; title: string;
+    name: string; alias: string; title: string;
     bio1: string; bio2: string;
     portraitCaption: string;
     /** 三格数据：大字 + 说明。数值与说明都随语言 */
@@ -55,7 +55,9 @@ export type Dict = {
     addressLabel: string;
     /** 注册地址逐行 */
     address: string[];
-    colEvent: string; colJoin: string; colAbout: string;
+    colEvent: string; colJoin: string; colAbout: string; colContact: string;
+    phoneLabel: string; phone: string;
+    linkPrivacy: string; linkTerms: string;
     linkEvents: string; linkRankings: string; linkSaga: string;
     linkTickets: string; linkApply: string; linkFounder: string; linkMedia: string;
     rights: string;
@@ -123,7 +125,7 @@ const zh: Dict = {
   },
   founder: {
     heading: "创始人", sub: "THE FOUNDER",
-    name: "陈庆彪",
+    name: "陈庆彪", alias: "Rainbow",
     title: "功夫教练 · 武术指导 · 编导",
     bio1: "1970 年生于山东武术世家，六岁起随祖父与父亲习武，兼修武术、散打与太极。毕业于安徽宿州体育学院、新加坡中华总商会管理学院。",
     bio2: "1992 年在近千名参赛者中脱颖而出签约新加坡电视台，此后横跨银幕与擂台：为《陆小凤》《笑傲江湖》担任武术指导，与郭富城、甄子丹、袁咏仪等合作拍摄；2004 年在 62 国角逐的世界首届传统武术节夺得双金，同年再获美国西雅图国际功夫大赛自由搏击冠军。2006 年自编自导自演世界首部功夫音乐剧《黄飞鸿》。",
@@ -154,7 +156,9 @@ const zh: Dict = {
     // 属公开工商信息，但该路名位于肯特市住宅区，多半是自住地址，
     // 公开门牌号会招致不必要的到访与邮件，且展示型官网并不需要它。
     address: ["KENT, WASHINGTON", "United States"],
-    colEvent: "赛事", colJoin: "参与", colAbout: "关于",
+    colEvent: "赛事", colJoin: "参与", colAbout: "关于", colContact: "联系",
+    phoneLabel: "电话", phone: "+1 (425) 998-3898",
+    linkPrivacy: "隐私政策", linkTerms: "服务条款",
     linkEvents: "赛程", linkRankings: "天下英雄榜", linkSaga: "五届之路",
     linkTickets: "购票", linkApply: "武者报名", linkFounder: "创始人", linkMedia: "集锦",
     rights: "保留所有权利",
@@ -230,7 +234,7 @@ const en: Dict = {
   },
   founder: {
     heading: "THE FOUNDER", sub: "CHEN QINGBIAO",
-    name: "Chen Qingbiao",
+    name: "Chen Qingbiao", alias: "Rainbow",
     title: "KUNG FU COACH · FIGHT CHOREOGRAPHER · DIRECTOR",
     bio1: "Born in 1970 into a martial arts family in Shandong, he began training with his grandfather and father at the age of six, studying wushu, sanda and tai chi. He graduated from the Suzhou Institute of Physical Education in Anhui and the SCCCI Institute of Business in Singapore.",
     bio2: "In 1992 he was handpicked from nearly a thousand entrants and signed with MediaCorp Singapore. The two decades that followed ran on both sides of the craft — fight choreographer on television dramas, on-screen alongside Aaron Kwok, Donnie Yen and Anita Yuen — while he kept competing. In 2004 he took double gold at the First World Traditional Wushu Festival against entrants from 62 countries, and free-sparring gold at the US International Kung Fu Championship the same year. In 2006 he wrote, directed and starred in the world's first kung fu musical.",
@@ -258,7 +262,9 @@ const en: Dict = {
     entityNote: "A profit corporation registered in the State of Washington, USA",
     addressLabel: "REGISTERED IN",
     address: ["KENT, WASHINGTON", "United States"],
-    colEvent: "THE EVENT", colJoin: "TAKE PART", colAbout: "ABOUT",
+    colEvent: "THE EVENT", colJoin: "TAKE PART", colAbout: "ABOUT", colContact: "CONTACT",
+    phoneLabel: "PHONE", phone: "+1 (425) 998-3898",
+    linkPrivacy: "Privacy Policy", linkTerms: "Terms of Service",
     linkEvents: "Schedule", linkRankings: "World Rankings", linkSaga: "The Five-Edition Saga",
     linkTickets: "Tickets", linkApply: "Fighter Tryouts", linkFounder: "The Founder", linkMedia: "Highlights",
     rights: "All rights reserved",

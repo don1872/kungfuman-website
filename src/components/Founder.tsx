@@ -45,7 +45,7 @@ export function Founder({ locale }: { locale: Locale }) {
           <div>
             {/* 姓名保持汉字 */}
             <div className="font-serif-sc text-[40px] leading-[1.2] font-black text-white">
-              {d.name}
+              {d.name} <span className="text-base font-normal text-flame">「{d.alias}」</span>
             </div>
             <div className="my-2.5 mb-7 font-latin text-sm tracking-[4px] text-gold">{d.title}</div>
             {/* ⚠️ 以下两段为占位虚构文案，上线前须以真实履历核定（见 README） */}

@@ -9,9 +9,11 @@ import { LogoFull } from "./Logo";
  * 法人信息取自华盛顿州公司注册文件：KUNG FU MAN CORP.，营利法人，
  * 注册地 12614 SE 208TH PL, Kent, WA 98031-2296。
  *
- * 有意不放的：邮箱、电话、社交账号、隐私政策与服务条款。
- * 前三项目前没有可用信息，编造联系方式比留空更糟；后两项对应的页面尚未建立，
- * 链到不存在的页面同样不可取。待信息齐备后再补。
+ * 电话取自本人提供。邮箱与社交账号目前仍无可用信息，编造联系方式比留空更糟，
+ * 待提供后补入品牌列。
+ *
+ * 隐私政策与服务条款为模板文本，见 src/lib/legal.ts 顶部的待办清单——
+ * 正式收集个人信息前须经律师审定。
  */
 export function Footer({ locale }: { locale: Locale }) {
   const d = getDict(locale);
@@ -62,6 +64,19 @@ export function Footer({ locale }: { locale: Locale }) {
                 <div key={line}>{line}</div>
               ))}
             </address>
+
+            <div className="mt-4 font-latin text-[10px] tracking-[3px] text-gold">
+              {f.colContact}
+            </div>
+            <div className="mt-1.5 text-xs text-rice-dim">
+              {f.phoneLabel}{" "}
+              <a
+                href={`tel:${f.phone.replace(/[^\d+]/g, "")}`}
+                className="font-latin tracking-[1px] text-rice transition-colors hover:text-flame"
+              >
+                {f.phone}
+              </a>
+            </div>
           </div>
 
           {/* 站内导航三列 */}
@@ -88,8 +103,19 @@ export function Footer({ locale }: { locale: Locale }) {
       {/* 版权条 */}
       <div className="border-t border-gold/15">
         <div className="mx-auto flex max-w-[1240px] flex-col gap-3 px-5 py-5 md:flex-row md:items-center md:justify-between md:px-11">
-          <div className="font-latin text-[11px] tracking-[2px] text-rice-dim/70">
-            © 2026 {f.entity} · {f.rights}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
+            <span className="font-latin text-[11px] tracking-[2px] text-rice-dim/70">
+              © 2026 {f.entity} · {f.rights}
+            </span>
+            <span className="flex items-center gap-3 text-[11px] tracking-[1px]">
+              <Link href={`/${locale}/privacy`} className="text-rice-dim/80 transition-colors hover:text-flame">
+                {f.linkPrivacy}
+              </Link>
+              <span className="text-rice-dim/30">·</span>
+              <Link href={`/${locale}/terms`} className="text-rice-dim/80 transition-colors hover:text-flame">
+                {f.linkTerms}
+              </Link>
+            </span>
           </div>
           <div className="flex items-center gap-5">
             <span className="text-[11px] tracking-[2px] text-rice-dim/70">{f.tagline}</span>
