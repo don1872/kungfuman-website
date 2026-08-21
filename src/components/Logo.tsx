@@ -11,17 +11,26 @@ import type { Locale } from "@/lib/locales";
  * 因此给徽章加一道金色细边，做成有意为之的徽章框，与站内卡片、英雄帖的金线语言一致。
  */
 
-/** 圆形徽章 —— 替代原先手做的「功」方章 */
-export function Mark({ size = 44 }: { size?: number }) {
+/**
+ * 圆形徽章 —— 替代原先手做的「功」方章。
+ * 裁切 (12,6,453,262)：包含完整金环与人物四肢，底边切在 y=275 的
+ * KUNGFUMAN 字母带之上。此前裁在 (50,0,412,292)，圆环右侧与上沿被切掉，
+ * 视觉上整个徽章偏向左下。
+ *
+ * 文件名带 -v2：Next 给 /_next/image 下发长效不可变缓存，键是 URL。
+ * 原地覆盖同名文件的话，回访用户会继续拿到旧图。换素材必须换文件名。
+ */
+export function Mark({ className = "h-11" }: { className?: string }) {
   return (
     <Image
-      src="/assets/logo-mark.jpg"
+      src="/assets/logo-mark-v2.jpg"
       alt="KUNGFUMAN"
-      width={362}
-      height={292}
+      width={441}
+      height={256}
       priority
-      className="w-auto flex-none border border-gold/40"
-      style={{ height: size }}
+      // 高度只用 class 控制。内联 style 优先级高于 md: 断点类，
+      // 写成 style={{height}} 会让响应式尺寸失效。
+      className={`w-auto flex-none border border-gold/40 ${className}`}
     />
   );
 }
@@ -73,12 +82,17 @@ export function Seal({
   );
 }
 
-/** 品牌锁定：徽章 + KUNGFUMAN + 副行 */
+/**
+ * 品牌锁定：徽章 + KUNGFUMAN + 副行。
+ *
+ * 窄屏只留徽章：副标「功夫侠国际武术巅峰赛」在 390px 下会折行并压到
+ * 语言切换按钮上。徽章本身即品牌标识，放不下时不硬塞文字。
+ */
 export function Wordmark({ locale }: { locale: Locale }) {
   return (
     <div className="flex items-center gap-3">
-      <Mark size={52} />
-      <div>
+      <Mark className="h-11 md:h-[52px]" />
+      <div className="hidden md:block">
         <div className="font-latin text-xl leading-none font-bold tracking-[4px] text-white [text-shadow:0_1px_8px_rgba(0,0,0,.6)]">
           KUNGFUMAN
         </div>
