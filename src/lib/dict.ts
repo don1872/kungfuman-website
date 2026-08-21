@@ -47,7 +47,19 @@ export type Dict = {
     watchTitle: string; watchBody: string; watchBtn: string;
     applyTitle: string; applyBody: string; applyBtn: string;
   };
-  footer: { tagline: string };
+  footer: {
+    tagline: string;
+    /** 法人实体名，与华盛顿州注册文件一致 */
+    entity: string;
+    entityNote: string;
+    addressLabel: string;
+    /** 注册地址逐行 */
+    address: string[];
+    colEvent: string; colJoin: string; colAbout: string;
+    linkEvents: string; linkRankings: string; linkSaga: string;
+    linkTickets: string; linkApply: string; linkFounder: string; linkMedia: string;
+    rights: string;
+  };
   overlay: { close: string };
   ticket: {
     title: string; step1: string; step2: string;
@@ -133,7 +145,17 @@ const zh: Dict = {
     applyBody: "全球海选，套路、器械、对抗三条通道，英雄不问出处。",
     applyBtn: "报名参赛 APPLY",
   },
-  footer: { tagline: "功夫侠国际武术巅峰赛 · 第一届 问鼎 · 谁主沉浮" },
+  footer: {
+    tagline: "第一届 · 问鼎 · 谁主沉浮",
+    entity: "KUNG FU MAN CORP.",
+    entityNote: "美国华盛顿州注册营利法人",
+    addressLabel: "注册地址",
+    address: ["12614 SE 208TH PL", "KENT, WA 98031-2296", "United States"],
+    colEvent: "赛事", colJoin: "参与", colAbout: "关于",
+    linkEvents: "赛程", linkRankings: "天下英雄榜", linkSaga: "五届之路",
+    linkTickets: "购票", linkApply: "武者报名", linkFounder: "创始人", linkMedia: "集锦",
+    rights: "保留所有权利",
+  },
   overlay: { close: "关闭 CLOSE" },
   ticket: {
     title: "购票 TICKETS", step1: "① 选场次 SESSION", step2: "② 选座位 SEATS",
@@ -227,7 +249,17 @@ const en: Dict = {
     applyBody: "Global tryouts open to every school. Forms, weapons, full-contact — heroes rise from anywhere.",
     applyBtn: "APPLY",
   },
-  footer: { tagline: "KUNGFUMAN INTERNATIONAL WUSHU CHAMPIONSHIP · EDITION I" },
+  footer: {
+    tagline: "EDITION I · THE QUEST · WHO RULES THE WORLD",
+    entity: "KUNG FU MAN CORP.",
+    entityNote: "A profit corporation registered in the State of Washington, USA",
+    addressLabel: "REGISTERED OFFICE",
+    address: ["12614 SE 208TH PL", "KENT, WA 98031-2296", "United States"],
+    colEvent: "THE EVENT", colJoin: "TAKE PART", colAbout: "ABOUT",
+    linkEvents: "Schedule", linkRankings: "World Rankings", linkSaga: "The Five-Edition Saga",
+    linkTickets: "Tickets", linkApply: "Fighter Tryouts", linkFounder: "The Founder", linkMedia: "Highlights",
+    rights: "All rights reserved",
+  },
   overlay: { close: "CLOSE" },
   ticket: {
     title: "TICKETS", step1: "① SESSION", step2: "② SEATS",
