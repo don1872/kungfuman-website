@@ -15,6 +15,7 @@ import { Rankings } from "./Rankings";
 import { Editions } from "./Editions";
 import { Founder } from "./Founder";
 import { Media } from "./Media";
+import { Arena } from "./Arena";
 import { FinalCta } from "./FinalCta";
 import { Footer } from "./Footer";
 import { TicketOverlay } from "./TicketOverlay";
@@ -74,6 +75,9 @@ export function SiteShell({ locale }: { locale: Locale }) {
         <Editions locale={locale} />
         <Founder locale={locale} />
         <Media locale={locale} />
+
+        {/* 擂台现场置于集锦与购票之间：看过精彩片段 → 看见现场 → 买票 */}
+        <Arena locale={locale} onOpenTicket={() => setTicketOpen(true)} />
 
         <FinalCta
           locale={locale}

@@ -43,6 +43,14 @@ export type Dict = {
     journeyHeading: string; journeySub: string;
   };
   media: { heading: string; sub: string };
+  arena: {
+    eyebrow: string; heading: string; body: string;
+    /** 四个看点：小标题 + 一句说明 */
+    features: { title: string; note: string }[];
+    cta: string;
+    /** 效果图注明——这是设计渲染，不是现场照片 */
+    renderNote: string;
+  };
   cta: {
     brush: string; sub: string;
     watchTitle: string; watchBody: string; watchBtn: string;
@@ -142,6 +150,19 @@ const zh: Dict = {
     journeyHeading: "江湖印记", journeySub: "THE JOURNEY",
   },
   media: { heading: "集锦", sub: "HIGHLIGHTS" },
+  arena: {
+    eyebrow: "现场 · THE ARENA",
+    heading: "有些声音，屏幕传不过来",
+    body: "铜钟悬于场心，钟身刻满古纹，一击既出，声浪压过满场人声。太极圆台浮在环形水面上，水幕自台基倾泻而下。四周战鼓列阵，鼓点起落即是号令。四方「武」字幡垂落，看台环抱擂台——每一个座位，都正对着场心。",
+    features: [
+      { title: "铜钟", note: "一击开赛，声震全场" },
+      { title: "水上圆台", note: "太极为界，水幕为墙" },
+      { title: "鼓阵", note: "鼓点起落即是号令" },
+      { title: "环形看台", note: "每个座位都对着场心" },
+    ],
+    cta: "购票 · 选座",
+    renderNote: "场馆效果图",
+  },
   cta: {
     brush: "上擂台，见真章", sub: "YOUR MOMENT. YOUR LEGACY.",
     watchTitle: "现场观赛",
@@ -254,6 +275,19 @@ const en: Dict = {
     journeyHeading: "THE JOURNEY", journeySub: "IN PICTURES",
   },
   media: { heading: "HIGHLIGHTS", sub: "EDITION I" },
+  arena: {
+    eyebrow: "THE ARENA",
+    heading: "SOME SOUNDS DON'T TRAVEL THROUGH A SCREEN",
+    body: "A bronze bell hangs over the floor, carved end to end. One strike and the sound rolls straight over the crowd. The fighting platform floats on a ring of water, curtains falling from its base. War drums line the perimeter, and the beat is the call to fight. Banners drop from all four sides, and the stands wrap the floor so that every seat faces the centre.",
+    features: [
+      { title: "THE BELL", note: "One strike opens the fight" },
+      { title: "THE FLOATING RING", note: "Water for walls, taiji for the line" },
+      { title: "THE DRUMS", note: "The beat is the call" },
+      { title: "THE STANDS", note: "Every seat faces the centre" },
+    ],
+    cta: "GET TICKETS",
+    renderNote: "Arena design render",
+  },
   cta: {
     brush: "STEP INTO THE RING", sub: "YOUR MOMENT. YOUR LEGACY.",
     watchTitle: "WATCH LIVE",
