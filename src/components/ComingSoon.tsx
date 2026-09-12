@@ -5,8 +5,9 @@ import type { Locale } from "@/lib/locales";
 /**
  * 「敬请期待」遮罩 —— 包住一个尚未定稿的板块。
  *
- * 板块内容照常渲染并虚化，标语清晰压在上层：虚出轮廓是为了让人看出
- * 「东西已经有了，只是还没到时候」，整块留白反而像页面没做完。
+ * 板块内容照常渲染并轻微虚化，标语清晰压在上层：几乎不糊是刻意的——
+ * 内容看得清才让人看出「东西已经有了，只是还没到时候」，糊重了等于白做。
+ * 代价是白字失去了暗层打底，所以对比度改由标语背后那层径向柔光单独负责。
  *
  * 虚化用遮罩层的 backdrop-filter，而不是给内容加 filter: blur()。
  * filter 会把元素连同自身背景一起糊出盒子外，擂台那种整幅背景图的板块
@@ -30,9 +31,12 @@ export function ComingSoon({ locale, children }: { locale: Locale; children: Rea
         {children}
       </div>
 
-      <div className="pointer-events-none absolute inset-0 z-10 bg-ink/40 backdrop-blur-[7px] backdrop-saturate-[.6]">
+      <div className="pointer-events-none absolute inset-0 z-10 bg-ink/12 backdrop-blur-[2px] backdrop-saturate-[.92]">
         <div className="sticky top-0 flex h-screen max-h-full items-center justify-center px-6">
-          <div className="text-center">
+          <div className="relative text-center">
+            {/* 板块放清晰之后，白字压在擂台照那种亮背景上会糊；这层柔光只罩标语附近，
+                边缘渐隐到全透明，不会在板块中间留出一块看得见的方形暗斑 */}
+            <div className="pointer-events-none absolute top-1/2 left-1/2 -z-1 h-[420px] w-[820px] max-w-[130vw] -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(ellipse_at_center,rgba(20,11,8,.78)_0%,rgba(20,11,8,.55)_38%,rgba(20,11,8,.22)_62%,transparent_78%)]" />
             <div className="font-latin text-[11px] tracking-[7px] text-gold [text-shadow:0_1px_10px_rgba(0,0,0,.9)] md:text-xs md:tracking-[9px]">
               {d.eyebrow}
             </div>
