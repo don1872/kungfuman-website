@@ -98,6 +98,10 @@ SEO：每个语种有独立 `<html lang>`、`<title>`、`description`、canonica
 - **创始人履历时间线**（`Timeline`）：16 条，分「起点 / 影视 / 竞技 / 创作与传承」四章，
   配简历原图；下接「江湖印记」影像墙（10 张，无说明文字）
 - **隐私政策与服务条款**：`/[locale]/privacy`、`/[locale]/terms`，中英各一份
+- **「敬请期待」蒙层**（`ComingSoon`）：包住赛程、天下英雄榜、五届之路、集锦、擂台现场五个板块。
+  内容照常渲染并虚化（遮罩层 `backdrop-filter`，裁在板块边界内），标语清晰压在上层并 `sticky` 吊在
+  视口正中；内容层加 `inert`，点击、Tab 聚焦与读屏朗读一并关闭。文案见 `dict.ts` 的 `comingSoon`。
+  **这五块的内容定稿后，在 `SiteShell.tsx` 里去掉对应的 `<ComingSoon>` 包裹即可恢复。**
 - **企业页脚**：法人信息、注册地、联系方式（电话 / 邮箱 / Instagram）、站内导航三列、法务链接
 - 中英双语：`/zh` `/en` 两套独立路由，各自静态预渲染 + hreflang
 - 780px 响应式、`prefers-reduced-motion` 降级、覆盖层 Esc 关闭与滚动锁

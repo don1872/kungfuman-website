@@ -16,6 +16,7 @@ import { Editions } from "./Editions";
 import { Founder } from "./Founder";
 import { Media } from "./Media";
 import { Arena } from "./Arena";
+import { ComingSoon } from "./ComingSoon";
 import { FinalCta } from "./FinalCta";
 import { Footer } from "./Footer";
 import { TicketOverlay } from "./TicketOverlay";
@@ -54,8 +55,14 @@ export function SiteShell({ locale }: { locale: Locale }) {
           {locale === "zh" ? "」" : "\u201D"}
         </Parallax>
 
-        <Events locale={locale} />
-        <Rankings locale={locale} />
+        {/* 赛程 / 榜单 / 五届 / 集锦 / 擂台的内容尚未定稿，先以「敬请期待」蒙层示人 */}
+        <ComingSoon locale={locale}>
+          <Events locale={locale} />
+        </ComingSoon>
+
+        <ComingSoon locale={locale}>
+          <Rankings locale={locale} />
+        </ComingSoon>
 
         <Parallax
           image={photos.legacyKidsClass}
@@ -72,12 +79,20 @@ export function SiteShell({ locale }: { locale: Locale }) {
           {d.legacy.l2}
         </Parallax>
 
-        <Editions locale={locale} />
+        <ComingSoon locale={locale}>
+          <Editions locale={locale} />
+        </ComingSoon>
+
         <Founder locale={locale} />
-        <Media locale={locale} />
+
+        <ComingSoon locale={locale}>
+          <Media locale={locale} />
+        </ComingSoon>
 
         {/* 擂台现场置于集锦与购票之间：看过精彩片段 → 看见现场 → 买票 */}
-        <Arena locale={locale} onOpenTicket={() => setTicketOpen(true)} />
+        <ComingSoon locale={locale}>
+          <Arena locale={locale} onOpenTicket={() => setTicketOpen(true)} />
+        </ComingSoon>
 
         <FinalCta
           locale={locale}

@@ -28,6 +28,8 @@ export type Dict = {
   mainEvent: { meta: string; flag: string; vs: string };
   quote: { eyebrow: string; l1: string; l2: string };
   legacy: { eyebrow: string; l1: string; l2: string };
+  /** 「敬请期待」遮罩的文案。赛事内容板块定稿前盖在上层，见 components/ComingSoon.tsx */
+  comingSoon: { eyebrow: string; title: string; note: string };
   events: { heading: string; sub: string; hot: string; soon: string };
   rankings: { heading: string; sub: string; pts: string };
   editions: { heading: string; sub: string; intro: string; now: string };
@@ -127,6 +129,11 @@ const zh: Dict = {
   mainEvent: { meta: "主赛 MAIN EVENT · 综合对抗 84KG", flag: "● 长安站压轴", vs: "对决" },
   quote: { eyebrow: "创始人 · 陈庆彪 RAINBOW CHEN", l1: "功夫不在胜负，", l2: "在敢不敢站上去。" },
   legacy: { eyebrow: "LEGACY · 薪火相传", l1: "下一代功夫人，", l2: "已经站上垫子。" },
+  comingSoon: {
+    eyebrow: "COMING SOON",
+    title: "敬请期待",
+    note: "本板块内容仍在筹备，正式公布请关注官方渠道。",
+  },
   events: { heading: "赛程", sub: "EDITION I · WORLD TOUR", hot: "热售 HOT", soon: "即将开售 SOON" },
   rankings: { heading: "天下英雄榜", sub: "WORLD RANKINGS", pts: "PTS" },
   editions: {
@@ -251,6 +258,11 @@ const en: Dict = {
   mainEvent: { meta: "MAIN EVENT · FULL CONTACT 84KG", flag: "● XI'AN HEADLINER", vs: "VS" },
   quote: { eyebrow: "FOUNDER · RAINBOW CHEN", l1: "Kung fu is not about winning.", l2: "It's about daring to step up." },
   legacy: { eyebrow: "LEGACY", l1: "The next generation of kung fu,", l2: "already on the mat." },
+  comingSoon: {
+    eyebrow: "STAY TUNED",
+    title: "COMING SOON",
+    note: "This section is still in preparation. Official details to follow.",
+  },
   events: { heading: "SCHEDULE", sub: "EDITION I · WORLD TOUR", hot: "ON SALE", soon: "COMING SOON" },
   rankings: { heading: "WORLD RANKINGS", sub: "EDITION I", pts: "PTS" },
   editions: {
